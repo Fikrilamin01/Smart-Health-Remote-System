@@ -24,20 +24,20 @@ public class LoginController {
     }
 
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public String verification(
             @RequestParam(value = "uid") String userId,
             @RequestParam(value="pswd") String password,
             @RequestParam(value="userType") String userType,Model model)
             throws InterruptedException, ExecutionException  {
         if(userType.equals("doctor")){
-            if(doctorService.doctorAuthentication(userId, password) == true){
+            if(doctorService.doctorAuthentication(userId, password)){
                 //Retrieve the doctor object info and return it to doctor dashboard
                 model.addAttribute("Doctor",doctorService.getDoctor(userId));
                 return "doctorDashBoard";
             }
         }else{
-            if(patientService.patientAuthentication(userId, password) == true){
+            if(patientService.patientAuthentication(userId, password)){
                 //Retrieve the doctor object info and return it to doctor dashboard
                 model.addAttribute("Patient",patientService.getPatient(userId));
                 return "patientDashBoard";
