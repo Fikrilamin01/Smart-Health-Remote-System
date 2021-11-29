@@ -19,10 +19,7 @@ public class DoctorRepository {
 
     public String createDoctor(Doctor doctor) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        //auto create data ID by firebase
-        DocumentReference AddedDocRed = dbFirestore.collection(COL_NAME).document();
-        doctor.setUserId(AddedDocRed.getId());
-        ApiFuture<WriteResult> collectionsApiFuture =AddedDocRed.set(doctor);
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(doctor.getName()).set(doctor);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
