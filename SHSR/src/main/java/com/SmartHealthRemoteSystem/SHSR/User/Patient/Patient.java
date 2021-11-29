@@ -3,22 +3,33 @@ package com.SmartHealthRemoteSystem.SHSR.User.Patient;
 import com.SmartHealthRemoteSystem.SHSR.User.User;
 
 public class Patient extends User {
+    private String sensorDataId;
     private String address;
     private String emergencyContact;
 
     public Patient() {
     }
 
-    public Patient(String name, String contact,String password, String address, String emergencyContact) {
-        super(name,contact,password);
+    public Patient(String userId, String name, String password, String contact, String sensorDataId, String address, String emergencyContact) {
+        super(userId, name, password, contact);
+        this.sensorDataId = sensorDataId;
         this.address = address;
         this.emergencyContact = emergencyContact;
     }
 
-    public Patient(String userId, String name, String contact, String password, String address, String emergencyContact) {
-        super(userId, name, contact,password);
+    public Patient(String name, String password, String contact, String sensorDataId, String address, String emergencyContact) {
+        super(name, password, contact);
+        this.sensorDataId = sensorDataId;
         this.address = address;
         this.emergencyContact = emergencyContact;
+    }
+
+    public String getSensorDataId() {
+        return sensorDataId;
+    }
+
+    public void setSensorDataId(String sensorDataId) {
+        this.sensorDataId = sensorDataId;
     }
 
     public String getAddress() {

@@ -49,12 +49,12 @@ public class PatientService {
     }
 
     public Patient getPatient(String patientId) throws ExecutionException, InterruptedException {
+        return patientRepository.getPatient(patientId);
+    }
+
+    public String getPatientSensorId(String patientId) throws ExecutionException, InterruptedException {
         Patient patient = patientRepository.getPatient(patientId);
-        if(patient != null){
-            return patient;
-        }else{
-            return null;
-        }
+        return patient.getSensorDataId();
     }
 
     public boolean patientAuthentication(String userId, String password) throws ExecutionException, InterruptedException {
@@ -62,11 +62,7 @@ public class PatientService {
         if(patient == null){
             return false;
         }else{
-            if(patient.getPassword().equals(password)){
-                return true;
-            }else{
-                return false;
-            }
+            return patient.getPassword().equals(password);
         }
     }
 }

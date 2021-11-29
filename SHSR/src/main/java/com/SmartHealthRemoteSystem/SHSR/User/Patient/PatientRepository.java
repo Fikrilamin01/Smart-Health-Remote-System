@@ -19,14 +19,6 @@ import java.util.concurrent.ExecutionException;
 @Repository
 public class PatientRepository {
     public static final String COL_NAME = "Patient";
-    private final HealthStatusRepository healthStatusRepository;
-    private final PrescriptionRepository prescriptionRepository;
-
-    @Autowired
-    public PatientRepository( HealthStatusRepository healthStatusRepository, PrescriptionRepository prescriptionRepository) {
-        this.healthStatusRepository = healthStatusRepository;
-        this.prescriptionRepository = prescriptionRepository;
-    }
 
     //create and update function
     public String createPatient(Patient patient)
@@ -54,7 +46,7 @@ public class PatientRepository {
         DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(patientId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
-        Patient tempPatient = null;
+        Patient tempPatient;
         if (document.exists()) {
             tempPatient  = document.toObject(Patient.class);
             return tempPatient;
@@ -63,9 +55,7 @@ public class PatientRepository {
         }
     }
 
-    public String deletePatient(String patientId) throws ExecutionException, InterruptedException {
-        List<HealthStatus> healthStatusList;
-        List<Prescription> prescriptionList;
+    public String deletePatient(String patientId) {
         Firestore dbFirestore = FirestoreClient.getFirestore();
 
         ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(patientId).delete();

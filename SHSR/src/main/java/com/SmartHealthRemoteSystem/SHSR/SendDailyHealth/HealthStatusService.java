@@ -1,6 +1,7 @@
 package com.SmartHealthRemoteSystem.SHSR.SendDailyHealth;
 
 import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,32 +13,28 @@ public class HealthStatusService {
 
     private final HealthStatusRepository healthStatusRepository;
     private final SensorDataService sensorDataService;
+    private final PatientService patientService;
 
     @Autowired
-    public HealthStatusService(HealthStatusRepository healthStatusRepository, SensorDataService sensorDataService) {
+    public HealthStatusService(HealthStatusRepository healthStatusRepository, SensorDataService sensorDataService, PatientService patientService) {
         this.healthStatusRepository = healthStatusRepository;
         this.sensorDataService = sensorDataService;
+        this.patientService = patientService;
     }
 
-    public void createHealthStatus(HealthStatus healthStatus) throws ExecutionException, InterruptedException {
+    public void createHealthStatus(HealthStatus healthStatus, String patientId) throws ExecutionException, InterruptedException {
         //create object sensor data, only then can create health status
-        String sensorDataId = sensorDataService.createSensorData();
+        String sensorDataId = patientService.getPatientSensorId(patientId);
 
         String timeCreated = healthStatusRepository.CreateHealthStatus(healthStatus,sensorDataId);
     }
 
     public List<HealthStatus> getListHealthStatus() throws ExecutionException, InterruptedException {
-        List<HealthStatus> healthStatusList = healthStatusRepository.getListHealthStatus();
-        return healthStatusList;
+        return healthStatusRepository.getListHealthStatus();
     }
 
     public HealthStatus getHealthStatus(String healthStatusId) throws ExecutionException, InterruptedException {
-        HealthStatus healthStatus = healthStatusRepository.getHealthStatus(healthStatusId);
-        if(healthStatus!=null){
-            return healthStatus;
-        }else {
-            return null;
-        }
+        return healthStatusRepository.getHealthStatus(healthStatusId);
     }
 
     public void deleteAllHealthStatus(String userId) throws ExecutionException, InterruptedException {

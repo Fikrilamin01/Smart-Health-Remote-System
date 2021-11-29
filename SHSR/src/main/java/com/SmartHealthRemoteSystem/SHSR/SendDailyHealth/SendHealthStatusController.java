@@ -15,22 +15,15 @@ public class SendHealthStatusController {
     }
 
     @PostMapping("/create-health-status")
-    public void saveHealthStatus(@RequestBody HealthStatus healthStatus)
+    public void saveHealthStatus(@RequestBody HealthStatus healthStatus, String patientId)
             throws ExecutionException, InterruptedException {
-        healthStatusService.createHealthStatus(healthStatus);
+        healthStatusService.createHealthStatus(healthStatus, patientId);
     }
 
     @GetMapping("/get-health-status/{healthStatusId}")
     public HealthStatus getHealthStatus(@PathVariable String healthStatusId) throws ExecutionException, InterruptedException {
 
-        HealthStatus healthStatus = healthStatusService.getHealthStatus(healthStatusId);
-        if(healthStatus != null){
-            return healthStatus;
-            //display patient data on the web
-        }else{
-            return null;
-            //display error message
-        }
+        return healthStatusService.getHealthStatus(healthStatusId);
     }
 
     @PutMapping("/update-health-status")
