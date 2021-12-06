@@ -9,7 +9,7 @@ import javax.print.Doc;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/Doctor")
+//@RequestMapping("/doctor")
 public class DoctorController {
     private final DoctorService doctorService;
 
@@ -19,9 +19,10 @@ public class DoctorController {
     }
 
     @PostMapping("/create-doctor")
-    public void saveDoctor(@RequestBody Doctor doctor)
+    public String saveDoctor(@RequestBody Doctor doctor)
             throws ExecutionException, InterruptedException {
-        doctorService.createDoctor(doctor);
+       String msg = doctorService.createDoctor(doctor);
+       return msg;
     }
 
     @GetMapping("/get-doctor/{doctorId}")

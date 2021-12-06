@@ -14,25 +14,25 @@ public class SendHealthStatusController {
         this.healthStatusService = healthStatusService;
     }
 
-    @PostMapping("/create-health-status")
-    public void saveHealthStatus(@RequestBody HealthStatus healthStatus, String patientId)
+    @PostMapping("/create-healthstatus/{patientId}")
+    public void saveHealthStatus(@RequestBody HealthStatus healthStatus, @PathVariable String patientId)
             throws ExecutionException, InterruptedException {
         healthStatusService.createHealthStatus(healthStatus, patientId);
     }
 
-    @GetMapping("/get-health-status/{healthStatusId}")
-    public HealthStatus getHealthStatus(@PathVariable String healthStatusId) throws ExecutionException, InterruptedException {
+    @GetMapping("/get-healthstatus/{patientId}/{healthStatusId}")
+    public HealthStatus getHealthStatus(@PathVariable String healthStatusId, @PathVariable String patientId) throws ExecutionException, InterruptedException {
 
-        return healthStatusService.getHealthStatus(healthStatusId);
+        return healthStatusService.getHealthStatus(healthStatusId, patientId);
     }
 
-    @PutMapping("/update-health-status")
-    public void updateHealthStatus(@RequestBody HealthStatus healthStatus) throws ExecutionException, InterruptedException {
-        healthStatusService.updateHealthStatus(healthStatus);
+    @PutMapping("/update-healthstatus/{patientId}")
+    public void updateHealthStatus(@RequestBody HealthStatus healthStatus, @PathVariable String patientId) throws ExecutionException, InterruptedException {
+        healthStatusService.updateHealthStatus(healthStatus, patientId);
     }
 
-    @DeleteMapping("/delete-health-status/{healthStatusId}")
-    public void deleteHealthStatus(@PathVariable String healthStatusId) throws ExecutionException, InterruptedException {
-        healthStatusService.deleteHealthStatus(healthStatusId);
+    @DeleteMapping("/delete-healthstatus/{patientId}/{healthStatusId}")
+    public void deleteHealthStatus(@PathVariable String healthStatusId, @PathVariable String patientId) throws ExecutionException, InterruptedException {
+        healthStatusService.deleteHealthStatus(healthStatusId, patientId);
     }
 }

@@ -19,13 +19,14 @@ import java.util.concurrent.ExecutionException;
 @Repository
 public class PrescriptionRepository {
 
-    public static final String COL_NAME = "Prescription";
+    public static final String COL_NAME = "Patient";
+    public static final String SUB_COL_NAME = "Prescription";
 
-    public String CreatePrescription(Prescription prescription)
+    public String CreatePrescription(Prescription prescription, String patientId)
             throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         //auto create data ID by firebase
-        DocumentReference addedDocRef = dbFirestore.collection(COL_NAME).document();
+        DocumentReference addedDocRef = dbFirestore.collection(COL_NAME).document(patientId).collection(SUB_COL_NAME).document();
         prescription.setPrescriptionId(addedDocRef.getId());
         ApiFuture<WriteResult> collectionsApiFuture =
                 addedDocRef.set(prescription);
@@ -33,21 +34,20 @@ public class PrescriptionRepository {
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
-    public String UpdatePrescription(Prescription prescription)
+    public String UpdatePrescription(Prescription prescription, String patientId)
             throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        DocumentReference addedDocRef = dbFirestore.collection(COL_NAME).document(prescription.getPrescriptionId());
+        DocumentReference addedDocRef = dbFirestore.collection(COL_NAME).document(patientId).collection(SUB_COL_NAME).document(prescription.getPrescriptionId());
         ApiFuture<WriteResult> collectionsApiFuture =
-                //auto create data ID by firebase
                 addedDocRef.set(prescription);
         ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toString());
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
-    public Prescription getPrescription(String prescriptionId)
+    public Prescription getPrescription(String prescriptionId, String patientId)
             throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(prescriptionId);
+        DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(patientId).collection(SUB_COL_NAME).document(prescriptionId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
         Prescription tempPrescription = null;
@@ -59,10 +59,10 @@ public class PrescriptionRepository {
         }
     }
 
-    public List<Prescription> getListPrescription()
+    public List<Prescription> getListPrescription(String patientId)
             throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        Iterable<DocumentReference> documentReference = dbFirestore.collection(COL_NAME).listDocuments();
+        Iterable<DocumentReference> documentReference = dbFirestore.collection(COL_NAME).document(patientId).collection(SUB_COL_NAME).listDocuments();
         Iterator<DocumentReference> iterator = documentReference.iterator();
 
         List<Prescription> prescriptionList = new ArrayList<>();
@@ -78,9 +78,9 @@ public class PrescriptionRepository {
         return prescriptionList;
     }
 
-    public String deletePrescription(String prescriptionId) {
+    public String deletePrescription(String prescriptionId, String patientId) {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(prescriptionId).delete();
+        ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(patientId).collection(SUB_COL_NAME).document(prescriptionId).delete();
         return "Document with Sensor Data Id " + prescriptionId + " has been deleted";
     }
 }

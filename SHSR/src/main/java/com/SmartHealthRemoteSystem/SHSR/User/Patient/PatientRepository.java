@@ -2,6 +2,7 @@ package com.SmartHealthRemoteSystem.SHSR.User.Patient;
 
 import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatus;
 import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatusRepository;
+import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
 import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.Prescription;
 import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.PrescriptionRepository;
 import com.google.api.core.ApiFuture;
@@ -13,31 +14,40 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository
 public class PatientRepository {
     public static final String COL_NAME = "Patient";
 
-    //create and update function
-    public String createPatient(Patient patient)
+
+    public String savePatient(Patient patient)
             throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getName()).set(patient);
+        Map<String, String> tempPatient = new HashMap<>();
+        tempPatient.put("address", patient.getAddress());
+        tempPatient.put("emergencyContact", patient.getEmergencyContact());
+        tempPatient.put("sensorDataId", patient.getSensorDataId());
+
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId()).set(tempPatient);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
-    public String updatePatient(Patient patient)
-            throws InterruptedException, ExecutionException {
+    public String updatePatient(Patient patient) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionsApiFuture =
-                dbFirestore.collection(COL_NAME).document(patient.getUserId()).set(patient);
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME)
+                .document(patient.getUserId())
+                .update("address", patient.getAddress(),
+                        "emergencyContact", patient.getEmergencyContact(),
+                        "sensorDataId", patient.getSensorDataId());
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
 
-    public static Patient getPatient(String patientId)
+
+
+    public Patient getPatient(String patientId)
             throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(patientId);
@@ -50,6 +60,25 @@ public class PatientRepository {
         } else {
             return null;
         }
+    }
+
+    public List<Patient> getListPatient()
+            throws InterruptedException, ExecutionException {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        Iterable<DocumentReference> documentReference = dbFirestore.collection(COL_NAME).listDocuments();
+        Iterator<DocumentReference> iterator = documentReference.iterator();
+
+        List<Patient> patientList = new ArrayList<>();
+        Patient patient= null;
+        while (iterator.hasNext()) {
+            DocumentReference documentReference1=iterator.next();
+            ApiFuture<DocumentSnapshot> future = documentReference1.get();
+            DocumentSnapshot document = future.get();
+            patient = document.toObject(Patient.class);
+            patientList.add(patient);
+        }
+
+        return patientList;
     }
 
     public String deletePatient(String patientId) {

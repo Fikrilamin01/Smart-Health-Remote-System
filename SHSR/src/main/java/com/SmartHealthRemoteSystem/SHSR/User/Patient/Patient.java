@@ -10,15 +10,15 @@ public class Patient extends User {
     public Patient() {
     }
 
-    public Patient(String userId, String name, String password, String contact, String sensorDataId, String address, String emergencyContact) {
-        super(userId, name, password, contact);
+    public Patient(String userId, String name, String password, String contact, String role, String sensorDataId, String address, String emergencyContact) {
+        super(userId, name, password, contact, role);
         this.sensorDataId = sensorDataId;
         this.address = address;
         this.emergencyContact = emergencyContact;
     }
 
-    public Patient(String name, String password, String contact, String sensorDataId, String address, String emergencyContact) {
-        super(name, password, contact);
+    public Patient(String name, String password, String contact, String role, String sensorDataId, String address, String emergencyContact) {
+        super(name, password, contact, role);
         this.sensorDataId = sensorDataId;
         this.address = address;
         this.emergencyContact = emergencyContact;

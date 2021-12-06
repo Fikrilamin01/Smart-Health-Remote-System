@@ -9,8 +9,6 @@ public class Prescription {
     private String prescriptionId;
     private String timestamp;
     private String doctorId;
-    private String patientId;
-    private String sensorDataId;
     private List<String> medicineList;
     private String prescriptionDescription;
     private String diagnosisAilmentDescription;
@@ -18,23 +16,19 @@ public class Prescription {
     public Prescription() {
     }
 
-    public Prescription(String doctorId, String patientId, String sensorDataId, List<String> medicineList, String prescriptionDescription, String diagnosisAilmentDescription) {
+    public Prescription(String doctorId, List<String> medicineList, String prescriptionDescription, String diagnosisAilmentDescription) {
         this.doctorId = doctorId;
-        this.patientId = patientId;
-        this.sensorDataId = sensorDataId;
         this.medicineList = medicineList;
         this.prescriptionDescription = prescriptionDescription;
         this.diagnosisAilmentDescription = diagnosisAilmentDescription;
     }
 
     public Prescription(String prescriptionId, String  timestamp, String doctorId,
-                        String patientId, String sensorDataId, List<String> medicineList,
-                        String prescriptionDescription, String diagnosisAilmentDescription) {
+                        List<String> medicineList, String prescriptionDescription,
+                        String diagnosisAilmentDescription) {
         this.prescriptionId = prescriptionId;
         this.timestamp = timestamp;
         this.doctorId = doctorId;
-        this.patientId = patientId;
-        this.sensorDataId = sensorDataId;
         this.medicineList = medicineList;
         this.prescriptionDescription = prescriptionDescription;
         this.diagnosisAilmentDescription = diagnosisAilmentDescription;
@@ -62,22 +56,6 @@ public class Prescription {
 
     public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
-    }
-
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
-
-    public String getSensorDataId() {
-        return sensorDataId;
-    }
-
-    public void setSensorDataId(String sensorDataId) {
-        this.sensorDataId = sensorDataId;
     }
 
     public List<String> getMedicineList() {

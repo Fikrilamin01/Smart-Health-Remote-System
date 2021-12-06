@@ -18,44 +18,35 @@ public class PrescriptionService {
         this.sensorDataService = sensorDataService;
     }
 
-    public String createPrescription(Prescription prescription) throws ExecutionException, InterruptedException {
-        return prescriptionRepository.CreatePrescription(prescription);
+    public String createPrescription(Prescription prescription, String patientId) throws ExecutionException, InterruptedException {
+        return prescriptionRepository.CreatePrescription(prescription, patientId);
     }
 
-    public Prescription getPrescription(String prescriptionIdId) throws ExecutionException, InterruptedException {
-        return prescriptionRepository.getPrescription(prescriptionIdId);
+    public Prescription getPrescription(String prescriptionIdId, String patientId) throws ExecutionException, InterruptedException {
+        return prescriptionRepository.getPrescription(prescriptionIdId, patientId);
     }
-    public List<Prescription> getListPrescription() throws ExecutionException, InterruptedException {
-        List<Prescription> prescriptionList = prescriptionRepository.getListPrescription();
+    public List<Prescription> getListPrescription(String patientId) throws ExecutionException, InterruptedException {
+        List<Prescription> prescriptionList = prescriptionRepository.getListPrescription(patientId);
         return  prescriptionList;
     }
 
-    public void deleteAllPrescription(String userId) throws ExecutionException, InterruptedException {
-        List<Prescription> prescriptionList = getListPrescription();
-        String sensorDataId = "";
+    public void deleteAllPrescription(String patientId) throws ExecutionException, InterruptedException {
+        List<Prescription> prescriptionList = getListPrescription(patientId);
         for(Prescription prescription: prescriptionList){
             //deleting the patient prescription
-            if(prescription.getPatientId().equals(userId)){
-                prescriptionRepository.deletePrescription(prescription.getPrescriptionId());
-                sensorDataId = prescription.getSensorDataId();
-            }
+            prescriptionRepository.deletePrescription(prescription.getPrescriptionId(), patientId);
         }
-        //checking whether sensorData exist or not in database, if yes, deleted it.
-        if(sensorDataService.getSensorData(sensorDataId) != null){
-            sensorDataService.deleteSensorData(sensorDataId);
-        }
-
     }
 
 
-    public String updatePrescription(Prescription prescription) throws ExecutionException, InterruptedException {
-        return prescriptionRepository.UpdatePrescription(prescription);
+    public String updatePrescription(Prescription prescription, String patientId) throws ExecutionException, InterruptedException {
+        return prescriptionRepository.UpdatePrescription(prescription, patientId);
     }
 
-    public void deletePrescription(String prescriptionId) throws ExecutionException, InterruptedException {
+    public void deletePrescription(String prescriptionId, String patientId) throws ExecutionException, InterruptedException {
         String message = "";
-        if(prescriptionRepository.getPrescription(prescriptionId) != null) {
-            message = prescriptionRepository.deletePrescription(prescriptionId);
+        if(prescriptionRepository.getPrescription(prescriptionId, patientId) != null) {
+            message = prescriptionRepository.deletePrescription(prescriptionId, patientId);
         }else{
             message = "Error, the prescription Id is not exist";
         }

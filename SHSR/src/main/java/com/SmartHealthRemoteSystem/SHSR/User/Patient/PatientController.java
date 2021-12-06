@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/Patient")
+@RequestMapping("/patient")
 public class PatientController {
     private final PatientService patientService;
 
@@ -16,9 +16,9 @@ public class PatientController {
     }
 
     @PostMapping("/create-patient")
-    public void savePatient(@RequestBody Patient patient)
+    public String savePatient(@RequestBody Patient patient)
             throws ExecutionException, InterruptedException {
-        patientService.createPatient(patient);
+        return patientService.createPatient(patient);
     }
 
     @GetMapping("/get-patient/{patientId}")

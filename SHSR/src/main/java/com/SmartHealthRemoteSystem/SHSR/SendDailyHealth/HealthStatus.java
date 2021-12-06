@@ -8,26 +8,21 @@ import java.sql.Timestamp;
 public class HealthStatus {
     //add health status Id to prevent conflict in database
     private String healthStatusId;
-    private String sensorDataId;
     private String additionalNotes;
-    private String patientId;
     private String doctorId;
     private String timestamp;
 
     public HealthStatus() {
     }
 
-    public HealthStatus(String additionalNotes, String patientId, String doctorId) {
+    public HealthStatus(String additionalNotes, String doctorId) {
         this.additionalNotes = additionalNotes;
-        this.patientId = patientId;
         this.doctorId = doctorId;
     }
 
-    public HealthStatus(String healthStatusId, String sensorDataId, String additionalNotes, String patientId, String doctorId, String  timestamp) {
+    public HealthStatus(String healthStatusId, String additionalNotes, String doctorId, String  timestamp) {
         this.healthStatusId = healthStatusId;
-        this.sensorDataId = sensorDataId;
         this.additionalNotes = additionalNotes;
-        this.patientId = patientId;
         this.doctorId = doctorId;
         this.timestamp = timestamp;
     }
@@ -40,28 +35,12 @@ public class HealthStatus {
         this.healthStatusId = healthStatusId;
     }
 
-    public String getSensorDataId() {
-        return sensorDataId;
-    }
-
-    public void setSensorDataId(String sensorDataId) {
-        this.sensorDataId = sensorDataId;
-    }
-
     public String getAdditionalNotes() {
         return additionalNotes;
     }
 
     public void setAdditionalNotes(String additionalNotes) {
         this.additionalNotes = additionalNotes;
-    }
-
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
     }
 
     public String getDoctorId() {

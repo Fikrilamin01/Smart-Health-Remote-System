@@ -1,7 +1,10 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Patient;
 
 
+import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
 import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatusService;
+import com.SmartHealthRemoteSystem.SHSR.User.User;
+import com.SmartHealthRemoteSystem.SHSR.User.UserService;
 import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,20 +14,32 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class PatientService {
 
-
-    private final PatientRepository patientRepository;
-    private final HealthStatusService healthStatusService;
-    private final PrescriptionService prescriptionService;
+    private UserService userService;
+    private PatientRepository patientRepository;
+    private HealthStatusService healthStatusService;
+    private PrescriptionService prescriptionService;
+    private SensorDataService sensorDataService;
 
     @Autowired
-    public PatientService(PatientRepository patientRepository, HealthStatusService healthStatusService, PrescriptionService prescriptionService) {
+    public PatientService(UserService userService, PatientRepository patientRepository, HealthStatusService healthStatusService, PrescriptionService prescriptionService, SensorDataService sensorDataService) {
+        this.userService = userService;
         this.patientRepository = patientRepository;
         this.healthStatusService = healthStatusService;
         this.prescriptionService = prescriptionService;
+        this.sensorDataService = sensorDataService;
     }
 
-    public void createPatient(Patient patient) throws ExecutionException, InterruptedException {
-        String timeCreated = patientRepository.createPatient(patient);
+    public String createPatient(Patient patient) throws ExecutionException, InterruptedException {
+        //Create a temporary User
+        User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
+        Boolean result = userService.createUser(user);
+        if(result == true){
+            //there is no conflict with the ID
+            //proceed to create the patient in patient table
+            String timeCreated = patientRepository.savePatient(patient);
+            return timeCreated;
+        }
+        return "Failed to create user patient with userId: " + patient.getUserId();
     }
 
     public void deletePatient(String patientId) throws ExecutionException, InterruptedException {
@@ -33,7 +48,10 @@ public class PatientService {
             //show error message
             String message = "patientId is not exist in the database";
         }else{
+            Patient patient = getPatient(patientId);
             String message = patientRepository.deletePatient(patientId);
+            String timeDelete = userService.deleteUser(patientId);
+            String timeDelete1 = sensorDataService.deleteSensorData(patient.getSensorDataId());
             //Show success message
         }
 
@@ -45,11 +63,24 @@ public class PatientService {
     }
 
     public void updatePatient(Patient patient) throws ExecutionException, InterruptedException {
-        patientRepository.updatePatient(patient);
+        User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
+        String timeUpdate = userService.updateUser(user);
+        String timeUpdate1 = patientRepository.updatePatient(patient);
     }
 
     public Patient getPatient(String patientId) throws ExecutionException, InterruptedException {
-        return patientRepository.getPatient(patientId);
+        Patient patient = patientRepository.getPatient(patientId);
+        if(patient == null){
+            return null;
+        }else{
+            User user = userService.getUser(patientId);
+            patient.setUserId(user.getUserId());
+            patient.setName(user.getName());
+            patient.setPassword(user.getPassword());
+            patient.setContact(user.getContact());
+            patient.setRole(user.getRole());
+        }
+        return patient;
     }
 
     public String getPatientSensorId(String patientId) throws ExecutionException, InterruptedException {

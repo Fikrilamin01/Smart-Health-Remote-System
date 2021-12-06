@@ -18,14 +18,14 @@
 
     <h3>Login</h3>
 
-    <form name="login-form" th:action="@{/login}" class="login_form" method="post">
+    <form name="login-form"  th:action="@{/login}" class="login_form" method="post">
         <div class="mb-3 mt-3">
             <label for="uname" class="form-label">User ID:</label>
-            <input type="text" class="form-control" id="uname" placeholder="Enter UserId" name="uid" th:name="uid" required>
+            <input type="text" class="form-control" id="uname" placeholder="Enter UserId" name="username" th:name="uid" required>
         </div>
         <div class="mb-3">
             <label for="pwd" class="form-label">Password:</label>
-            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd" th:name="pswd" required>
+            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password" th:name="pswd" required>
         </div>
         <div class="mb-3 d-flex justify-content-center">
             <div class="form-check mr-1">
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="mb-3">
-            <h6 th:if="${InvalidCredential}"> Username or Password is wrong</h6>
+<!--            <h6 th:if="${InvalidCredential}"> Username or Password is wrong</h6>-->
         </div>
 
         <button type="button" value="Submit" id="btnsubmit" onclick="submitForm()" class="btn btn-primary">Login</button>

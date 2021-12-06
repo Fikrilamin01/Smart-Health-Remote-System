@@ -1,25 +1,36 @@
 package com.SmartHealthRemoteSystem.SHSR.User;
 
-public abstract class User {
+public class User {
     private String userId;
     private String name;
     private String password;
     private String contact;
+    private String role;
 
     public User() {
     }
 
-    public User(String userId, String name, String password, String contact) {
+    public User(String userId, String name, String password, String contact, String role) {
         this.userId = userId;
         this.name = name;
         this.password = password;
         this.contact = contact;
+        this.role = role;
     }
 
-    public User(String name, String password, String contact) {
+    public User(String name, String password, String contact, String role) {
         this.name = name;
         this.password = password;
         this.contact = contact;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getUserId() {

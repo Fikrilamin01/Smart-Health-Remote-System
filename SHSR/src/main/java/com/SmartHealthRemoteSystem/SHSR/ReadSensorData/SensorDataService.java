@@ -19,8 +19,8 @@ public class SensorDataService {
         return sensorDataRepository.CreateSensorData(sensorData);
     }
 
-    public void deleteSensorData(String sensorId){
-        sensorDataRepository.deleteSensorData(sensorId);
+    public String deleteSensorData(String sensorId){
+        return sensorDataRepository.deleteSensorData(sensorId);
     }
 
     public SensorData getSensorData(String sensorId) throws ExecutionException, InterruptedException {
