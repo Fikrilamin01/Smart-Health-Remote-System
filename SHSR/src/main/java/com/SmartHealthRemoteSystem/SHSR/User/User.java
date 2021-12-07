@@ -1,5 +1,9 @@
 package com.SmartHealthRemoteSystem.SHSR.User;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class User {
     private String userId;
     private String name;
@@ -64,4 +68,5 @@ public class User {
     public void setContact(String contact) {
         this.contact = contact;
     }
+
 }
