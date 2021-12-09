@@ -1,6 +1,7 @@
 package com.SmartHealthRemoteSystem.SHSR.Login;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -13,7 +14,9 @@ public class LoginController {
     }
 
     @GetMapping("/doctor/dashboard")
-    public String getDoctorDashboard(){
+    public String getDoctorDashboard(Model model){
+
+        model.addAllAttributes("doctor",doctor);
         return "doctorDashBoard";
     }
 
