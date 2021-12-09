@@ -16,12 +16,14 @@ public class LoginController {
     @GetMapping("/doctor/dashboard")
     public String getDoctorDashboard(Model model){
 
-//        model.addAllAttributes("doctor",doctor);
+//        model.addAttribute("doctor",doctor);
         return "doctorDashBoard";
     }
 
     @GetMapping("/patient/dashboard")
-    public String getPatientDashboard(){
+    public String getPatientDashboard(Model model){
+        model.addAllAttributes("patient,doctor",{patient,doctor});
+//        model.addAttribute("patient",patient);
         return "patientDashBoard";
     }
 }
