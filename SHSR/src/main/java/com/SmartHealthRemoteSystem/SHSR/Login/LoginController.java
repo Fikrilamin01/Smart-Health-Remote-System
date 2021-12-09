@@ -16,7 +16,7 @@ public class LoginController {
     @GetMapping("/doctor/dashboard")
     public String getDoctorDashboard(Model model){
 
-        model.addAllAttributes("doctor",doctor);
+//        model.addAllAttributes("doctor",doctor);
         return "doctorDashBoard";
     }
 
