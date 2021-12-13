@@ -1,11 +1,18 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Patient;
 
+import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
+import com.SmartHealthRemoteSystem.SHSR.User.Doctor.DoctorService;
+import com.SmartHealthRemoteSystem.SHSR.WebConfiguration.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ExecutionException;
 
-@RestController
+@Controller
 @RequestMapping("/patient")
 public class PatientController {
     private final PatientService patientService;
@@ -15,6 +22,16 @@ public class PatientController {
         this.patientService = patientService;
     }
 
+    @GetMapping
+    public String getPatientDashboard(Model model) throws ExecutionException, InterruptedException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
+        Patient patient = patientService.getPatient(myUserDetails.getUsername());
+        Doctor doctor = patientService.findDoctorThroughHealthStatusPatient(patient);
+        model.addAttribute("patient",patient);
+        model.addAttribute("doctor",doctor);
+        return "patientDashBoard";
+    }
     @PostMapping("/create-patient")
     public String savePatient(@RequestBody Patient patient)
             throws ExecutionException, InterruptedException {

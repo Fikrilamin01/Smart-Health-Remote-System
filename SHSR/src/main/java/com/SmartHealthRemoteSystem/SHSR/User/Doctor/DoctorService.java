@@ -1,11 +1,14 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Doctor;
 
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.Patient;
 import com.SmartHealthRemoteSystem.SHSR.User.User;
 import com.SmartHealthRemoteSystem.SHSR.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -65,9 +68,16 @@ public class DoctorService {
         }
     }
 
-
     public void deleteDoctor(String doctorId) throws ExecutionException, InterruptedException {
         String message = doctorRepository.deleteDoctor(doctorId);
         String timeDelete = userService.deleteUser(doctorId);
     }
+
+    public List<Patient> findAllPatientAssignToDoctor(String doctorId) {
+        List<Patient> patientList = new ArrayList<>();
+        //Logic on finding all the patient that has been assign to doctor...
+
+        return patientList;
+    }
+
 }

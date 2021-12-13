@@ -24,10 +24,10 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("ROLE_DOCTOR")) {
-                redirectUrl = "/doctor/dashboard";
+                redirectUrl = "/doctor";
                 break;
             } else if (grantedAuthority.getAuthority().equals("ROLE_PATIENT")) {
-                redirectUrl = "/patient/dashboard";
+                redirectUrl = "/patient";
                 break;
             }
         }

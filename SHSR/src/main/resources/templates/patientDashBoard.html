@@ -18,12 +18,12 @@
             <div class="col ">
                 <div class="d-flex shadow flex-column flex-shrink-0 p-3 bg-primary bg-opacity-25 rounded">
                     <div class="card bg-primary bg-opacity-25 rounded">
-                        <img class="card-img-top" src="/image/img_avatar1.png" alt="Card image" >
+                        <img class="card-img-top" src="/static/image/img_avatar1.png" alt="Card image" >
                         <div class="card-body">
-                            <h3 class="card-title" th:text="{patient.name}">Patient Name</h3>
-                            <p style=" font-size: 12px;">Patient Contact No. : <span th:text="{patient.contact}">0123456789</span></p>
-                            <p style=" font-size: 12px;">Patient Address : <span th:text="{patient.address}">65, Naha Road, Mymensingh</span></p>
-                            <p style=" font-size: 12px;">Emergency Contact No. : <span th:text="{patient.emergencyContact}">0123456789</span></p>
+                            <h3 class="card-title" th:text="${patient.name}"></h3>
+                            <p style=" font-size: 12px;">Patient Contact No. : <span th:text="${patient.contact}"></span></p>
+                            <p style=" font-size: 12px;">Patient Address : <span th:text="${patient.address}"></span></p>
+                            <p style=" font-size: 12px;">Emergency Contact No. : <span th:text="${patient.emergencyContact}"></span></p>
                         </div>
                     </div>
                     <hr>
@@ -43,24 +43,24 @@
                 </div>
             </div>
             <div class="col-9">
-                <h1 d-flex justify-content-start>Hello <span th:text="{patient.name}">Patient Name</span></h1>
+                <h1 d-flex justify-content-start>Hello <span th:text="${patient.name}">Patient Name</span></h1>
                 <p>How are you filling today?</p>
                 <div style="height: 500px; width: auto;" >
                     <div class="row gx-3 m-5">
                         <div class="col ">
                             <div class="container bg-primary bg-opacity-25 shadow-lg rounded border border-primary">
                                 <h3>Your Doctor</h3>
-                                <h5 th:text="{doctor.name}">Dr Peterson</h5>
-                                <p th:text="{doctor.position}">Heart Specialist</p>
+                                <h5 th:text="${doctor.name}">Dr Peterson</h5>
+                                <p th:text="${doctor.position}">Heart Specialist</p>
                             </div>
                         </div>
                         <div class="col ">
                             <div class="container bg-primary bg-opacity-25 shadow-lg rounded border border-primary">
                                 <h3>Your Data</h3>
                                 <div class="d-flex justify-content-evenly">
-                                    <div ><p>Weight<h6 th:text="{patient.weight}">70Kg</h6></p></div>
-                                    <div ><p>Height<h6 th:text="{patient.height}">1.7m</h6></p></div>
-                                    <div ><p>Age<h6 th:text="{patient.age}">56</h6></p></div>
+                                    <div ><p>Weight<h6>70Kg</h6></p></div>
+                                    <div ><p>Height<h6>1.7m</h6></p></div>
+                                    <div ><p>Age<h6>56</h6></p></div>
                                 </div>
                             </div>
                         </div>

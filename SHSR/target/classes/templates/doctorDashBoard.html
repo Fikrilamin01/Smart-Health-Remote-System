@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -21,14 +23,14 @@
                     <div class="card bg-primary bg-opacity-25 rounded">
                         <img class="card-img-top" src="/image/img_avatar1.png" alt="Card image" >
                         <div class="card-body">
-                            <h3 class="card-title" th:text="${doctor.name}">Dr Peterson</h3>
-                            <p class="card-text" th:text="${doctor.position}">Heart Specialist</p>
+                            <h3 class="card-title" th:text="${doctor.userId}" ><!-- th:text="${doctor.name}"-->  </h3>
+                            <p class="card-text" th:text="${doctor.position}"><!--th:text="${doctor.position}" -->>Heart Specialist</p>
                         </div>
                     </div>
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="myPatient.html" class="nav-link link-dark">
+                            <a th:href="@{/doctor/myPatient}" class="nav-link link-dark">
                                 My Patient
                             </a>
                         </li>
@@ -54,7 +56,7 @@
             <div class="col-9">
                 <h1 d-flex justify-content-start>Dashboard</h1>
                 <div style="height: 500px; width: auto;" class="d-flex justify-content-center align-items-center">
-                    <h1 >Welcome <span th:text="${doctor.name}">Dr Peterson</span> </h1>
+                    <h1 >Welcome <span th:text="${doctor.name}" ></span> </h1>
                 </div>
             </div>
         </div>

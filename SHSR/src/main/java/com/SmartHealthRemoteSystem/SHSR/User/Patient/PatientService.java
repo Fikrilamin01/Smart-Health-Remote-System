@@ -2,13 +2,18 @@ package com.SmartHealthRemoteSystem.SHSR.User.Patient;
 
 
 import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
+import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatus;
 import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatusService;
+import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
+import com.SmartHealthRemoteSystem.SHSR.User.Doctor.DoctorRepository;
+import com.SmartHealthRemoteSystem.SHSR.User.Doctor.DoctorService;
 import com.SmartHealthRemoteSystem.SHSR.User.User;
 import com.SmartHealthRemoteSystem.SHSR.User.UserService;
 import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -19,14 +24,18 @@ public class PatientService {
     private HealthStatusService healthStatusService;
     private PrescriptionService prescriptionService;
     private SensorDataService sensorDataService;
+    private DoctorService doctorService;
 
     @Autowired
-    public PatientService(UserService userService, PatientRepository patientRepository, HealthStatusService healthStatusService, PrescriptionService prescriptionService, SensorDataService sensorDataService) {
+    public PatientService(UserService userService, PatientRepository patientRepository,
+                          HealthStatusService healthStatusService, PrescriptionService prescriptionService,
+                          SensorDataService sensorDataService, DoctorService doctorService) {
         this.userService = userService;
         this.patientRepository = patientRepository;
         this.healthStatusService = healthStatusService;
         this.prescriptionService = prescriptionService;
         this.sensorDataService = sensorDataService;
+        this.doctorService = doctorService;
     }
 
     public String createPatient(Patient patient) throws ExecutionException, InterruptedException {
@@ -95,5 +104,11 @@ public class PatientService {
         }else{
             return patient.getPassword().equals(password);
         }
+    }
+
+    public Doctor findDoctorThroughHealthStatusPatient(Patient patient) throws ExecutionException, InterruptedException {
+        List<HealthStatus> healthStatusList = healthStatusService.getListHealthStatus(patient.getUserId());
+        String doctorId = healthStatusList.get(0).getDoctorId();
+        return doctorService.getDoctor(doctorId);
     }
 }
