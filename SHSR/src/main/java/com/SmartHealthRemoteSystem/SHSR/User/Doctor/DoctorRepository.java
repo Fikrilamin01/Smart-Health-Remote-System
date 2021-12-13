@@ -48,7 +48,7 @@ public class DoctorRepository {
         DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(doctorId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
-        Doctor tempDoctor = null;
+        Doctor tempDoctor;
         if (document.exists()) {
             tempDoctor  = document.toObject(Doctor.class);
             return tempDoctor;
