@@ -1,6 +1,7 @@
 package com.SmartHealthRemoteSystem.SHSR.SendDailyHealth;
 
 import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,4 +54,6 @@ public class HealthStatusService {
             message = "Error, the healthStatus Id is not exist";
         }
     }
+
+
 }
