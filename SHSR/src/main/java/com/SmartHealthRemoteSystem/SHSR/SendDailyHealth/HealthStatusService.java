@@ -53,4 +53,6 @@ public class HealthStatusService {
             message = "Error, the healthStatus Id is not exist";
         }
     }
+
+
 }

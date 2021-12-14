@@ -35,4 +35,32 @@ public class SendHealthStatusController {
     public void deleteHealthStatus(@PathVariable String healthStatusId, @PathVariable String patientId) throws ExecutionException, InterruptedException {
         healthStatusService.deleteHealthStatus(healthStatusId, patientId);
     }
+
+    @PostMapping("/sendHealthStatus")
+    public String sendHealthStatus(@RequestParam(value = "symptom") String symptom, @RequestParam(value="patientID") String patientID, @RequestParam (value = "doctorID")String doctorID) throws ExecutionException, InterruptedException {
+
+        HealthStatus healthStatus=new HealthStatus(symptom,doctorID);
+        healthStatusService.createHealthStatus(healthStatus,patientID);
+
+        return "patientDashBoard";
+    }
+
+    @PostMapping("/viewHealthStatusForm")
+    public String healthStatusForm(@RequestParam (value = "patientID")String patientID, @RequestParam(value="doctorID")String doctorID, Model model) throws ExecutionException, InterruptedException {
+//        List<HealthStatus>  healthStatus=healthStatusService.getListHealthStatus(patientID);
+//        HealthStatus firstHealthStatus=healthStatus.get(0);
+
+
+
+        model.addAttribute("patientID", patientID);
+        model.addAttribute("doctorID", doctorID);
+
+        return "sendDailyHealthSymptom";
+
+    }
+
 }
+
+
+
+
