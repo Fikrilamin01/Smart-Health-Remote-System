@@ -1,11 +1,13 @@
 package com.SmartHealthRemoteSystem.SHSR.SendDailyHealth;
 
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ExecutionException;
 
-@RestController
+@Controller
 @RequestMapping("/Health-status")
 public class SendHealthStatusController {
     private final HealthStatusService healthStatusService;
@@ -42,7 +44,7 @@ public class SendHealthStatusController {
         HealthStatus healthStatus=new HealthStatus(symptom,doctorID);
         healthStatusService.createHealthStatus(healthStatus,patientID);
 
-        return "patientDashBoard";
+        return "";
     }
 
     @PostMapping("/viewHealthStatusForm")
