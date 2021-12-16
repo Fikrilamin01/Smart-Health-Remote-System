@@ -60,4 +60,6 @@ public class SensorDataRepository {
         ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(sensorDataId).delete();
         return "Document with Sensor Data Id " + sensorDataId + " has been deleted";
     }
+
+
 }

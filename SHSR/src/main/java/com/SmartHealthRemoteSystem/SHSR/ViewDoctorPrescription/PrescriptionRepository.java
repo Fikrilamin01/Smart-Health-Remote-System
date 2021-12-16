@@ -24,6 +24,7 @@ public class PrescriptionRepository {
 
     public String CreatePrescription(Prescription prescription, String patientId)
             throws InterruptedException, ExecutionException {
+
         Firestore dbFirestore = FirestoreClient.getFirestore();
         //auto create data ID by firebase
         DocumentReference addedDocRef = dbFirestore.collection(COL_NAME).document(patientId).collection(SUB_COL_NAME).document();
