@@ -47,26 +47,25 @@ public class SendPrescriptionController {
         return "sendPrescriptionForm";
     }
 
-//    @RequestMapping(value = "/form/submit", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping("/form/submit")
-    public String submitPrescriptionForm(@ModelAttribute PrescriptionFormDTO prescriptionFormDTO, Model model)
-//                                             @RequestParam(value = "patientId") String patientId,
-//                                         @RequestParam(value = "doctorId") String doctorId,
-//                                         @RequestParam(value = "prescription") String prescription,
-//                                         @RequestParam(value = "diagnosisAilment") String diagnosisAilment,
-//                                         @RequestParam(value = "medicine") List<String> medicineList)
+    public String submitPrescriptionForm(Model model,
+                                         @RequestParam(value = "patientId") String patientId,
+                                         @RequestParam(value = "doctorId") String doctorId,
+                                         @RequestParam(value = "prescription") String prescription,
+                                         @RequestParam(value = "diagnosisAilment") String diagnosisAilment,
+                                         @RequestParam(value = "medicine") List<String> medicineList)
             throws ExecutionException, InterruptedException {
-        Prescription prescription1 = new Prescription(prescriptionFormDTO.getDoctorId(),
-                prescriptionFormDTO.getMedicine(),
-                prescriptionFormDTO.getPrescription(),
-                prescriptionFormDTO.getDiagnosisAilment());
+        Prescription prescription1 = new Prescription(doctorId,
+                medicineList,
+                prescription,
+                diagnosisAilment);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = doctorService.getDoctor(myUserDetails.getUsername());
 
         model.addAttribute("doctor",doctor);
-        String timeCreated = prescriptionService.createPrescription(prescription1,prescriptionFormDTO.getPatientId());
+        String timeCreated = prescriptionService.createPrescription(prescription1,patientId);
         //Will update more later. Need to figure to which page after processing the form?
         return "myPatient";
     }
