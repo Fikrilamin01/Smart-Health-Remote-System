@@ -3,6 +3,8 @@
       xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" th:href="@{/css/main.css}">
@@ -14,28 +16,28 @@
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="signup-form">
-                <form th:action="@{/prescription/form}" class="mt-5 border p-4 bg-light shadow" method="post">
+                <form th:action="@{/prescription/form/submit}" id="prescriptionForm" class="mt-5 border p-4 bg-light shadow" method="post">
                     <h4 class="mb-5 form-title">Send Prescription & Diagnosis Ailments</h4>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="patientName" class="form-label">Patient's Name</label>
-                            <input type="text" class="form-control" id="patientName" name="patientName" disabled="true" th:value="${patientName}">
-                            <input type="hidden" class="form-control" id="patientId" th:name="patientId" disabled="true" th:value="${patientId}">
+                            <input type="text" class="form-control" id="patientName"  disabled="true" th:value="${patientName}">
+                            <input type="hidden" class="form-control" id="patientId" name="patientId" th:value="${patientId}">
                         </div>
                         <div class="col-md-6">
                             <label for="doctorName" class="form-label">Doctor's Name</label>
-                            <input type="text" class="form-control" id="doctorName" name="doctorName" disabled="true" th:value="${doctor.name}">
-                            <input type="hidden" class="form-control" id="doctorId" th:name="doctorId" disabled="true" th:value="${doctor.userId}">
+                            <input type="text" class="form-control" id="doctorName"  disabled="true" th:value="${doctor.name}">
+                            <input type="hidden" class="form-control" id="doctorId" name="doctorId" th:value="${doctor.userId}">
 
                         </div>
 
                         <div class="mb-3 col-md-12">
                             <label>Prescription<span class="text-danger">*</span></label>
-                            <textarea rows="4" cols="50" th:name="prescription" class="form-control form-input" autofocus="true" style="resize: none;"></textarea>
+                            <textarea rows="4" cols="50" name="prescription" class="form-control form-input" autofocus="true" style="resize: none;"></textarea>
                         </div>
                         <div class="mb-3 col-md-12">
                             <label>Diagnosis ailment<span class="text-danger">*</span></label>
-                            <textarea rows="4" cols="50" th:name="diagnosisAilment" class="form-control form-input" autofocus="true" style="resize: none;"></textarea>
+                            <textarea rows="4" cols="50" name="diagnosisAilment"  class="form-control form-input" autofocus="true" style="resize: none;"></textarea>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -79,7 +81,7 @@
                                 <p class="confirmation_page-subtitle">All data will be saved. Any change <br> request made after this will need <br>to update it manually</p>
                             </div>
                             <div class="confirmation_page-buttons">
-                                <button class ="btn btn-primary confirmBtn">Confirm</button>
+                                <button class ="btn btn-primary confirmBtn sendPrescriptionBtn" >Confirm</button>
                                 <button type="button"class ="btn btn-secondary cancelBtn">Cancel</button>
                             </div>
                         </div>
@@ -96,7 +98,7 @@
 
         $('#addMedicineBtn').click(function(){
             var html = '<tr scope="row" id="row'+i+'"><td class="row-index">'+i+'</td>' +
-                '<td><input type="text"class="form-control form-input" th:name="medicine[]" id="medicine"></td>' +
+                '<td><input type="text"class="form-control form-input" name="medicine" id="medicine"></td>' +
                 '<td><i class="uil uil-minus-circle btn removeMedicineBtn" id="'+i+'">Delete</i></td></tr>';
             $('.tbody').append(html);
             i++;
@@ -131,6 +133,8 @@
             modalView.removeClass('active-modal')
         })
     })
+
+
 
 </script>
     </body>
