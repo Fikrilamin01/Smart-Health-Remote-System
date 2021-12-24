@@ -32,8 +32,7 @@ public class SensorDataRepository {
     public String UpdateSensorData(SensorData sensorData)
             throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        //auto create data ID by firebase
-        DocumentReference addedDocRef = dbFirestore.collection(COL_NAME).document();
+        DocumentReference addedDocRef = dbFirestore.collection(COL_NAME).document(sensorData.getSensorDataId());
         ApiFuture<WriteResult> collectionsApiFuture =
                 dbFirestore.collection(COL_NAME).document(sensorData.getSensorDataId()).set(sensorData);
         ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime());
