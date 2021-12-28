@@ -79,16 +79,6 @@ public class PatientService {
 
     public Patient getPatient(String patientId) throws ExecutionException, InterruptedException {
         Patient patient = patientRepository.getPatient(patientId);
-        if(patient == null){
-            return null;
-        }else{
-            User user = userService.getUser(patientId);
-            patient.setUserId(user.getUserId());
-            patient.setName(user.getName());
-            patient.setPassword(user.getPassword());
-            patient.setContact(user.getContact());
-            patient.setRole(user.getRole());
-        }
         return patient;
     }
 

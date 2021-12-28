@@ -1,17 +1,13 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Patient;
 
-import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatus;
-import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatusRepository;
-import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
-import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.Prescription;
-import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.PrescriptionRepository;
+import com.SmartHealthRemoteSystem.SHSR.User.User;
+import com.SmartHealthRemoteSystem.SHSR.User.UserRepository;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -20,6 +16,11 @@ import java.util.concurrent.ExecutionException;
 @Repository
 public class PatientRepository {
     public static final String COL_NAME = "Patient";
+    public final UserRepository userRepository;
+
+    public PatientRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
     public String savePatient(Patient patient)
@@ -29,6 +30,9 @@ public class PatientRepository {
         tempPatient.put("address", patient.getAddress());
         tempPatient.put("emergencyContact", patient.getEmergencyContact());
         tempPatient.put("sensorDataId", patient.getSensorDataId());
+        //Create a temporary User
+        User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
+        userRepository.saveUser(user);
 
         ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId()).set(tempPatient);
         return collectionsApiFuture.get().getUpdateTime().toString();
@@ -56,6 +60,12 @@ public class PatientRepository {
         Patient tempPatient;
         if (document.exists()) {
             tempPatient  = document.toObject(Patient.class);
+            User user = userRepository.getUser(patientId);
+            tempPatient.setUserId(user.getUserId());
+            tempPatient.setName(user.getName());
+            tempPatient.setPassword(user.getPassword());
+            tempPatient.setContact(user.getContact());
+            tempPatient.setRole(user.getRole());
             return tempPatient;
         } else {
             return null;
