@@ -45,7 +45,10 @@ public class SensorDataRepository {
     public String UpdateSensorData(SensorData sensorData)
             throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
+
         //auto create data ID by firebase
+
+
         DocumentReference addedDocRef = dbFirestore.collection(COL_NAME).document(sensorData.getSensorDataId());
         ApiFuture<WriteResult> collectionsApiFuture =
                 dbFirestore.collection(COL_NAME).document(sensorData.getSensorDataId()).set(sensorData);
@@ -73,6 +76,7 @@ public class SensorDataRepository {
         ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(sensorDataId).delete();
         return "Document with Sensor Data Id " + sensorDataId + " has been deleted";
     }
+
     public void CreateTest(String PatientID)
     {   String URL= "test/kesh";
         // real-time database
@@ -113,4 +117,6 @@ public class SensorDataRepository {
             }
         });
     }
+
+
 }

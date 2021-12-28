@@ -18,7 +18,7 @@
             <div class="col ">
                 <div class="d-flex shadow flex-column flex-shrink-0 p-3 bg-primary bg-opacity-25 rounded">
                     <div class="card bg-primary bg-opacity-25 rounded">
-                        <img class="card-img-top" src="/static/image/img_avatar1.png" alt="Card image" >
+                        <img class="card-img-top" src="/image/img_avatar1.png" alt="Card image" >
                         <div class="card-body">
                             <h3 class="card-title" th:text="${patient.name}"></h3>
                             <p style=" font-size: 12px;">Patient Contact No. : <span th:text="${patient.contact}"></span></p>
@@ -34,8 +34,8 @@
                             </a>
                         </li>
                         <li>
-                            <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
-                                <input type="submit" value="Logout" />
+                            <form th:action="@{/logout}" method="post" hidden="true" name="logoutForm">
+                                <button>Logout</button>
                             </form>
                             <a href="javascript: document.logoutForm.submit()" class="nav-link link-dark">
                                 Logout
@@ -75,10 +75,10 @@
                                     <h3>Doctor's Prescription</h3>
                                 </a>
 
-                                <form th:action="@{/Health-status/viewHealthStatusForm}" method="post" th:hidden="true" name="healthStatusForm">
+                                <form th:action="@{/Health-status/viewHealthStatusForm}" method="post" hidden="true" name="healthStatusForm">
                                     <input type="text" th:value="${doctor.userId}" th:name="doctorID" id="doctorID">
                                     <input type="text" th:value="${patient.userId}" th:name="patientID" id="patientID">
-                                    <input type="submit" value="submit" />
+                                    <button/>Submit</button>
                                 </form>
                                 <a href="javascript: document.healthStatusForm.submit()"  class="list-group-item m-3 d-flex justify-content-center align-items-center bg-primary bg-opacity-50 rounded" style=" height: 75px;">
                                     <h3>Send Health Symptoms to Doctor</h3>

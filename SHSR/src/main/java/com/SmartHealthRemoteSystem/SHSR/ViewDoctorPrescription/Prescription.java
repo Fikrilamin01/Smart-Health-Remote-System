@@ -1,7 +1,6 @@
 package com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription;
 
 import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorData;
-
 import java.sql.Timestamp;
 import java.util.List;
 
