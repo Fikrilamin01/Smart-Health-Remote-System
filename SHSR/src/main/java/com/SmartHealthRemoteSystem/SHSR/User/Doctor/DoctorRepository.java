@@ -1,17 +1,14 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Doctor;
 
-import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatus;
-import com.SmartHealthRemoteSystem.SHSR.User.Patient.Patient;
+import com.SmartHealthRemoteSystem.SHSR.User.User;
+import com.SmartHealthRemoteSystem.SHSR.User.UserRepository;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.*;
@@ -19,6 +16,11 @@ import java.util.concurrent.ExecutionException;
 @Repository
 public class DoctorRepository {
     public static final String COL_NAME = "Doctor";
+    public final UserRepository userRepository;
+
+    public DoctorRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     //Create or update doctor
     public String saveDoctor(Doctor doctor) throws ExecutionException, InterruptedException {
@@ -49,8 +51,15 @@ public class DoctorRepository {
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
         Doctor tempDoctor;
+
         if (document.exists()) {
             tempDoctor  = document.toObject(Doctor.class);
+            User user = userRepository.getUser(doctorId);
+            tempDoctor.setUserId(user.getUserId());
+            tempDoctor.setName(user.getName());
+            tempDoctor.setPassword(user.getPassword());
+            tempDoctor.setContact(user.getContact());
+            tempDoctor.setRole(user.getRole());
             return tempDoctor;
         } else {
             return null;
