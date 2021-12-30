@@ -30,6 +30,7 @@ public class PatientRepository {
         tempPatient.put("address", patient.getAddress());
         tempPatient.put("emergencyContact", patient.getEmergencyContact());
         tempPatient.put("sensorDataId", patient.getSensorDataId());
+        tempPatient.put("assigned_doctor", patient.getAssigned_doctor());
         //Create a temporary User
         User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
         userRepository.saveUser(user);
@@ -44,7 +45,8 @@ public class PatientRepository {
                 .document(patient.getUserId())
                 .update("address", patient.getAddress(),
                         "emergencyContact", patient.getEmergencyContact(),
-                        "sensorDataId", patient.getSensorDataId());
+                        "sensorDataId", patient.getSensorDataId(),
+                        "assigned_doctor",patient.getAssigned_doctor());
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
@@ -85,6 +87,12 @@ public class PatientRepository {
             ApiFuture<DocumentSnapshot> future = documentReference1.get();
             DocumentSnapshot document = future.get();
             patient = document.toObject(Patient.class);
+            User user=userRepository.getUser(document.getId());
+            patient.setUserId(user.getUserId());
+            patient.setPassword(user.getPassword());
+            patient.setName(user.getName());
+            patient.setContact(user.getContact());
+            patient.setRole(user.getRole());
             patientList.add(patient);
         }
 
