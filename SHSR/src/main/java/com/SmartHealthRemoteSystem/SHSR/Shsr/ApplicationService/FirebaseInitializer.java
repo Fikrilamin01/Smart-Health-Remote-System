@@ -23,7 +23,6 @@ public class FirebaseInitializer {
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .setDatabaseUrl("https://smarthealthcaresupport-default-rtdb.asia-southeast1.firebasedatabase.app")
                 .build();
-
         if(FirebaseApp.getApps().isEmpty()){
             FirebaseApp.initializeApp(options);
         }
