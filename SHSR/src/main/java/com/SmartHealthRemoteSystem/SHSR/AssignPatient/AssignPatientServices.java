@@ -7,6 +7,7 @@ import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientRepository;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -24,7 +25,7 @@ public class AssignPatientServices {
     public List<Patient> getListPatient() throws ExecutionException, InterruptedException {
 
         List<Patient> patients=patientRepository.getListPatient();
-        for(int i=0;i<patients.size();i++)
+        for(int i=patients.size()-1;i>=0;i--)
         {
             if(!(patients.get(i).getAssigned_doctor().equals("")))
             {
@@ -32,6 +33,9 @@ public class AssignPatientServices {
             }
 
         }
+
+
+
         return patients;
 
     }
