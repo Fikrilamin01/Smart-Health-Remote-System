@@ -1,6 +1,8 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Doctor;
 
 import com.SmartHealthRemoteSystem.SHSR.User.Patient.Patient;
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientRepository;
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientService;
 import com.SmartHealthRemoteSystem.SHSR.User.User;
 import com.SmartHealthRemoteSystem.SHSR.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
     private UserService userService;
+    private PatientRepository patientRepository;
 
     @Autowired
     public DoctorService(DoctorRepository doctorRepository, UserService userService) {
@@ -73,10 +76,16 @@ public class DoctorService {
         String timeDelete = userService.deleteUser(doctorId);
     }
 
-    public List<Patient> findAllPatientAssignToDoctor(String doctorId) {
+    public List<Patient> findAllPatientAssignToDoctor(String doctorId) throws ExecutionException, InterruptedException {
         List<Patient> patientList = new ArrayList<>();
         //Logic on finding all the patient that has been assign to doctor...
+        List<Patient> allPatientList = patientRepository.getListPatient();
 
+        for (int i=0;i<patientList.size();i++){
+            if(patientList.get(i).getAssigned_doctor().equals(doctorId)){
+                patientList.add(patientList.get(i));
+            }
+        }
         return patientList;
     }
 
