@@ -108,6 +108,10 @@ public class PatientService {
         return prescription;
     }
 
+    public List<Patient> getPatientList(String patientId) throws ExecutionException, InterruptedException {
+        return patientRepository.getListPatient();
+    }
+
     public Doctor findDoctorThroughHealthStatusPatient(Patient patient) throws ExecutionException, InterruptedException {
         List<HealthStatus> healthStatusList = healthStatusService.getListHealthStatus(patient.getUserId());
         String doctorId = healthStatusList.get(0).getDoctorId();
