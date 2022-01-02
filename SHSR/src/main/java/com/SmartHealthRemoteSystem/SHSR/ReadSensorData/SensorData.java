@@ -1,9 +1,13 @@
 package com.SmartHealthRemoteSystem.SHSR.ReadSensorData;
 
-public class SensorData {
+import com.google.cloud.Timestamp;
+
+import java.sql.Time;
+
+public class    SensorData {
     private String ecgReading;
     private double bodyTemperature;
-    private int timestamp;
+    private Timestamp timestamp;
     private String sensorDataId;
     private String oxygenReading;
 
@@ -17,7 +21,7 @@ public class SensorData {
         this.oxygenReading = oxygenReading;
     }
 
-    public SensorData(String ecgReading, double bodyTemperature, int timestamp, String sensorDataId, String OxygenReading) {
+    public SensorData(String ecgReading, double bodyTemperature, Timestamp timestamp, String sensorDataId, String OxygenReading) {
         this.ecgReading = ecgReading;
         this.bodyTemperature = bodyTemperature;
         this.timestamp = timestamp;
@@ -45,11 +49,11 @@ public class SensorData {
 
     public String getOxygenReading(){return oxygenReading;}
 
-    public int getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -59,5 +63,14 @@ public class SensorData {
 
     public void setSensorDataId(String sensorDataId) {
         this.sensorDataId = sensorDataId;
+    }
+
+    @Override
+    public String toString() {
+        return "SensorData{" +
+                "ecgReading='" + ecgReading + '\'' +
+                "\n timestamp=" + timestamp +
+                "\n sensorDataId='" + sensorDataId + '\'' +
+                '}';
     }
 }

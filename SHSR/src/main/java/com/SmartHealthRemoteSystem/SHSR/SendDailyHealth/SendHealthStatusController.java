@@ -1,6 +1,8 @@
 package com.SmartHealthRemoteSystem.SHSR.SendDailyHealth;
 
+import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +13,12 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/Health-status")
 public class SendHealthStatusController {
     private final HealthStatusService healthStatusService;
-
-    public SendHealthStatusController(HealthStatusService healthStatusService) {
+    private final PatientService patientService;
+    private final SensorDataService sensorDataService;
+    public SendHealthStatusController(HealthStatusService healthStatusService, PatientService patientService, SensorDataService sensorDataService) {
         this.healthStatusService = healthStatusService;
+        this.patientService=patientService;
+        this.sensorDataService=sensorDataService;
     }
 
     @PostMapping("/create-healthstatus/{patientId}")
@@ -41,6 +46,9 @@ public class SendHealthStatusController {
     @PostMapping("/sendHealthStatus")
     public String sendHealthStatus(@RequestParam(value = "symptom") String symptom, @RequestParam(value="patientID") String patientID, @RequestParam (value = "doctorID")String doctorID) throws ExecutionException, InterruptedException {
 
+
+        String sensorId=patientService.getPatientSensorId(patientID);
+        symptom+="\n"+ sensorDataService.stringSensorData(sensorId);
         HealthStatus healthStatus=new HealthStatus(symptom,doctorID);
         healthStatusService.createHealthStatus(healthStatus,patientID);
 

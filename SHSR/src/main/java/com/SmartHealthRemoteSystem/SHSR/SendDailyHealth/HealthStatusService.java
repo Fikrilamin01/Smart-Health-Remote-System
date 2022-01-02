@@ -1,6 +1,7 @@
 package com.SmartHealthRemoteSystem.SHSR.SendDailyHealth;
 
 import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,11 @@ public class HealthStatusService {
 
     private final HealthStatusRepository healthStatusRepository;
     private final SensorDataService sensorDataService;
-   // private final PatientService patientService;
 
     @Autowired
     public HealthStatusService(HealthStatusRepository healthStatusRepository, SensorDataService sensorDataService) {
         this.healthStatusRepository = healthStatusRepository;
         this.sensorDataService = sensorDataService;
-       // this.patientService = patientService;
     }
 
     public void createHealthStatus(HealthStatus healthStatus, String patientId) throws ExecutionException, InterruptedException {
