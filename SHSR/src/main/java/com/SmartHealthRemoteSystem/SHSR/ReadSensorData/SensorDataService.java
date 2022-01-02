@@ -30,4 +30,9 @@ public class SensorDataService {
     public String updateSensorData(SensorData sensorData) throws ExecutionException, InterruptedException {
         return sensorDataRepository.UpdateSensorData(sensorData);
     }
+
+    public String stringSensorData(String sensorId) throws ExecutionException, InterruptedException {
+        SensorData sensorData=sensorDataRepository.getSensorDataDetails(sensorId);
+        return sensorData.toString();
+    }
 }
