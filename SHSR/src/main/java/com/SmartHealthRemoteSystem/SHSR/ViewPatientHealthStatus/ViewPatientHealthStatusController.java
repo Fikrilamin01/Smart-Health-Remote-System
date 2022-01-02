@@ -10,6 +10,7 @@ import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.PrescriptionServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,7 +31,7 @@ public class ViewPatientHealthStatusController {
         this.patientService = patientService;
         this.healthStatusService = healthStatusService;
     }
-
+@GetMapping()
     public String getHealthStatus(@RequestParam("patientId")String patientId, @RequestParam("doctorId")String doctorId, Model model) throws ExecutionException, InterruptedException {
         //Retrieve information
         Patient patient=patientService.getPatient(patientId);
@@ -38,6 +39,13 @@ public class ViewPatientHealthStatusController {
 
         //Retrive patient list of health status
         List<HealthStatus> healthStatus= healthStatusService.getListHealthStatus(patientId);
+        List<HealthStatus> threeLastHealth=null;
+    for (int i = healthStatus.size()-1; i==(healthStatus.size()-3) ; i--) {
+        threeLastHealth.add(healthStatus.get(i));
+    }
+        model.addAttribute("patient",patient);
+        model.addAttribute("doctor",doctor);
+        model.addAttribute("healthStatusList",threeLastHealth);
 
         return "viewPatientHealthStatus";
 
