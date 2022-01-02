@@ -38,8 +38,8 @@ public class AssignPatientController {
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = assignPatientServices.getDoctor(myUserDetails.getUsername());
         Patient patient =assignPatientServices.getPatient(patientID);
-        List<Patient> patientList= assignPatientServices.getListPatient();
         assignPatientServices.AssignPatient(patientID,doctor.getUserId());
+        List<Patient> patientList= assignPatientServices.getListPatient();
         model.addAttribute("patientList",patientList);
         model.addAttribute("doctor",doctor);
         return "assignpatient";
