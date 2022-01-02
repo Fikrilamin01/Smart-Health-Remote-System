@@ -21,10 +21,10 @@
             <div class="col ">
                 <div class="d-flex shadow flex-column flex-shrink-0 p-3 bg-primary bg-opacity-25 rounded">
                     <div class="card bg-primary bg-opacity-25 rounded">
-                        <img class="card-img-top" src="/image/img_avatar1.png" alt="Card image" >
+                        <img class="card-img-top" src="/static/image/img_avatar1.png" alt="Card image" >
                         <div class="card-body">
-                            <h3 class="card-title" th:text="${doctor.userId}" ></h3>
-                            <p class="card-text" th:text="${doctor.position}"></p>
+                            <h3 class="card-title" th:text="${doctor.userId}" ><!-- th:text="${doctor.name}"-->  </h3>
+                            <p class="card-text" th:text="${doctor.position}"><!--th:text="${doctor.position}" -->>Heart Specialist</p>
                         </div>
                     </div>
                     <hr>
@@ -45,7 +45,7 @@
                             </a>
                         </li>
                         <li>
-                            <form th:action="@{/logout}" method="post" hidden="true" name="logoutForm">
+                            <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
                                 <input type="submit" value="Logout" />
                             </form>
                             <a href="javascript: document.logoutForm.submit()" class="nav-link link-dark">

@@ -2,6 +2,7 @@ package com.SmartHealthRemoteSystem.SHSR.User.Patient;
 
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.DoctorService;
+import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.Prescription;
 import com.SmartHealthRemoteSystem.SHSR.WebConfiguration.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Controller
@@ -32,6 +34,22 @@ public class PatientController {
         model.addAttribute("doctor",doctor);
         return "patientDashBoard";
     }
+
+    @GetMapping("/viewPrescription")
+    public String getPatientListThatAssignedToDoctor(Model model) throws ExecutionException, InterruptedException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
+        Patient patient = patientService.getPatient(myUserDetails.getUsername());
+        Doctor doctor = patientService.findDoctorThroughHealthStatusPatient(patient);
+        Prescription prescription = patientService.getPrescription(myUserDetails.getUsername());
+
+        model.addAttribute("patient",patient);
+        model.addAttribute("doctor",doctor);
+        model.addAttribute("prescription",prescription);
+
+        return "viewPrescription";
+    }
+
     @PostMapping("/create-patient")
     public String savePatient(@RequestBody Patient patient)
             throws ExecutionException, InterruptedException {
