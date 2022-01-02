@@ -9,6 +9,7 @@ import com.SmartHealthRemoteSystem.SHSR.User.Doctor.DoctorRepository;
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.DoctorService;
 import com.SmartHealthRemoteSystem.SHSR.User.User;
 import com.SmartHealthRemoteSystem.SHSR.User.UserService;
+import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.Prescription;
 import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,6 +95,21 @@ public class PatientService {
         }else{
             return patient.getPassword().equals(password);
         }
+    }
+
+    public Prescription getPrescription(String patientId) throws ExecutionException, InterruptedException {
+        Prescription prescription = null;
+
+        List<Prescription> prescriptionList =  prescriptionService.getListPrescription(patientId);
+        if(!prescriptionList.isEmpty()){
+            prescription = prescriptionList.get(prescriptionList.size()-1);
+        }
+
+        return prescription;
+    }
+
+    public List<Patient> getPatientList(String patientId) throws ExecutionException, InterruptedException {
+        return patientRepository.getListPatient();
     }
 
     public Doctor findDoctorThroughHealthStatusPatient(Patient patient) throws ExecutionException, InterruptedException {
