@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,7 +32,7 @@ public class ViewPatientHealthStatusController {
         this.patientService = patientService;
         this.healthStatusService = healthStatusService;
     }
-@GetMapping()
+@PostMapping("/a")
     public String getHealthStatus(@RequestParam("patientId")String patientId, @RequestParam("doctorId")String doctorId, Model model) throws ExecutionException, InterruptedException {
         //Retrieve information
         Patient patient=patientService.getPatient(patientId);
