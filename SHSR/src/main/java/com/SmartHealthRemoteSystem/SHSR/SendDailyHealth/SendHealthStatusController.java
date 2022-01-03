@@ -2,6 +2,7 @@ package com.SmartHealthRemoteSystem.SHSR.SendDailyHealth;
 
 import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.Patient;
 import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,26 +45,30 @@ public class SendHealthStatusController {
     }
 
     @PostMapping("/sendHealthStatus")
-    public String sendHealthStatus(@RequestParam(value = "symptom") String symptom, @RequestParam(value="patientID") String patientID, @RequestParam (value = "doctorID")String doctorID) throws ExecutionException, InterruptedException {
+    public String sendHealthStatus(@RequestParam(value = "symptom") String symptom, @RequestParam(value="patientId") String patientId, @RequestParam (value = "doctorId")String doctorId, Model model) throws ExecutionException, InterruptedException {
 
 
-        String sensorId=patientService.getPatientSensorId(patientID);
+        String sensorId=patientService.getPatientSensorId(patientId);
         symptom+="\n"+ sensorDataService.stringSensorData(sensorId);
-        HealthStatus healthStatus=new HealthStatus(symptom,doctorID);
-        healthStatusService.createHealthStatus(healthStatus,patientID);
+        HealthStatus healthStatus=new HealthStatus(symptom,doctorId);
+        healthStatusService.createHealthStatus(healthStatus,patientId);
 
-        return "";
+        Patient patient=patientService.getPatient(patientId);
+        Doctor doctor=patientService.findDoctorThroughHealthStatusPatient(patient);
+        model.addAttribute(patient);
+        model.addAttribute(doctor);
+        return "patientDashBoard";
     }
 
     @PostMapping("/viewHealthStatusForm")
-    public String healthStatusForm(@RequestParam (value = "patientID")String patientID, @RequestParam(value="doctorID")String doctorID, Model model) throws ExecutionException, InterruptedException {
+    public String healthStatusForm(@RequestParam (value = "patientId") String patientId, Model model) throws ExecutionException, InterruptedException {
 //        List<HealthStatus>  healthStatus=healthStatusService.getListHealthStatus(patientID);
 //        HealthStatus firstHealthStatus=healthStatus.get(0);
 
-
-
-        model.addAttribute("patientID", patientID);
-        model.addAttribute("doctorID", doctorID);
+        Patient patient=patientService.getPatient(patientId);
+        Doctor doctor=patientService.findDoctorThroughHealthStatusPatient(patient);
+        model.addAttribute("patient", patient);
+        model.addAttribute("doctor", doctor);
 
         return "sendDailyHealthSymptom";
 

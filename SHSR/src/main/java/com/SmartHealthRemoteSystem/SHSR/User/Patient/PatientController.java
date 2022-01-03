@@ -83,4 +83,13 @@ public class PatientController {
         patientService.deletePatient(patientId);
     }
 
+    @PostMapping("/backDashboard")
+    public String backDashboard(@RequestParam (value = "patientId") String patientId, Model model) throws ExecutionException, InterruptedException {
+        Patient patient=patientService.getPatient(patientId);
+        Doctor doctor=patientService.findDoctorThroughHealthStatusPatient(patient);
+        model.addAttribute("patient", patient);
+        model.addAttribute("doctor", doctor);
+        return "patientDashBoard";
+    }
+
 }
