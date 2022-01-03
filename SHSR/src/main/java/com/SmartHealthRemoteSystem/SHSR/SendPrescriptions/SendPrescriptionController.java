@@ -2,22 +2,19 @@ package com.SmartHealthRemoteSystem.SHSR.SendPrescriptions;
 
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.DoctorService;
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.Patient;
 import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientService;
 import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.Prescription;
 import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.PrescriptionService;
 import com.SmartHealthRemoteSystem.SHSR.WebConfiguration.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Controller
@@ -63,10 +60,10 @@ public class SendPrescriptionController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = doctorService.getDoctor(myUserDetails.getUsername());
-
+        List<Patient> patientList = doctorService.findAllPatientAssignToDoctor(doctor.getUserId());
+        model.addAttribute("patientList", patientList);
         model.addAttribute("doctor",doctor);
         String timeCreated = prescriptionService.createPrescription(prescription1,patientId);
-        //Will update more later. Need to figure to which page after processing the form?
         return "myPatient";
     }
 
