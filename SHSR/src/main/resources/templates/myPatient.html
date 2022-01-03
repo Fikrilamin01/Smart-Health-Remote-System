@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -20,21 +21,21 @@
             <div class="col ">
                 <div class="d-flex shadow flex-column flex-shrink-0 p-3 bg-primary bg-opacity-25 rounded">
                     <div class="card bg-primary bg-opacity-25 rounded">
-                        <img class="card-img-top" src="/static/image/img_avatar1.png" alt="Card image" >
+                        <img class="card-img-top" src="/static/image/img_avatar1.png" alt="Card image">
                         <div class="card-body">
-                            <h3 class="card-title" th:text="${doctor.name}" ></h3>
+                            <h3 class="card-title" th:text="${doctor.name}"></h3>
                             <p class="card-text" th:text="${doctor.position}"></p>
                         </div>
                     </div>
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link active" aria-current="page">
+                            <a th:href="@{/doctor/myPatient}" class="nav-link link-dark">
                                 My Patient
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-dark">
+                            <a th:href="@{/assignpatient}" class="nav-link link-dark">
                                 Assign Patient
                             </a>
                         </li>
@@ -44,7 +45,10 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-dark">
+                            <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+                                <input type="submit" value="Logout" />
+                            </form>
+                            <a href="javascript: document.logoutForm.submit()" class="nav-link link-dark">
                                 Logout
                             </a>
                         </li>
@@ -60,22 +64,28 @@
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Patient Name</th>
+                            <th scope="col">Action</th>
                         </tr>
                         </thead>
                         <tbody class="tbody">
-                        <tr th:each="pacnt,it : ${patientList}" >
+                        <tr th:each="pacnt,it : ${patientList}">
                             <td th:text="${it.index+1}"></td>
-                           <td th:text="${pacnt.name}"></td>
-<!--                            <td> <a th:href="@{/viewPatientHealthStatus}">View</a></td>-->
+                            <td th:text="${pacnt.name}"></td>
+                            <!--                            <td> <a th:href="@{/viewPatientHealthStatus}">View</a></td>-->
                             <td>
-                                <form th:action="@{/viewPatientHealthStatus/a}" method="post" hidden="true"  name="viewPatient" class="viewPatientForm">
+                                <form th:action="@{/viewPatientHealthStatus/a}" method="post" hidden="true"
+                                      name="viewPatient" class="viewPatientForm">
                                     <input type="text" th:value="${doctor.userId}" th:name="doctorId" id="doctorId">
                                     <input type="text" th:value="${pacnt.userId}" th:name="patientId" id="patientId">
 
                                 </form>
-                                <button type="button" class=" list-group-item m-3 d-flex justify-content-center align-items-center bg-primary bg-opacity-50 rounded viewBtn">View</button>
-<!--                                <a href="javascript: document.viewPatient.submit()"  class="list-group-item m-3 d-flex justify-content-center align-items-center bg-primary bg-opacity-50 rounded"><p>View</p></a>-->
-
+                                <button type="button"
+                                        class="btn btn-primary rounded viewBtn">
+                                    View
+                                </button>
+                                <a th:href="@{/prescription/form(patientId=${pacnt.userId})}"
+                                   class="btn btn-primary rounded">
+                                    Send Prescription</a>
                             </td>
                         </tr>
 
@@ -88,7 +98,9 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 <script>
     // let x=document.querySelector(".viewBtn");
     // x.addEventListener("click",function () {
@@ -96,9 +108,9 @@
     // });
 
     var i;
-    $(function (){
-        $('.viewBtn').click(function (){
-            i=$("button").index(this);
+    $(function () {
+        $('.viewBtn').click(function () {
+            i = $("button").index(this);
         })
 
         $(document).on('click', '.viewBtn', function () {
