@@ -46,7 +46,7 @@ public class ViewPatientHealthStatusController {
     }
         model.addAttribute("patient",patient);
         model.addAttribute("doctor",doctor);
-        model.addAttribute("healthStatusList",threeLastHealth);
+        model.addAttribute("healthStatusList",healthStatus);
 
         return "viewPatientHealthStatus" ;
 
