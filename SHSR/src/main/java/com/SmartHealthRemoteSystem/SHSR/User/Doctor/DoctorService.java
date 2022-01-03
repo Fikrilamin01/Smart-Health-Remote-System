@@ -16,13 +16,14 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class DoctorService {
     private final DoctorRepository doctorRepository;
-    private UserService userService;
-    private PatientRepository patientRepository;
+    private final UserService userService;
+    private final PatientRepository patientRepository;
 
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository, UserService userService) {
+    public DoctorService(DoctorRepository doctorRepository, UserService userService, PatientRepository patientRepository) {
         this.doctorRepository = doctorRepository;
         this.userService = userService;
+        this.patientRepository= patientRepository;
     }
 
     public String createDoctor(Doctor doctor) throws ExecutionException, InterruptedException {
@@ -81,9 +82,9 @@ public class DoctorService {
         //Logic on finding all the patient that has been assign to doctor...
         List<Patient> allPatientList = patientRepository.getListPatient();
 
-        for (int i=0;i<patientList.size();i++){
-            if(patientList.get(i).getAssigned_doctor().equals(doctorId)){
-                patientList.add(patientList.get(i));
+        for (int i=0;i<allPatientList.size();i++){
+            if(allPatientList.get(i).getAssigned_doctor().equals(doctorId)){
+                patientList.add(allPatientList.get(i));
             }
         }
         return patientList;
