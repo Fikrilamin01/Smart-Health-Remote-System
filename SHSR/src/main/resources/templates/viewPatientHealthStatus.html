@@ -60,6 +60,13 @@
                     <h3 th:text="patient.contact">Contact number: </h3>
                    <table class="table">
                        <legend> Latest health status</legend>
+                       <thead>
+                            <tr>
+                                <td>Id</td>
+                                <td>Timestamp</td>
+                                <td>Notes</td>
+                            </tr>
+                       </thead>
                        <tr th:each="healthStatus : ${healthStatusList}">
                             <td th:text="${healthStatus.healthStatusId}"></td>
                             <td th:text="${healthStatus.timestamp}"></td>
@@ -80,3 +87,4 @@
 
 </body>
 </html>
+
