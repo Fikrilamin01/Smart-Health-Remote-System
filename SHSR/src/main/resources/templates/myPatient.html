@@ -78,6 +78,7 @@
                                     <input type="text" th:value="${doctor.userId}" th:name="doctorId" id="doctorId">
                                     <input type="text" th:value="${pacnt.userId}" th:name="patientId" id="patientId">
 
+
                                 </form>
                                 <button type="button"
                                         class="btn btn-primary rounded viewBtn">
@@ -86,6 +87,19 @@
                                 <a th:href="@{/prescription/form(patientId=${pacnt.userId})}"
                                    class="btn btn-primary rounded">
                                     Send Prescription</a>
+                            </td>
+                            <td>
+                                <form th:action="@{/unassignDoctor}" th:method="put" hidden="true"
+                                      name="UnassignedPatient" class="UnassignedPatient">
+                                    <input type="text" th:value="${pacnt.userId}" th:name="patientId">
+
+
+                                </form>
+                                <button type="button"
+                                        class="btn btn-primary rounded UnassignedPatientBtn">
+                                    UnassignedPatient
+                                </button>
+
                             </td>
                         </tr>
                         </tbody>
@@ -114,6 +128,13 @@
 
         $(document).on('click', '.viewBtn', function () {
             $('.viewPatientForm').get(i).submit();
+        })
+        $('.UnassignedPatientBtn').click(function (){
+            i = $( "button" ).index( this )-1;
+
+        })
+        $(document).on('click', '.UnassignedPatientBtn', function () {
+            $('.UnassignedPatient').get(i).submit();
         })
     })
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -43,5 +44,19 @@ public class AssignPatientController {
         model.addAttribute("patientList",patientList);
         model.addAttribute("doctor",doctor);
         return "assignpatient";
+    }
+    @PutMapping("/unassignDoctor")
+    public String UnassignDoctor(Model model,@RequestParam (value="patientId")String patientID) throws ExecutionException, InterruptedException {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
+        Doctor doctor = assignPatientServices.getDoctor(myUserDetails.getUsername());
+        Patient patient =assignPatientServices.getPatient(patientID);
+        assignPatientServices.UnassignDoctor(patientID,doctor.getUserId());
+        List<Patient> patientList=assignPatientServices.getListPatient();
+        model.addAttribute("patientList",patientList);
+        model.addAttribute("doctor",doctor);
+        return "assignpatient";
+
     }
 }

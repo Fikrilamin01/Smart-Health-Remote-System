@@ -54,4 +54,10 @@ public class AssignPatientServices {
         patient.setAssigned_doctor(doctorId);
         patientRepository.updatePatient(patient);
     }
+    public void UnassignDoctor(String patientId,String doctorId) throws ExecutionException, InterruptedException {
+        Doctor doctor=doctorRepository.getDoctor(doctorId);
+        Patient patient=patientRepository.getPatient(patientId);
+        patient.setAssigned_doctor("");
+        patientRepository.updatePatient(patient);
+    }
 }
