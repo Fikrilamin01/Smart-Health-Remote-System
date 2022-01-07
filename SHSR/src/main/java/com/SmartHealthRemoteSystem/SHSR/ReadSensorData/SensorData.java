@@ -4,7 +4,7 @@ import com.google.cloud.Timestamp;
 
 import java.sql.Time;
 
-public class    SensorData {
+public class SensorData {
     private String ecgReading;
     private double bodyTemperature;
     private Timestamp timestamp;

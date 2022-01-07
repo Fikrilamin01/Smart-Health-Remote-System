@@ -30,7 +30,7 @@ public class PatientController {
         MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
         Patient patient = patientService.getPatient(myUserDetails.getUsername());
         Doctor doctor = patientService.findDoctorThroughHealthStatusPatient(patient);
-        List<Patient> patientList= patientService.getPatientList(myUserDetails.getUsername());
+        List<Patient> patientList= patientService.getPatientList();
 
         model.addAttribute("patient",patient);
         model.addAttribute("doctor",doctor);

@@ -79,6 +79,12 @@ public class DoctorRepository {
             ApiFuture<DocumentSnapshot> future = documentReference1.get();
             DocumentSnapshot document = future.get();
             doctor = document.toObject(Doctor.class);
+            User user = userRepository.getUser(document.getId());
+            doctor.setUserId(user.getUserId());
+            doctor.setPassword(user.getPassword());
+            doctor.setName(user.getName());
+            doctor.setContact(user.getContact());
+            doctor.setRole(user.getRole());
             doctorList.add(doctor);
         }
 

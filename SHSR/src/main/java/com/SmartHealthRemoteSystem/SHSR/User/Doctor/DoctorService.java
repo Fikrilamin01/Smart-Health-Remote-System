@@ -59,6 +59,10 @@ public class DoctorService {
         }
     }
 
+    public List<Doctor> getListDoctor() throws ExecutionException, InterruptedException {
+        return doctorRepository.getListDoctor();
+    }
+
     public Boolean doctorAuthentication (String doctorId,String password) throws ExecutionException, InterruptedException {
         Doctor doctor = getDoctor(doctorId);
         if(doctor == null){

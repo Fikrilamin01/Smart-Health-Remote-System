@@ -27,6 +27,12 @@ public class Patient extends User {
         this.assigned_doctor = assigned_doctor;
     }
 
+    public Patient(String userId, String name, String password, String contact, String role, String address, String emergencyContact) {
+        super(userId, name, password, contact, role);
+        this.address = address;
+        this.emergencyContact = emergencyContact;
+    }
+
     public String getSensorDataId() {
         return sensorDataId;
     }

@@ -108,7 +108,7 @@ public class PatientService {
         return prescription;
     }
 
-    public List<Patient> getPatientList(String patientId) throws ExecutionException, InterruptedException {
+    public List<Patient> getPatientList() throws ExecutionException, InterruptedException {
         return patientRepository.getListPatient();
     }
 

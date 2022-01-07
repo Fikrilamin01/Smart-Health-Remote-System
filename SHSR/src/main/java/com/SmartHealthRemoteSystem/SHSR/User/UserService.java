@@ -31,7 +31,21 @@ public class UserService {
         return userRepository.getUser(userId);
     }
 
+    public List<User> getUserList() throws ExecutionException, InterruptedException {
+        return userRepository.getListUser();
+    }
+
     public String deleteUser(String userId) throws ExecutionException, InterruptedException {
         return userRepository.deleteUser(userId);
+    }
+
+    public List<User> getAdminList() throws ExecutionException, InterruptedException {
+        List<User> userList = userRepository.getListUser();
+        for(int i = userList.size()-1; i >= 0; i--){
+            if(!userList.get(i).getRole().equals("ADMIN")){
+                userList.remove(i);
+            }
+        }
+        return userList;
     }
 }
