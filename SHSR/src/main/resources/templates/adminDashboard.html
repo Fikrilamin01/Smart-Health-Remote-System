@@ -24,7 +24,14 @@
                 <li>
                     <button type="button" class="admin_sidebar_link" id="addUserBtn">Add user</button>
                 </li>
-                <li><a href="#" class="admin_sidebar_link">Logout</a></li>
+                <li>
+                    <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+                        <input type="submit" value="Logout" />
+                    </form>
+                    <a href="javascript: document.logoutForm.submit()" class="admin_sidebar_link">
+                        Logout
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="admin_main_content col-10">

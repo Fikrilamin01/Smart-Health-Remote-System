@@ -43,7 +43,7 @@ public class PatientService {
         //Create a temporary User
         User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
         Boolean result = userService.createUser(user);
-        if(result == true){
+        if (result == true) {
             //there is no conflict with the ID
             //proceed to create the patient in patient table
             String timeCreated = patientRepository.savePatient(patient);
@@ -54,14 +54,18 @@ public class PatientService {
 
     public void deletePatient(String patientId) throws ExecutionException, InterruptedException {
         //Search in the database whether the patient exist or not
-        if(patientRepository.getPatient(patientId) == null){
+        if (patientRepository.getPatient(patientId) == null) {
             //show error message
             String message = "patientId is not exist in the database";
-        }else{
+        } else {
             Patient patient = getPatient(patientId);
             String message = patientRepository.deletePatient(patientId);
             String timeDelete = userService.deleteUser(patientId);
-            String timeDelete1 = sensorDataService.deleteSensorData(patient.getSensorDataId());
+            if (patient.getSensorDataId() == null) {
+                //since patient doesn't have sensorId, we not deleting the sensor from sensor database table
+            } else {
+                String timeDelete1 = sensorDataService.deleteSensorData(patient.getSensorDataId());
+            }
             //Show success message
         }
 
@@ -90,9 +94,9 @@ public class PatientService {
 
     public boolean patientAuthentication(String userId, String password) throws ExecutionException, InterruptedException {
         Patient patient = getPatient(userId);
-        if(patient == null){
+        if (patient == null) {
             return false;
-        }else{
+        } else {
             return patient.getPassword().equals(password);
         }
     }
@@ -100,9 +104,9 @@ public class PatientService {
     public Prescription getPrescription(String patientId) throws ExecutionException, InterruptedException {
         Prescription prescription = null;
 
-        List<Prescription> prescriptionList =  prescriptionService.getListPrescription(patientId);
-        if(!prescriptionList.isEmpty()){
-            prescription = prescriptionList.get(prescriptionList.size()-1);
+        List<Prescription> prescriptionList = prescriptionService.getListPrescription(patientId);
+        if (!prescriptionList.isEmpty()) {
+            prescription = prescriptionList.get(prescriptionList.size() - 1);
         }
 
         return prescription;
@@ -116,5 +120,14 @@ public class PatientService {
         List<HealthStatus> healthStatusList = healthStatusService.getListHealthStatus(patient.getUserId());
         String doctorId = healthStatusList.get(0).getDoctorId();
         return doctorService.getDoctor(doctorId);
+    }
+
+    public void updatePatientUsingAdminDashboard(Patient patient) throws ExecutionException, InterruptedException {
+        // The difference between this function and updatePatient function is that this function
+        // will update only patient address and emergency contact field
+        Patient prevPatientInfo = patientRepository.getPatient(patient.getUserId());
+        patient.setAssigned_doctor(prevPatientInfo.getAssigned_doctor());
+        patient.setSensorDataId(prevPatientInfo.getSensorDataId());
+        patientRepository.savePatient(patient);
     }
 }

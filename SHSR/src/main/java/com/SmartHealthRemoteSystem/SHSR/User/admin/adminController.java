@@ -50,20 +50,22 @@ public class adminController {
                                       @RequestParam(value = "doctorPosition") String doctorPosition,
                                       @RequestParam(value = "action") String action,
                                       Model model) throws ExecutionException, InterruptedException {
-        String errorMessage = "";
+        String Message = "";
         if(action.equals("add")){
             if(role.equals("PATIENT")){
-                errorMessage +=  patientService.createPatient(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
+                Message +=  patientService.createPatient(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
             } else if(role.equals("DOCTOR")){
-                errorMessage += doctorService.createDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
+                Message += doctorService.createDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
             } else {
                 if(userService.createUser(new User(id,name,password,contact,role))== false){
-                    errorMessage = "Failed to create user with id " + id +" ,please choose another Id";
+                    Message = "Failed to create user with id " + id +" ,please choose another Id";
                 };
             }
         }else{
+            User user = new User(id,name,password,contact,role);
+            Message = userService.updateUser(user);
             if(role.equals("PATIENT")){
-                patientService.updatePatient(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
+                patientService.updatePatientUsingAdminDashboard(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
             } else if(role.equals("DOCTOR")){
                 doctorService.updateDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
             } else {
@@ -74,7 +76,7 @@ public class adminController {
         List<User> adminList = userService.getAdminList();
         List<Patient> patientList = patientService.getPatientList();
         List<Doctor> doctorList = doctorService.getListDoctor();
-        model.addAttribute("errorMsg", errorMessage);
+        model.addAttribute("errorMsg", Message);
         model.addAttribute("adminList", adminList);
         model.addAttribute("patientList", patientList);
         model.addAttribute("doctorList", doctorList);

@@ -23,15 +23,13 @@ public class AssignPatientServices {
 
     }
     public List<Patient> getListPatient() throws ExecutionException, InterruptedException {
-
+        //function to return list of unassigned patient
         List<Patient> patients=patientRepository.getListPatient();
         for(int i=patients.size()-1;i>=0;i--)
         {
-            if(!(patients.get(i).getAssigned_doctor().equals("")))
-            {
+           if (!(patients.get(i).getAssigned_doctor().isEmpty())){
                 patients.remove(i);
-            }
-
+           }
         }
 
 

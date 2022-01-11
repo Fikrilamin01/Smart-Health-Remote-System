@@ -70,6 +70,16 @@ confirmAddUserBtn.addEventListener("click", function () {
 
 cancelAddUserBtn.addEventListener("click", function () {
     document.getElementsByClassName("add_user_page")[0].classList.remove("user_page_active")
+    document.getElementById("userId").value = null;
+    document.getElementById("userFullName").value = null;
+    document.getElementById("userPassword").value = null;
+    document.getElementById("contact").value = null;
+    document.getElementById("address").value = null;
+    document.getElementById("emergencyContact").value = null;
+    document.getElementById("hospital").value = null;
+    document.getElementById("doctorPosition").value = null;
+    document.getElementById("userId").readOnly = false;
+    document.getElementById("userPassword").readOnly = false;
 })
 
 cancelAddUserBtn.addEventListener("click", activeRadioForm)
@@ -110,8 +120,10 @@ editUserBtn.forEach((e) => {
         let cells = row.getElementsByTagName("td")
 
         document.getElementById("userId").value = cells[0].innerText;
+        document.getElementById("userId").readOnly = true;
         document.getElementById("userFullName").value = cells[1].innerText;
         document.getElementById("userPassword").value = cells[3].innerText;
+        document.getElementById("userPassword").readOnly = true;
         document.getElementById("contact").value = cells[2].innerText;
 
         if (editClassName === 'btn btn-warning editUserBtn editPatient') {
