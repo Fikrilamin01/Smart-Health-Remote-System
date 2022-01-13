@@ -50,26 +50,24 @@ public class adminController {
                                       @RequestParam(value = "doctorPosition") String doctorPosition,
                                       @RequestParam(value = "action") String action,
                                       Model model) throws ExecutionException, InterruptedException {
-        String Message = "";
+        String Message;
         if(action.equals("add")){
             if(role.equals("PATIENT")){
-                Message +=  patientService.createPatient(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
+                Message =  patientService.createPatient(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
             } else if(role.equals("DOCTOR")){
-                Message += doctorService.createDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
+                Message = doctorService.createDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
             } else {
-                if(userService.createUser(new User(id,name,password,contact,role))== false){
-                    Message = "Failed to create user with id " + id +" ,please choose another Id";
-                };
+                Message =userService.createUser(new User(id,name,password,contact,role));
             }
         }else{
             User user = new User(id,name,password,contact,role);
-            Message = userService.updateUser(user);
+            userService.updateUser(user);
             if(role.equals("PATIENT")){
-                patientService.updatePatientUsingAdminDashboard(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
+                Message = patientService.updatePatient(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
             } else if(role.equals("DOCTOR")){
-                doctorService.updateDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
+                Message = doctorService.updateDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
             } else {
-                userService.updateUser(new User(id,name,password,contact,role));
+                Message = userService.updateUser(new User(id,name,password,contact,role));
             }
 
         }
@@ -87,17 +85,19 @@ public class adminController {
     public String deleteSelectedUser(@RequestParam("userIdToBeDelete") String userId,
                                      @RequestParam("userRoleToBeDelete") String role,
                                      Model model) throws ExecutionException, InterruptedException {
+        String message;
         if(role.equals("PATIENT")){
-            patientService.deletePatient(userId);
+            message = patientService.deletePatient(userId);
         } else if(role.equals("DOCTOR")){
-            doctorService.deleteDoctor(userId);
+            message = doctorService.deleteDoctor(userId);
         } else {
-            userService.deleteUser(userId);
+            message = userService.deleteUser(userId);
         }
 
         List<User> adminList = userService.getAdminList();
         List<Patient> patientList = patientService.getPatientList();
         List<Doctor> doctorList = doctorService.getListDoctor();
+        model.addAttribute("message", message);
         model.addAttribute("adminList", adminList);
         model.addAttribute("patientList", patientList);
         model.addAttribute("doctorList", doctorList);

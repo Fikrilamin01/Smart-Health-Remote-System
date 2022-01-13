@@ -1,5 +1,7 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Doctor;
 
+import com.SmartHealthRemoteSystem.SHSR.Repository.SHSRDAO;
+import com.SmartHealthRemoteSystem.SHSR.User.Patient.Patient;
 import com.SmartHealthRemoteSystem.SHSR.User.User;
 import com.SmartHealthRemoteSystem.SHSR.User.UserRepository;
 import com.google.api.core.ApiFuture;
@@ -11,10 +13,11 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
 
 
+import javax.print.Doc;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 @Repository
-public class DoctorRepository {
+public class DoctorRepository implements SHSRDAO<Doctor> {
     public static final String COL_NAME = "Doctor";
     public final UserRepository userRepository;
 
@@ -22,30 +25,8 @@ public class DoctorRepository {
         this.userRepository = userRepository;
     }
 
-    //Create or update doctor
-    public String saveDoctor(Doctor doctor) throws ExecutionException, InterruptedException {
-        Firestore dbFirestore = FirestoreClient.getFirestore();
-        Map<String, String> tempDoctor = new HashMap<>();
-        tempDoctor.put("hospital", doctor.getHospital());
-        tempDoctor.put("position", doctor.getPosition());
-
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(doctor.getUserId()).set(tempDoctor);
-        return collectionsApiFuture.get().getUpdateTime().toString();
-    }
-
-    public String updateDoctor(Doctor doctor) throws ExecutionException, InterruptedException {
-        Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME)
-                .document(doctor.getUserId())
-                .update("hospital", doctor.getHospital(),
-                        "position", doctor.getPosition());
-        return collectionsApiFuture.get().getUpdateTime().toString();
-    }
-
-
-
-    public Doctor getDoctor(String doctorId)
-            throws InterruptedException, ExecutionException {
+    @Override
+    public Doctor get(String doctorId) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(doctorId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
@@ -54,7 +35,8 @@ public class DoctorRepository {
 
         if (document.exists()) {
             tempDoctor  = document.toObject(Doctor.class);
-            User user = userRepository.getUser(doctorId);
+            User user = userRepository.get(doctorId);
+            assert tempDoctor != null;
             tempDoctor.setUserId(user.getUserId());
             tempDoctor.setName(user.getName());
             tempDoctor.setPassword(user.getPassword());
@@ -66,20 +48,21 @@ public class DoctorRepository {
         }
     }
 
-    public List<Doctor> getListDoctor()
-            throws InterruptedException, ExecutionException {
+    @Override
+    public List<Doctor> getAll() throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         Iterable<DocumentReference> documentReference = dbFirestore.collection(COL_NAME).listDocuments();
         Iterator<DocumentReference> iterator = documentReference.iterator();
 
         List<Doctor> doctorList = new ArrayList<>();
-        Doctor doctor = null;
+        Doctor doctor;
         while (iterator.hasNext()) {
             DocumentReference documentReference1=iterator.next();
             ApiFuture<DocumentSnapshot> future = documentReference1.get();
             DocumentSnapshot document = future.get();
             doctor = document.toObject(Doctor.class);
-            User user = userRepository.getUser(document.getId());
+            User user = userRepository.get(document.getId());
+            assert doctor != null;
             doctor.setUserId(user.getUserId());
             doctor.setPassword(user.getPassword());
             doctor.setName(user.getName());
@@ -91,9 +74,49 @@ public class DoctorRepository {
         return doctorList;
     }
 
-    public String deleteDoctor(String doctorId) {
+    @Override
+    public String save(Doctor doctor) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(doctorId).delete();
-        return "Document with Doctor Id " + doctorId + " has been deleted";
+        Map<String, String> tempDoctor = new HashMap<>();
+        tempDoctor.put("hospital", doctor.getHospital());
+        tempDoctor.put("position", doctor.getPosition());
+
+        //Create User object and save it to database
+        User user = new User(doctor.getUserId(), doctor.getName(), doctor.getPassword(), doctor.getContact(), doctor.getRole());
+        userRepository.save(user);
+
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(doctor.getUserId()).set(tempDoctor);
+        return collectionsApiFuture.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String update(Doctor doctor) throws ExecutionException, InterruptedException {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        if(!(doctor.getHospital().isEmpty())){
+            dbFirestore.collection(COL_NAME).document(doctor.getUserId())
+                    .update("hospital", doctor.getHospital());
+        } else if(!(doctor.getPosition().isEmpty())){
+            dbFirestore.collection(COL_NAME).document(doctor.getUserId())
+                    .update("position", doctor.getPosition());
+        }
+        User user = new User(doctor.getUserId(), doctor.getName(), doctor.getPassword(), doctor.getContact(), doctor.getRole());
+        return userRepository.update(user);
+    }
+
+    @Override
+    public String delete(String doctorId) throws ExecutionException, InterruptedException {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        String message;
+        String timeDeleteUser;
+        Doctor doctor = get(doctorId);
+        if (doctor == null) {
+            return "patientId is not exist in the database";
+        } else {
+            //delete patient
+            ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(doctorId).delete();
+            timeDeleteUser = userRepository.delete(doctorId);
+        }
+
+        return "Document with Doctor Id " + doctorId + " has been deleted. " + timeDeleteUser;
     }
 }

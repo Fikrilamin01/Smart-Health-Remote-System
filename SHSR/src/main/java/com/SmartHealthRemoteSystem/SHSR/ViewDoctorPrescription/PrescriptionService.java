@@ -1,6 +1,6 @@
 package com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription;
 
-import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
+import com.SmartHealthRemoteSystem.SHSR.Repository.SubCollectionSHSRDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,46 +9,30 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class PrescriptionService {
-    private final PrescriptionRepository prescriptionRepository;
-    private final SensorDataService sensorDataService;
+    private final SubCollectionSHSRDAO<Prescription> prescriptionRepository;
 
     @Autowired
-    public PrescriptionService(PrescriptionRepository prescriptionRepository, SensorDataService sensorDataService) {
+    public PrescriptionService(SubCollectionSHSRDAO<Prescription> prescriptionRepository) {
+
         this.prescriptionRepository = prescriptionRepository;
-        this.sensorDataService = sensorDataService;
     }
 
     public String createPrescription(Prescription prescription, String patientId) throws ExecutionException, InterruptedException {
-        return prescriptionRepository.CreatePrescription(prescription, patientId);
+        return prescriptionRepository.save(prescription, patientId);
     }
 
     public Prescription getPrescription(String prescriptionIdId, String patientId) throws ExecutionException, InterruptedException {
-        return prescriptionRepository.getPrescription(prescriptionIdId, patientId);
+        return prescriptionRepository.get(prescriptionIdId, patientId);
     }
     public List<Prescription> getListPrescription(String patientId) throws ExecutionException, InterruptedException {
-        List<Prescription> prescriptionList = prescriptionRepository.getListPrescription(patientId);
-        return  prescriptionList;
+        return prescriptionRepository.getAll(patientId);
     }
-
-    public void deleteAllPrescription(String patientId) throws ExecutionException, InterruptedException {
-        List<Prescription> prescriptionList = getListPrescription(patientId);
-        for(Prescription prescription: prescriptionList){
-            //deleting the patient prescription
-            prescriptionRepository.deletePrescription(prescription.getPrescriptionId(), patientId);
-        }
-    }
-
 
     public String updatePrescription(Prescription prescription, String patientId) throws ExecutionException, InterruptedException {
-        return prescriptionRepository.UpdatePrescription(prescription, patientId);
+        return prescriptionRepository.update(prescription, patientId);
     }
 
-    public void deletePrescription(String prescriptionId, String patientId) throws ExecutionException, InterruptedException {
-        String message = "";
-        if(prescriptionRepository.getPrescription(prescriptionId, patientId) != null) {
-            message = prescriptionRepository.deletePrescription(prescriptionId, patientId);
-        }else{
-            message = "Error, the prescription Id is not exist";
-        }
+    public String deletePrescription(String prescriptionId, String patientId) throws ExecutionException, InterruptedException {
+        return prescriptionRepository.delete(patientId, prescriptionId);
     }
 }

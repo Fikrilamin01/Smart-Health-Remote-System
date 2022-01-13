@@ -1,68 +1,52 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Patient;
 
+import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorData;
+import com.SmartHealthRemoteSystem.SHSR.Repository.SHSRDAO;
+import com.SmartHealthRemoteSystem.SHSR.Repository.SubCollectionSHSRDAO;
+import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatus;
 import com.SmartHealthRemoteSystem.SHSR.User.User;
-import com.SmartHealthRemoteSystem.SHSR.User.UserRepository;
+import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.Prescription;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Repository
-public class PatientRepository {
+public class PatientRepository implements SHSRDAO<Patient> {
     public static final String COL_NAME = "Patient";
-    public final UserRepository userRepository;
 
-    public PatientRepository(UserRepository userRepository) {
+    private final SHSRDAO<User> userRepository;
+    private final SubCollectionSHSRDAO<HealthStatus> healthStatusRepository;
+    private final SHSRDAO<SensorData> sensorDataRepository;
+    private final SubCollectionSHSRDAO<Prescription> prescriptionRepository;
+
+    @Autowired
+    public PatientRepository(SHSRDAO<User> userRepository, SubCollectionSHSRDAO<HealthStatus> healthStatusRepository,
+                             SHSRDAO<SensorData> sensorDataRepository, SubCollectionSHSRDAO<Prescription> prescriptionRepository) {
         this.userRepository = userRepository;
+        this.healthStatusRepository = healthStatusRepository;
+        this.sensorDataRepository = sensorDataRepository;
+        this.prescriptionRepository = prescriptionRepository;
     }
 
-
-    public String savePatient(Patient patient)
-            throws InterruptedException, ExecutionException {
-        Firestore dbFirestore = FirestoreClient.getFirestore();
-        Map<String, String> tempPatient = new HashMap<>();
-        tempPatient.put("address", patient.getAddress());
-        tempPatient.put("emergencyContact", patient.getEmergencyContact());
-        tempPatient.put("sensorDataId", patient.getSensorDataId());
-        tempPatient.put("assigned_doctor", patient.getAssigned_doctor());
-        //Create a temporary User
-        User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
-        userRepository.saveUser(user);
-
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId()).set(tempPatient);
-        return collectionsApiFuture.get().getUpdateTime().toString();
-    }
-
-    public String updatePatient(Patient patient) throws ExecutionException, InterruptedException {
-        Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME)
-                .document(patient.getUserId())
-                .update("address", patient.getAddress(),
-                        "emergencyContact", patient.getEmergencyContact(),
-                        "sensorDataId", patient.getSensorDataId(),
-                        "assigned_doctor",patient.getAssigned_doctor());
-        return collectionsApiFuture.get().getUpdateTime().toString();
-    }
-
-
-
-
-    public Patient getPatient(String patientId)
-            throws InterruptedException, ExecutionException {
+    @Override
+    public Patient get(String patientId) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(patientId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
         Patient tempPatient;
         if (document.exists()) {
-            tempPatient  = document.toObject(Patient.class);
-            User user = userRepository.getUser(patientId);
+            tempPatient = document.toObject(Patient.class);
+            User user = userRepository.get(patientId);
+            assert tempPatient != null;
             tempPatient.setUserId(user.getUserId());
             tempPatient.setName(user.getName());
             tempPatient.setPassword(user.getPassword());
@@ -74,20 +58,21 @@ public class PatientRepository {
         }
     }
 
-    public List<Patient> getListPatient()
-            throws InterruptedException, ExecutionException {
+    @Override
+    public List<Patient> getAll() throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         Iterable<DocumentReference> documentReference = dbFirestore.collection(COL_NAME).listDocuments();
         Iterator<DocumentReference> iterator = documentReference.iterator();
 
         List<Patient> patientList = new ArrayList<>();
-        Patient patient= null;
+        Patient patient;
         while (iterator.hasNext()) {
-            DocumentReference documentReference1=iterator.next();
+            DocumentReference documentReference1 = iterator.next();
             ApiFuture<DocumentSnapshot> future = documentReference1.get();
             DocumentSnapshot document = future.get();
             patient = document.toObject(Patient.class);
-            User user=userRepository.getUser(document.getId());
+            User user = userRepository.get(document.getId());
+            assert patient != null;
             patient.setUserId(user.getUserId());
             patient.setPassword(user.getPassword());
             patient.setName(user.getName());
@@ -99,10 +84,82 @@ public class PatientRepository {
         return patientList;
     }
 
-    public String deletePatient(String patientId) {
+    @Override
+    public String save(Patient patient) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
+        Map<String, String> tempPatient = new HashMap<>();
+        tempPatient.put("address", patient.getAddress());
+        tempPatient.put("emergencyContact", patient.getEmergencyContact());
+        tempPatient.put("sensorDataId", patient.getSensorDataId());
+        tempPatient.put("assigned_doctor", patient.getAssigned_doctor());
+        //Create a temporary User
+        User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
+        userRepository.save(user);
 
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId()).set(tempPatient);
+        return collectionsApiFuture.get().getUpdateTime().toString();
+    }
+
+    @Override
+    public String update(Patient patient) throws ExecutionException, InterruptedException {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        if (!(patient.getAddress().isEmpty())) {
+            dbFirestore.collection(COL_NAME).document(patient.getUserId())
+                    .update("address", patient.getAddress());
+        } else if (!(patient.getEmergencyContact().isEmpty())) {
+            dbFirestore.collection(COL_NAME).document(patient.getUserId())
+                    .update("emergencyContact", patient.getEmergencyContact());
+        } else if (!(patient.getSensorDataId().isEmpty())) {
+            dbFirestore.collection(COL_NAME).document(patient.getUserId())
+                    .update("sensorDataId", patient.getSensorDataId());
+
+        } else if (!(patient.getAssigned_doctor().isEmpty())) {
+            dbFirestore.collection(COL_NAME).document(patient.getUserId())
+                    .update("assigned_doctor", patient.getAssigned_doctor());
+        }
+        return userRepository.update(new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole()));
+    }
+
+    @Override
+    public String delete(String patientId) throws ExecutionException, InterruptedException {
+        String healthStatusMessage = "", prescriptionMessage = "", timeDeleteUser, messageSensor = "";
+
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        Patient patient = get(patientId);
+        if (patient == null) {
+            return "patientId is not exist in the database";
+        }
+
+        //delete sensor from sensor table
+        //since patient and sensor is 1-to-1 composition relation,
+        //delete the patient will also delete the sensor
+        if (patient.getSensorDataId() == null) {
+            //since patient doesn't have sensorId, we are not deleting the sensor from sensor database table
+        } else {
+            messageSensor = sensorDataRepository.delete(patient.getSensorDataId());
+        }
+
+        //Delete all health status patient in the database
+        List<HealthStatus> healthStatusList = healthStatusRepository.getAll(patientId);
+        for (HealthStatus healthStatus : healthStatusList) {
+            healthStatusMessage += healthStatusRepository.delete(patientId, healthStatus.getHealthStatusId()) + "\n";
+        }
+
+        //Delete all prescription patient in the database
+        List<Prescription> prescriptionList = prescriptionRepository.getAll(patientId);
+        for (Prescription prescription : prescriptionList) {
+            prescriptionMessage += prescriptionRepository.delete(patientId, prescription.getPrescriptionId()) + "\n";
+        }
+
+        //delete patient
         ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(patientId).delete();
-        return "Document with Patient Id " + patientId + " has been deleted and the files related to this patient";
+        timeDeleteUser = userRepository.delete(patientId);
+
+
+        return "Document with Patient Id " + patientId + " has been deleted. " + "\n" +
+                messageSensor + " \n+" +
+                healthStatusMessage +
+                prescriptionMessage + "\n" +
+                timeDeleteUser;
     }
 }

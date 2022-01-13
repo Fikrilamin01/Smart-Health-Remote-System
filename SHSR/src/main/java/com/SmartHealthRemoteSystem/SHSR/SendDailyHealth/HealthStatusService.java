@@ -1,7 +1,8 @@
 package com.SmartHealthRemoteSystem.SHSR.SendDailyHealth;
 
-import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
-import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientService;
+import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorData;
+import com.SmartHealthRemoteSystem.SHSR.Repository.SHSRDAO;
+import com.SmartHealthRemoteSystem.SHSR.Repository.SubCollectionSHSRDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,46 +12,34 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class HealthStatusService {
 
-    private final HealthStatusRepository healthStatusRepository;
-    private final SensorDataService sensorDataService;
+    private final SubCollectionSHSRDAO<HealthStatus> healthStatusRepository;
+    private final SHSRDAO<SensorData> sensorDataService;
 
     @Autowired
-    public HealthStatusService(HealthStatusRepository healthStatusRepository, SensorDataService sensorDataService) {
+    public HealthStatusService(SubCollectionSHSRDAO<HealthStatus> healthStatusRepository, SHSRDAO<SensorData> sensorDataService) {
         this.healthStatusRepository = healthStatusRepository;
         this.sensorDataService = sensorDataService;
     }
 
-    public void createHealthStatus(HealthStatus healthStatus, String patientId) throws ExecutionException, InterruptedException {
-        String timeCreated = healthStatusRepository.CreateHealthStatus(healthStatus,patientId);
+    public String createHealthStatus(HealthStatus healthStatus, String patientId) throws ExecutionException, InterruptedException {
+        return healthStatusRepository.save(healthStatus,patientId);
     }
 
     public List<HealthStatus> getListHealthStatus(String patientId) throws ExecutionException, InterruptedException {
-        return healthStatusRepository.getListHealthStatus(patientId);
+        return healthStatusRepository.getAll(patientId);
     }
 
     public HealthStatus getHealthStatus(String healthStatusId, String patientId) throws ExecutionException, InterruptedException {
-        return healthStatusRepository.getHealthStatus(healthStatusId, patientId);
+        return healthStatusRepository.get(healthStatusId, patientId);
     }
 
-    public void deleteAllHealthStatus(String patientId) throws ExecutionException, InterruptedException {
-        List<HealthStatus> healthStatusList = getListHealthStatus(patientId);
-        for(HealthStatus healthStatus : healthStatusList){
-            //deleting all health status in Database
-            String deleteMessage = healthStatusRepository.deleteHealthStatus(healthStatus.getHealthStatusId(), patientId);
-        }
-    }
 
     public void updateHealthStatus(HealthStatus healthStatus, String patientId) throws ExecutionException, InterruptedException {
-        String timeUpdated = healthStatusRepository.UpdateHealthStatus(healthStatus, patientId);
+        String timeUpdated = healthStatusRepository.update(healthStatus, patientId);
     }
 
-    public void deleteHealthStatus(String healthStatusId, String patientId) throws ExecutionException, InterruptedException {
-        String message = "";
-        if(healthStatusRepository.getHealthStatus(healthStatusId, patientId) != null) {
-            message = healthStatusRepository.deleteHealthStatus(healthStatusId, patientId);
-        }else{
-            message = "Error, the healthStatus Id is not exist";
-        }
+    public String deleteHealthStatus(String healthStatusId, String patientId) throws ExecutionException, InterruptedException {
+            return healthStatusRepository.delete(healthStatusId, patientId);
     }
 
 

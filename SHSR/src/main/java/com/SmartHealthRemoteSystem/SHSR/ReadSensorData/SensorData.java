@@ -6,7 +6,7 @@ import java.sql.Time;
 
 public class SensorData {
     private String ecgReading;
-    private double bodyTemperature;
+    private Double bodyTemperature;
     private Timestamp timestamp;
     private String sensorDataId;
     private String oxygenReading;
@@ -15,7 +15,7 @@ public class SensorData {
     public SensorData() {
     }
 
-    public SensorData(String ecgReading, double bodyTemperature, String oxygenReading) {
+    public SensorData(String ecgReading, Double bodyTemperature, String oxygenReading) {
         this.ecgReading = ecgReading;
         this.bodyTemperature = bodyTemperature;
         this.oxygenReading = oxygenReading;
@@ -37,11 +37,11 @@ public class SensorData {
         this.ecgReading = ecgReading;
     }
 
-    public double getBodyTemperature() {
+    public Double getBodyTemperature() {
         return bodyTemperature;
     }
 
-    public void setBodyTemperature(double bodyTemperature) {
+    public void setBodyTemperature(Double bodyTemperature) {
         this.bodyTemperature = bodyTemperature;
     }
 

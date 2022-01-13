@@ -7,15 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Controller
+@RequestMapping("/assignpatient")
 public class AssignPatientController {
     public final AssignPatientServices assignPatientServices;
 
@@ -23,13 +21,13 @@ public class AssignPatientController {
         this.assignPatientServices = assignPatientServices;
     }
 
-    @GetMapping("/assignpatient")
+    @GetMapping
     public String AssignPatientForm(Model model) throws ExecutionException, InterruptedException{
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = assignPatientServices.getDoctor(myUserDetails.getUsername());
         List<Patient> patientList= assignPatientServices.getListPatient();
-        model.addAttribute("patientList",patientList);
+        model.addAttribute("patientList", patientList);
         model.addAttribute("doctor",doctor);
         return "assignpatient";
     }

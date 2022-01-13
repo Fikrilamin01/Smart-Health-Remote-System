@@ -2,6 +2,7 @@ package com.SmartHealthRemoteSystem.SHSR.WebConfiguration;
 
 import com.SmartHealthRemoteSystem.SHSR.User.User;
 import com.SmartHealthRemoteSystem.SHSR.User.UserRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,10 +20,11 @@ public class MyUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    @SneakyThrows
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         // user from firestore database
-        Optional<User> user = Optional.ofNullable(userRepository.getUser(userName));
+        Optional<User> user = Optional.ofNullable(userRepository.get(userName));
         user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
         return user.map(MyUserDetails::new).get();
     }

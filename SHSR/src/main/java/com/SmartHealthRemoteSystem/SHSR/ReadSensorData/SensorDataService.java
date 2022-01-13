@@ -1,5 +1,6 @@
 package com.SmartHealthRemoteSystem.SHSR.ReadSensorData;
 
+import com.SmartHealthRemoteSystem.SHSR.Repository.SHSRDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,32 +8,32 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class SensorDataService {
-    private final SensorDataRepository sensorDataRepository;
+    private final SHSRDAO<SensorData> sensorDataRepository;
 
     @Autowired
-    public SensorDataService(SensorDataRepository sensorDataRepository) {
+    public SensorDataService(SHSRDAO<SensorData> sensorDataRepository) {
         this.sensorDataRepository = sensorDataRepository;
     }
 
     public String createSensorData() throws ExecutionException, InterruptedException {
         SensorData sensorData = new SensorData();
-        return sensorDataRepository.CreateSensorData(sensorData);
+        return sensorDataRepository.save(sensorData);
     }
 
-    public String deleteSensorData(String sensorId){
-        return sensorDataRepository.deleteSensorData(sensorId);
+    public String deleteSensorData(String sensorId) throws ExecutionException, InterruptedException {
+        return sensorDataRepository.delete(sensorId);
     }
 
     public SensorData getSensorData(String sensorId) throws ExecutionException, InterruptedException {
-        return sensorDataRepository.getSensorDataDetails(sensorId);
+        return sensorDataRepository.get(sensorId);
     }
 
     public String updateSensorData(SensorData sensorData) throws ExecutionException, InterruptedException {
-        return sensorDataRepository.UpdateSensorData(sensorData);
+        return sensorDataRepository.update(sensorData);
     }
 
     public String stringSensorData(String sensorId) throws ExecutionException, InterruptedException {
-        SensorData sensorData=sensorDataRepository.getSensorDataDetails(sensorId);
+        SensorData sensorData=sensorDataRepository.get(sensorId);
         return sensorData.toString();
     }
 }

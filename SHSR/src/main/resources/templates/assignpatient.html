@@ -7,7 +7,6 @@ and open the template in the editor.
 <!doctype html>
 <html lang="en"
       xmlns:th="https://www.thymeleaf.org"
-
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <!-- Required meta tags -->
@@ -82,13 +81,13 @@ and open the template in the editor.
                     </thead>
                     <tbody>
 
-                    <tr th:each="patient : ${patientList}">
+                    <tr th:each="patient:${patientList}">
 
                         <td th:text="${patientStat.index}+1"></td>
                         <td th:text="${patient.userId}"></td>
                         <td th:text="${patient.name}"></td>
                         <td>
-                            <form th:action="@{/assigntoDoctor}" method="post" class="assignform" hidden="true"
+                            <form th:action="@{/assignpatient/assigntoDoctor}" method="post" class="assignform" hidden="true"
                                   th:object="${patient}">
                                 <input type="hidden" th:value="*{userId}" name="patientId">
 

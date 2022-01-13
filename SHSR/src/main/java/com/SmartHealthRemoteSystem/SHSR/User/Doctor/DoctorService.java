@@ -1,55 +1,61 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Doctor;
 
+import com.SmartHealthRemoteSystem.SHSR.Repository.SHSRDAO;
 import com.SmartHealthRemoteSystem.SHSR.User.Patient.Patient;
-import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientRepository;
-import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientService;
 import com.SmartHealthRemoteSystem.SHSR.User.User;
-import com.SmartHealthRemoteSystem.SHSR.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
 public class DoctorService {
-    private final DoctorRepository doctorRepository;
-    private final UserService userService;
-    private final PatientRepository patientRepository;
+    private final SHSRDAO<Doctor> doctorRepository;
+    private final SHSRDAO<Patient> patientRepository;
+    private final SHSRDAO<User> userRepository;
 
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository, UserService userService, PatientRepository patientRepository) {
+    public DoctorService(SHSRDAO<Doctor> doctorRepository, SHSRDAO<Patient> patientRepository, SHSRDAO<User> userRepository) {
         this.doctorRepository = doctorRepository;
-        this.userService = userService;
-        this.patientRepository= patientRepository;
+        this.patientRepository = patientRepository;
+        this.userRepository = userRepository;
     }
 
     public String createDoctor(Doctor doctor) throws ExecutionException, InterruptedException {
+        boolean checkUserExist = false;
         //create a temporary user
-        User user = new User(doctor.getUserId(),doctor.getName(),doctor.getPassword(),doctor.getContact(), doctor.getRole());
-        if(userService.createUser(user)){
-            //there is no conflict with the ID
-            //proceed to create the patient in patient table
-            String timeCreated = doctorRepository.saveDoctor(doctor);
-            return timeCreated;
+        User user = new User(doctor.getUserId(), doctor.getName(), doctor.getPassword(), doctor.getContact(), doctor.getRole());
+
+        //get list of all user
+        List<User> userList = userRepository.getAll();
+        for (User u : userList) {
+            //if the Id already exist
+            if (u.getUserId().equals(doctor.getUserId())) {
+                checkUserExist = true;
+                break;
+            }
         }
-        return "Failed to create user doctor with userId: " + doctor.getUserId();
+        //return error message
+        if (checkUserExist) {
+            return "Error create doctor with id " + doctor.getUserId() + ". Please use another Id.";
+        }
+
+        userRepository.save(user);
+        return doctorRepository.save(doctor);
     }
 
-    public void updateDoctor(Doctor doctor) throws ExecutionException, InterruptedException {
-        User user = new User(doctor.getUserId(),doctor.getName(),doctor.getPassword(),doctor.getContact(), doctor.getRole());
-        String timeUpdate = userService.updateUser(user);
-        String timeUpdate1 = doctorRepository.updateDoctor(doctor);
+    public String updateDoctor(Doctor doctor) throws ExecutionException, InterruptedException {
+        return doctorRepository.update(doctor);
     }
 
     public Doctor getDoctor(String doctorId) throws ExecutionException, InterruptedException {
-        Doctor doctor = doctorRepository.getDoctor(doctorId);
-        if(doctor == null){
+        Doctor doctor = doctorRepository.get(doctorId);
+        if (doctor == null) {
             return null;
-        }else{
-            User user = userService.getUser(doctorId);
+        } else {
+            User user = userRepository.get(doctorId);
             doctor.setName(user.getName());
             doctor.setPassword(user.getPassword());
             doctor.setContact(user.getContact());
@@ -60,35 +66,22 @@ public class DoctorService {
     }
 
     public List<Doctor> getListDoctor() throws ExecutionException, InterruptedException {
-        return doctorRepository.getListDoctor();
+        return doctorRepository.getAll();
     }
 
-    public Boolean doctorAuthentication (String doctorId,String password) throws ExecutionException, InterruptedException {
-        Doctor doctor = getDoctor(doctorId);
-        if(doctor == null){
-            return false;
-        }else{
-            if(doctor.getPassword().equals(password)){
-                return true;
-            }else{
-                return false;
-            }
-        }
-    }
 
-    public void deleteDoctor(String doctorId) throws ExecutionException, InterruptedException {
-        String message = doctorRepository.deleteDoctor(doctorId);
-        String timeDelete = userService.deleteUser(doctorId);
+    public String deleteDoctor(String doctorId) throws ExecutionException, InterruptedException {
+        return doctorRepository.delete(doctorId);
     }
 
     public List<Patient> findAllPatientAssignToDoctor(String doctorId) throws ExecutionException, InterruptedException {
         List<Patient> patientList = new ArrayList<>();
         //Logic on finding all the patient that has been assign to doctor...
-        List<Patient> allPatientList = patientRepository.getListPatient();
+        List<Patient> allPatientList = patientRepository.getAll();
 
-        for (int i=0;i<allPatientList.size();i++){
-            if(allPatientList.get(i).getAssigned_doctor().equals(doctorId)){
-                patientList.add(allPatientList.get(i));
+        for (Patient patient : allPatientList) {
+            if (patient.getAssigned_doctor().equals(doctorId)) {
+                patientList.add(patient);
             }
         }
         return patientList;

@@ -1,16 +1,12 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Patient;
 
 
-import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
-import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatus;
-import com.SmartHealthRemoteSystem.SHSR.SendDailyHealth.HealthStatusService;
+import com.SmartHealthRemoteSystem.SHSR.Repository.SHSRDAO;
+import com.SmartHealthRemoteSystem.SHSR.Repository.SubCollectionSHSRDAO;
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.Doctor;
 import com.SmartHealthRemoteSystem.SHSR.User.Doctor.DoctorRepository;
-import com.SmartHealthRemoteSystem.SHSR.User.Doctor.DoctorService;
 import com.SmartHealthRemoteSystem.SHSR.User.User;
-import com.SmartHealthRemoteSystem.SHSR.User.UserService;
 import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.Prescription;
-import com.SmartHealthRemoteSystem.SHSR.ViewDoctorPrescription.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,91 +16,66 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class PatientService {
 
-    private UserService userService;
-    private PatientRepository patientRepository;
-    private HealthStatusService healthStatusService;
-    private PrescriptionService prescriptionService;
-    private SensorDataService sensorDataService;
-    private DoctorService doctorService;
+    private SHSRDAO<User> userRepository;
+    private SHSRDAO<Patient> patientRepository;
+    private SHSRDAO<Doctor> doctorRepository;
+    private SubCollectionSHSRDAO<Prescription> prescriptionRepository;
+
 
     @Autowired
-    public PatientService(UserService userService, PatientRepository patientRepository,
-                          HealthStatusService healthStatusService, PrescriptionService prescriptionService,
-                          SensorDataService sensorDataService, DoctorService doctorService) {
-        this.userService = userService;
+    public PatientService(SHSRDAO<User> userRepository, SHSRDAO<Patient> patientRepository,
+                          SHSRDAO<Doctor> doctorRepository, SubCollectionSHSRDAO<Prescription> prescriptionRepository) {
+        this.userRepository = userRepository;
         this.patientRepository = patientRepository;
-        this.healthStatusService = healthStatusService;
-        this.prescriptionService = prescriptionService;
-        this.sensorDataService = sensorDataService;
-        this.doctorService = doctorService;
+        this.doctorRepository = doctorRepository;
+        this.prescriptionRepository = prescriptionRepository;
     }
 
     public String createPatient(Patient patient) throws ExecutionException, InterruptedException {
+        boolean checkUserExist = false;
         //Create a temporary User
         User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
-        Boolean result = userService.createUser(user);
-        if (result == true) {
-            //there is no conflict with the ID
-            //proceed to create the patient in patient table
-            String timeCreated = patientRepository.savePatient(patient);
-            return timeCreated;
-        }
-        return "Failed to create user patient with userId: " + patient.getUserId();
-    }
-
-    public void deletePatient(String patientId) throws ExecutionException, InterruptedException {
-        //Search in the database whether the patient exist or not
-        if (patientRepository.getPatient(patientId) == null) {
-            //show error message
-            String message = "patientId is not exist in the database";
-        } else {
-            Patient patient = getPatient(patientId);
-            String message = patientRepository.deletePatient(patientId);
-            String timeDelete = userService.deleteUser(patientId);
-            if (patient.getSensorDataId() == null) {
-                //since patient doesn't have sensorId, we not deleting the sensor from sensor database table
-            } else {
-                String timeDelete1 = sensorDataService.deleteSensorData(patient.getSensorDataId());
+        //get list of all user
+        List<User> userList = userRepository.getAll();
+        for(User u: userList){
+            //if the Id already exist
+            if(u.getUserId().equals(patient.getUserId())){
+                checkUserExist = true;
+                break;
             }
-            //Show success message
+        }
+        //return error message
+        if(checkUserExist){
+            return "Error create patient with id "+ patient.getUserId() + ". Please use another Id.";
         }
 
-        //Delete all health status patient in the database
-        healthStatusService.deleteAllHealthStatus(patientId);
-
-        //Delete all prescription patient in the database
-        prescriptionService.deleteAllPrescription(patientId);
+        //Otherwise, save the user in user collection and patient collection
+        userRepository.save(user);
+        return patientRepository.save(patient);
     }
 
-    public void updatePatient(Patient patient) throws ExecutionException, InterruptedException {
-        User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
-        String timeUpdate = userService.updateUser(user);
-        String timeUpdate1 = patientRepository.updatePatient(patient);
+    public String deletePatient(String patientId) throws ExecutionException, InterruptedException {
+        return patientRepository.delete(patientId);
+    }
+
+    public String updatePatient(Patient patient) throws ExecutionException, InterruptedException {
+        return patientRepository.update(patient);
     }
 
     public Patient getPatient(String patientId) throws ExecutionException, InterruptedException {
-        Patient patient = patientRepository.getPatient(patientId);
-        return patient;
+        return patientRepository.get(patientId);
     }
 
     public String getPatientSensorId(String patientId) throws ExecutionException, InterruptedException {
-        Patient patient = patientRepository.getPatient(patientId);
+        Patient patient = patientRepository.get(patientId);
         return patient.getSensorDataId();
     }
 
-    public boolean patientAuthentication(String userId, String password) throws ExecutionException, InterruptedException {
-        Patient patient = getPatient(userId);
-        if (patient == null) {
-            return false;
-        } else {
-            return patient.getPassword().equals(password);
-        }
-    }
 
     public Prescription getPrescription(String patientId) throws ExecutionException, InterruptedException {
         Prescription prescription = null;
 
-        List<Prescription> prescriptionList = prescriptionService.getListPrescription(patientId);
+        List<Prescription> prescriptionList = prescriptionRepository.getAll(patientId);
         if (!prescriptionList.isEmpty()) {
             prescription = prescriptionList.get(prescriptionList.size() - 1);
         }
@@ -113,21 +84,13 @@ public class PatientService {
     }
 
     public List<Patient> getPatientList() throws ExecutionException, InterruptedException {
-        return patientRepository.getListPatient();
+        return patientRepository.getAll();
     }
 
     public Doctor findDoctorThroughHealthStatusPatient(Patient patient) throws ExecutionException, InterruptedException {
-        List<HealthStatus> healthStatusList = healthStatusService.getListHealthStatus(patient.getUserId());
-        String doctorId = healthStatusList.get(0).getDoctorId();
-        return doctorService.getDoctor(doctorId);
-    }
-
-    public void updatePatientUsingAdminDashboard(Patient patient) throws ExecutionException, InterruptedException {
-        // The difference between this function and updatePatient function is that this function
-        // will update only patient address and emergency contact field
-        Patient prevPatientInfo = patientRepository.getPatient(patient.getUserId());
-        patient.setAssigned_doctor(prevPatientInfo.getAssigned_doctor());
-        patient.setSensorDataId(prevPatientInfo.getSensorDataId());
-        patientRepository.savePatient(patient);
+//        List<HealthStatus> healthStatusList = healthStatusRepository.getListHealthStatus(patient.getUserId());
+//        String doctorId = healthStatusList.get(0).getDoctorId();
+        //change name of the function later.
+        return doctorRepository.get(patient.getAssigned_doctor());
     }
 }
