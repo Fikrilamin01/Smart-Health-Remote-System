@@ -68,8 +68,8 @@
                         </tr>
                         </thead>
                         <tbody class="tbody">
-                        <tr th:each="pacnt,it : ${patientList}">
-                            <td th:text="${it.index+1}"></td>
+                        <tr th:each="pacnt : ${patientList}">
+                            <td th:text="${pacntStat.index}+1"></td>
                             <td th:text="${pacnt.name}"></td>
                             <!--                            <td> <a th:href="@{/viewPatientHealthStatus}">View</a></td>-->
                             <td>
@@ -120,7 +120,7 @@
     //     document.getElementById("viewPatientForm").submit();
     // });
 
-    var i;
+    var i,z;
     $(function () {
         $('.viewBtn').click(function () {
             i = $("button").index(this);
@@ -130,11 +130,11 @@
             $('.viewPatientForm').get(i).submit();
         })
         $('.UnassignedPatientBtn').click(function (){
-            i = $( "button" ).index( this )-1;
+            z = $( "button" ).index( this )-1;
 
         })
         $(document).on('click', '.UnassignedPatientBtn', function () {
-            $('.UnassignedPatient').get(i).submit();
+            $('.UnassignedPatient').get(z).submit();
         })
     })
 
