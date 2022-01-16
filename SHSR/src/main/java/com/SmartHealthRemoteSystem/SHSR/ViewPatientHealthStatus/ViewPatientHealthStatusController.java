@@ -27,28 +27,33 @@ public class ViewPatientHealthStatusController {
 
 
     @Autowired
-    public ViewPatientHealthStatusController(HealthStatusService healthStatusService, DoctorService doctorService, PatientService patientService) {
+    public ViewPatientHealthStatusController( HealthStatusService healthStatusService,DoctorService doctorService, PatientService patientService) {
         this.doctorService = doctorService;
         this.patientService = patientService;
         this.healthStatusService = healthStatusService;
     }
-
-    @PostMapping("/a")
-    public String getHealthStatus(@RequestParam("patientId") String patientId, @RequestParam("doctorId") String doctorId, Model model) throws ExecutionException, InterruptedException {
+@PostMapping("/a")
+    public String getHealthStatus(@RequestParam("patientId")String patientId, @RequestParam("doctorId")String doctorId, Model model) throws ExecutionException, InterruptedException {
         //Retrieve information
-        Patient patient = patientService.getPatient(patientId);
-        Doctor doctor = doctorService.getDoctor(doctorId);
+        Patient patient=patientService.getPatient(patientId);
+        Doctor doctor=doctorService.getDoctor(doctorId);
 
         //Retrive patient list of health status
-        List<HealthStatus> healthStatus = healthStatusService.getListHealthStatus(patientId);
-        List<HealthStatus> threeLastHealth = null;
-        for (int i = healthStatus.size() - 1; i >= (healthStatus.size() - 3); i--) {
-            threeLastHealth.add(healthStatus.get(i));
-        }
-        model.addAttribute("patient", patient);
-        model.addAttribute("doctor", doctor);
-        model.addAttribute("healthStatusList", healthStatus);
+        List<HealthStatus> healthStatus= healthStatusService.getListHealthStatus(patientId);
+//        List<HealthStatus> threeLastHealth=null;
+//    for (int i = healthStatus.size()-1; i==(healthStatus.size()-3) ; i--) {
+//        threeLastHealth.add(healthStatus.get(i));
+//    }
+        model.addAttribute("patient",patient);
+        model.addAttribute("doctor",doctor);
+        model.addAttribute("healthStatusList",healthStatus);
 
-        return "viewPatientHealthStatus";
+        return "viewPatientHealthStatus" ;
+
+
     }
+
+
+
+
 }

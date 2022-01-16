@@ -57,7 +57,7 @@
                 <h1 d-flex justify-content-start>My Patient</h1>
                 <div style="height: 500px; width: auto;" class="form-title">
                     <h1 th:text="${patient.name}">zzz</h1>
-                    <h3 th:text="patient.contact">Contact number: </h3>
+                    <h3 th:text="${patient.contact}">Contact number: </h3>
                    <table class="table">
                        <legend> Latest health status</legend>
                        <thead>
