@@ -126,4 +126,5 @@ public class UserRepository implements SHSRDAO<User> {
         ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(id).delete();
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
+
 }
