@@ -104,18 +104,20 @@ public class PatientRepository implements SHSRDAO<Patient> {
     public String update(Patient patient) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         if (!(patient.getAddress().isEmpty())) {
-            dbFirestore.collection(COL_NAME).document(patient.getUserId())
+            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("address", patient.getAddress());
-        } else if (!(patient.getEmergencyContact().isEmpty())) {
-            dbFirestore.collection(COL_NAME).document(patient.getUserId())
-                    .update("emergencyContact", patient.getEmergencyContact());
-        } else if (!(patient.getSensorDataId().isEmpty())) {
-            dbFirestore.collection(COL_NAME).document(patient.getUserId())
-                    .update("sensorDataId", patient.getSensorDataId());
-
-        } else if (!(patient.getAssigned_doctor().isEmpty())) {
-            dbFirestore.collection(COL_NAME).document(patient.getUserId())
+        }
+        if (!(patient.getAssigned_doctor().isEmpty()) || patient.getAssigned_doctor().isBlank()) {
+            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("assigned_doctor", patient.getAssigned_doctor());
+        }
+        if (!(patient.getEmergencyContact().isEmpty())) {
+            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
+                    .update("emergencyContact", patient.getEmergencyContact());
+        }
+        if (!(patient.getSensorDataId().isEmpty())) {
+            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
+                    .update("sensorDataId", patient.getSensorDataId());
         }
         return userRepository.update(new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole()));
     }

@@ -95,7 +95,9 @@ public class DoctorRepository implements SHSRDAO<Doctor> {
         if(!(doctor.getHospital().isEmpty())){
             dbFirestore.collection(COL_NAME).document(doctor.getUserId())
                     .update("hospital", doctor.getHospital());
-        } else if(!(doctor.getPosition().isEmpty())){
+        }
+
+        if(!(doctor.getPosition().isEmpty())){
             dbFirestore.collection(COL_NAME).document(doctor.getUserId())
                     .update("position", doctor.getPosition());
         }

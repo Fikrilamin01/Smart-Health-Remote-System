@@ -87,7 +87,8 @@ public class HealthStatusRepository implements SubCollectionSHSRDAO<HealthStatus
         ApiFuture<WriteResult> collectionsApiFuture = null;
         if(!(healthStatus.getDoctorId().isEmpty())){
             collectionsApiFuture = addedDocRef.update("doctorId", healthStatus.getDoctorId());
-        } else if (!(healthStatus.getAdditionalNotes().isEmpty())){
+        }
+        if (!(healthStatus.getAdditionalNotes().isEmpty())){
             collectionsApiFuture = addedDocRef.update("additionalNotes", healthStatus.getDoctorId());
         }
         if (collectionsApiFuture != null) {

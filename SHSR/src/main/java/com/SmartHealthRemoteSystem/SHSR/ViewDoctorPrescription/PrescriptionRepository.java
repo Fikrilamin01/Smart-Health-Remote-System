@@ -76,9 +76,11 @@ public class PrescriptionRepository implements SubCollectionSHSRDAO<Prescription
         ApiFuture<WriteResult> collectionsApiFuture;
         if(!(prescription.getDoctorId().isEmpty())){
             addedDocRef.update("doctorId", prescription.getDoctorId());
-        } else if (!(prescription.getPrescriptionDescription().isEmpty())){
+        }
+        if (!(prescription.getPrescriptionDescription().isEmpty())){
             addedDocRef.update("prescriptionDescription", prescription.getPrescriptionDescription());
-        } else if (!(prescription.getDiagnosisAilmentDescription().isEmpty())){
+        }
+        if (!(prescription.getDiagnosisAilmentDescription().isEmpty())){
             addedDocRef.update("diagnosisAilmentDescription", prescription.getDiagnosisAilmentDescription());
         }
         //need to make sure that user interface update all medicine list at once,
