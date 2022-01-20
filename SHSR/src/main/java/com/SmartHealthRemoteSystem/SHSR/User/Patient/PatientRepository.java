@@ -109,7 +109,7 @@ public class PatientRepository implements SHSRDAO<Patient> {
             ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("address", patient.getAddress());
         }
-        if (!(patient.getAssigned_doctor().isEmpty()) || patient.getAssigned_doctor().isBlank()) {
+        if (!(patient.getAssigned_doctor() == null)) {
             ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("assigned_doctor", patient.getAssigned_doctor());
         }
@@ -117,7 +117,7 @@ public class PatientRepository implements SHSRDAO<Patient> {
             ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("emergencyContact", patient.getEmergencyContact());
         }
-        if (!(patient.getSensorDataId().isEmpty())) {
+        if (!(patient.getSensorDataId() == null)) {
             ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("sensorDataId", patient.getSensorDataId());
         }
