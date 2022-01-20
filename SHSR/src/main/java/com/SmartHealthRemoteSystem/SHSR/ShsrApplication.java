@@ -9,16 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class ShsrApplication implements CommandLineRunner{
+public class ShsrApplication{
 
 
 	public static void main(String[] args) {
 		SpringApplication.run(ShsrApplication.class, args);
-
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
 
 	}
 }

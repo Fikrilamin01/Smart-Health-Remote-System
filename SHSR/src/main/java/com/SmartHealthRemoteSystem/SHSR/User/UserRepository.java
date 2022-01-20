@@ -106,13 +106,17 @@ public class UserRepository implements SHSRDAO<User> {
         //map key value will be pass to firestore database to be updated.
         if(!(user.getName().isEmpty())){
             collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getUserId()).update("name", user.getName());
-        }else if(!(user.getPassword().isEmpty())){
+        }
+        if(!(user.getPassword().isEmpty())){
             collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getUserId()).update("password", user.getPassword());
-        } else if(!(user.getContact().isEmpty())){
+        }
+        if(!(user.getContact().isEmpty())){
             collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getUserId()).update("contact", user.getContact());
-        } else if(!(user.getRole().isEmpty())){
+        }
+        if(!(user.getRole().isEmpty())){
             collectionsApiFuture = dbFirestore.collection(COL_NAME).document(user.getUserId()).update("role", user.getRole());
         }
+
         if (collectionsApiFuture != null) {
             return collectionsApiFuture.get().getUpdateTime().toString();
         } else{

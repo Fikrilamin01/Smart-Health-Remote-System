@@ -89,7 +89,7 @@
                                     Send Prescription</a>
                             </td>
                             <td>
-                                <form th:action="@{/unassignDoctor}" th:method="put" hidden="true"
+                                <form th:action="@{/assignpatient/unassignDoctor}" th:method="put" hidden="true"
                                       name="UnassignedPatient" class="UnassignedPatient">
                                     <input type="text" th:value="${pacnt.userId}" th:name="patientId">
 
@@ -120,21 +120,30 @@
     //     document.getElementById("viewPatientForm").submit();
     // });
 
-    var i,z;
+    var i,z,j;
     $(function () {
         $('.viewBtn').click(function () {
-            i = $("button").index(this);
+            i = $(".viewBtn").index(this);
         })
 
         $(document).on('click', '.viewBtn', function () {
             $('.viewPatientForm').get(i).submit();
         })
         $('.UnassignedPatientBtn').click(function (){
-            z = $( "button" ).index( this )-1;
+            z = $( ".UnassignedPatientBtn" ).index( this );
 
         })
         $(document).on('click', '.UnassignedPatientBtn', function () {
             $('.UnassignedPatient').get(z).submit();
+
+        })
+        $('.ReleasePatientBtn').click(function (){
+            j = $( ".ReleasePatientBtn" ).index( this );
+
+
+        })
+        $(document).on('click', '.ReleasePatientBtn', function () {
+            $('.ReleasePatient').get(j).submit();
         })
     })
 

@@ -81,9 +81,11 @@ public class SensorDataRepository implements SHSRDAO<SensorData> {
         ApiFuture<WriteResult> collectionsApiFuture = null;
         if(!(sensorData.getEcgReading().isEmpty())){
             collectionsApiFuture =addedDocRef.update("ecgReading", sensorData.getEcgReading());
-        } else if (!(sensorData.getOxygenReading().isEmpty())){
+        }
+        if (!(sensorData.getOxygenReading().isEmpty())){
             collectionsApiFuture =  addedDocRef.update("oxygenReading", sensorData.getOxygenReading());
-        } else if (sensorData.getBodyTemperature() != null){
+        }
+        if (sensorData.getBodyTemperature() != null){
             collectionsApiFuture = addedDocRef.update("bodyTemperature", sensorData.getBodyTemperature());
         }
         if (collectionsApiFuture != null) {

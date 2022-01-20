@@ -53,7 +53,7 @@ public class adminController {
         String Message;
         if(action.equals("add")){
             if(role.equals("PATIENT")){
-                Message =  patientService.createPatient(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
+                Message =  patientService.createPatient(new Patient(id,name,password,contact,role,"",patientAddress,emergencyContact,""));
             } else if(role.equals("DOCTOR")){
                 Message = doctorService.createDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
             } else {
@@ -61,9 +61,9 @@ public class adminController {
             }
         }else{
             User user = new User(id,name,password,contact,role);
-            userService.updateUser(user);
             if(role.equals("PATIENT")){
-                Message = patientService.updatePatient(new Patient(id,name,password,contact,role,patientAddress,emergencyContact));
+                Patient patient = new Patient(id,name,password,contact,role,patientAddress,emergencyContact);
+                Message = patientService.updatePatient(patient);
             } else if(role.equals("DOCTOR")){
                 Message = doctorService.updateDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
             } else {
