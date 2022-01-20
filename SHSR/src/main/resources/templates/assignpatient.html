@@ -55,7 +55,8 @@ and open the template in the editor.
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-dark">
+                            <a th:each="patient:${patientList}"
+                               th:href="@{/notification(patientId=${patient.userId})}" class="nav-link link-dark">
                                 Notification
                             </a>
                         </li>
@@ -133,7 +134,7 @@ and open the template in the editor.
     $(function () {
         $('.assignbtn').click(function (){
              i = $( ".assignbtn" ).index( this );
-             alert(i);
+
         })
         $(document).on('click', '.assignbtn', function () {
             var modalView = $('.confirmation_page');

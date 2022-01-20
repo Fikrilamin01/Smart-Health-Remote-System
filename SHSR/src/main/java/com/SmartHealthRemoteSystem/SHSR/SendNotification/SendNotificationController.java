@@ -31,7 +31,7 @@ public class SendNotificationController {
         this.doctorRepository = doctorRepository;
         this.sendNotificationService = sendNotificationService;
     }
-    @GetMapping
+    @GetMapping()
     public String SendNotification(Model model, @RequestParam (value = "patientId")String patientID) throws ExecutionException, InterruptedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
@@ -42,6 +42,8 @@ public class SendNotificationController {
         boolean temp=sendNotificationService.CheckBodyTemp(sensorData.getSensorDataId());
         String Oxygen=sendNotificationService.CheckOxygen(sensorData.getSensorDataId());
         String message=sendNotificationService.CheckCondition(sensorData.getSensorDataId(),category,temp,Oxygen);
+        patient.setMessage(message);
+        patientRepository.update(patient);
         return"doctor/doctorDashBoard";
     }
 }

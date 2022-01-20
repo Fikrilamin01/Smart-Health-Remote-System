@@ -7,7 +7,19 @@ public class Patient extends User {
     private String address;
     private String emergencyContact;
     private String assigned_doctor;
+    private String status;
+    private String message;
     public Patient() {
+    }
+
+    public Patient(String userId, String name, String password, String contact, String role, String sensorDataId, String address, String emergencyContact, String assigned_doctor, String status, String message) {
+        super(userId, name, password, contact, role);
+        this.sensorDataId = sensorDataId;
+        this.address = address;
+        this.emergencyContact = emergencyContact;
+        this.assigned_doctor = assigned_doctor;
+        this.status = status;
+        this.message = message;
     }
 
     public Patient(String userId, String name, String password, String contact, String role, String sensorDataId, String address, String emergencyContact, String assigned_doctor) {
@@ -16,6 +28,7 @@ public class Patient extends User {
         this.address = address;
         this.emergencyContact = emergencyContact;
         this.assigned_doctor = assigned_doctor;
+
     }
 
     public Patient(String name, String password, String contact, String role, String sensorDataId, String address, String emergencyContact, String assigned_doctor) {
@@ -70,5 +83,13 @@ public class Patient extends User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

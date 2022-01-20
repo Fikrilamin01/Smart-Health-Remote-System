@@ -40,7 +40,8 @@
                             </a>
                         </li>
                         <li>
-                            <a th:href="@{/notification}" class="nav-link link-dark">
+                            <a th:each="patient:${patientList}"
+                                    th:href="@{/notification(patientId=${patient.userId})}" class="nav-link link-dark">
                                 Notification
                             </a>
                         </li>

@@ -29,6 +29,8 @@ public class DoctorController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = doctorService.getDoctor(myUserDetails.getUsername());
+//        List<Patient> patientList= .getListPatient();
+//        model.addAttribute("patientList", patientList);
         model.addAttribute("doctor",doctor);
         return "doctorDashBoard";
     }
