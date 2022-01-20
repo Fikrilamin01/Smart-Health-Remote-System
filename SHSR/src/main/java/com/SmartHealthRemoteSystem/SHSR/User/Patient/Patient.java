@@ -7,7 +7,6 @@ public class Patient extends User {
     private String address;
     private String emergencyContact;
     private String assigned_doctor;
-
     public Patient() {
     }
 
@@ -63,5 +62,13 @@ public class Patient extends User {
 
     public void setAssigned_doctor(String assigned_doctor) {
         this.assigned_doctor = assigned_doctor;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

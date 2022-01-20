@@ -132,7 +132,8 @@ and open the template in the editor.
     var i;
     $(function () {
         $('.assignbtn').click(function (){
-             i = $( "button" ).index( this );
+             i = $( ".assignbtn" ).index( this );
+             alert(i);
         })
         $(document).on('click', '.assignbtn', function () {
             var modalView = $('.confirmation_page');
