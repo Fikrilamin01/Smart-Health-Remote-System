@@ -83,6 +83,10 @@ public class PatientService {
         return prescription;
     }
 
+    public List<Prescription> getAllPrescription(String patientId) throws ExecutionException, InterruptedException {
+        return prescriptionRepository.getAll(patientId);
+    }
+
     public List<Patient> getPatientList() throws ExecutionException, InterruptedException {
         return patientRepository.getAll();
     }

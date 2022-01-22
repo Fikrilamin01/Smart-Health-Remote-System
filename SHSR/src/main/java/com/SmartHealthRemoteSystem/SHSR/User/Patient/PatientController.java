@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -40,19 +41,35 @@ public class PatientController {
     }
 
     @GetMapping("/viewPrescription")
-    public String getPatientListThatAssignedToDoctor(Model model) throws ExecutionException, InterruptedException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
-        Patient patient = patientService.getPatient(myUserDetails.getUsername());
-        Doctor doctor = patientService.findDoctorThroughHealthStatusPatient(patient);
-        Prescription prescription = patientService.getPrescription(myUserDetails.getUsername());
+    public String getPatientListThatAssignedToDoctor(Model model,@RequestParam(value = "pageNo") int pageNo) throws ExecutionException, InterruptedException {
 
-        model.addAttribute("patient",patient);
-        model.addAttribute("doctor",doctor);
-        model.addAttribute("prescription",prescription);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
+            Patient patient = patientService.getPatient(myUserDetails.getUsername());
+            Doctor doctor = patientService.findDoctorThroughHealthStatusPatient(patient);
+            ArrayList<Prescription> prescriptionList = (ArrayList<Prescription>) patientService.getAllPrescription(patient.getUserId());
+            Prescription prescription = null;
+            if((!prescriptionList.isEmpty()) && pageNo==-1){
+                prescription = prescriptionList.get(prescriptionList.size() - 1);
+                pageNo=prescriptionList.size() - 1;
+            }else if(!prescriptionList.isEmpty()){
+                prescription = prescriptionList.get(pageNo);
+            }
+            int totalPage = prescriptionList.size();
+
+
+            model.addAttribute("patient",patient);
+            model.addAttribute("doctor",doctor);
+            model.addAttribute("prescription",prescription);
+            model.addAttribute("currentPage",pageNo);
+            model.addAttribute("totalPage",totalPage);
+
+
 
         return "viewPrescription";
     }
+
 
     @PostMapping("/create-patient")
     public String savePatient(@RequestBody Patient patient)
