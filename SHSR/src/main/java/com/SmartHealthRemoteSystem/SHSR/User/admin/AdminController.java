@@ -15,13 +15,13 @@ import java.util.concurrent.ExecutionException;
 
 @Controller
 @RequestMapping("/admin")
-public class adminController {
+public class AdminController {
 
     private final UserService userService;
     private final PatientService patientService;
     private final DoctorService doctorService;
 
-    public adminController(UserService userService, PatientService patientService, DoctorService doctorService) {
+    public AdminController(UserService userService, PatientService patientService, DoctorService doctorService) {
         this.userService = userService;
         this.patientService = patientService;
         this.doctorService = doctorService;

@@ -18,10 +18,12 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/patient")
 public class PatientController {
     private final PatientService patientService;
+    private final DoctorService doctorService;
 
     @Autowired
-    public PatientController(PatientService patientService) {
+    public PatientController(PatientService patientService, DoctorService doctorService) {
         this.patientService = patientService;
+        this.doctorService = doctorService;
     }
 
     @GetMapping
@@ -29,7 +31,7 @@ public class PatientController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
         Patient patient = patientService.getPatient(myUserDetails.getUsername());
-        Doctor doctor = patientService.findDoctorThroughHealthStatusPatient(patient);
+        Doctor doctor= doctorService.getDoctor(patient.getAssigned_doctor());
         List<Patient> patientList= patientService.getPatientList();
 
         model.addAttribute("patient",patient);
@@ -40,11 +42,11 @@ public class PatientController {
     }
 
     @GetMapping("/viewPrescription")
-    public String getPatientListThatAssignedToDoctor(Model model) throws ExecutionException, InterruptedException {
+    public String getPrescription(Model model) throws ExecutionException, InterruptedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
         Patient patient = patientService.getPatient(myUserDetails.getUsername());
-        Doctor doctor = patientService.findDoctorThroughHealthStatusPatient(patient);
+        Doctor doctor= doctorService.getDoctor(patient.getAssigned_doctor());
         Prescription prescription = patientService.getPrescription(myUserDetails.getUsername());
 
         model.addAttribute("patient",patient);
@@ -54,39 +56,11 @@ public class PatientController {
         return "viewPrescription";
     }
 
-    @PostMapping("/create-patient")
-    public String savePatient(@RequestBody Patient patient)
-            throws ExecutionException, InterruptedException {
-        return patientService.createPatient(patient);
-    }
-
-    @GetMapping("/get-patient/{patientId}")
-    public Patient getPatient(@PathVariable String patientId) throws ExecutionException, InterruptedException {
-
-        Patient patient = patientService.getPatient(patientId);
-        if(patient != null){
-            return patient;
-            //display patient data on the web
-        }else{
-            return null;
-            //display error message
-        }
-    }
-
-    @PutMapping("/update-patient")
-    public void updatePatient(@RequestBody Patient patient) throws ExecutionException, InterruptedException {
-        patientService.updatePatient(patient);
-    }
-
-    @DeleteMapping("/delete-patient/{patientId}")
-    public void deletePatient(@PathVariable String patientId) throws ExecutionException, InterruptedException {
-        patientService.deletePatient(patientId);
-    }
 
     @PostMapping("/backDashboard")
     public String backDashboard(@RequestParam (value = "patientId") String patientId, Model model) throws ExecutionException, InterruptedException {
         Patient patient=patientService.getPatient(patientId);
-        Doctor doctor=patientService.findDoctorThroughHealthStatusPatient(patient);
+        Doctor doctor= doctorService.getDoctor(patient.getAssigned_doctor());
         model.addAttribute("patient", patient);
         model.addAttribute("doctor", doctor);
         return "patientDashBoard";

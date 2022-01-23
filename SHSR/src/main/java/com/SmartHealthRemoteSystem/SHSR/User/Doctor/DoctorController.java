@@ -44,33 +44,4 @@ public class DoctorController {
         return "myPatient";
     }
 
-    @PostMapping("/create-doctor")
-    public String saveDoctor(@RequestBody Doctor doctor)
-            throws ExecutionException, InterruptedException {
-       String msg = doctorService.createDoctor(doctor);
-       return msg;
-    }
-
-    @GetMapping("/get-doctor/{doctorId}")
-    public Doctor getDoctor(@PathVariable String doctorId) throws ExecutionException, InterruptedException {
-
-        Doctor doctor = doctorService.getDoctor(doctorId);
-        if(doctor != null){
-            return doctor;
-            //display patient data on the web
-        }else{
-            return null;
-            //display error message
-        }
-    }
-
-    @PutMapping("/update-doctor")
-    public void updateDoctor(@RequestBody Doctor doctor) throws ExecutionException, InterruptedException {
-        doctorService.updateDoctor(doctor);
-    }
-
-    @DeleteMapping("/delete-doctor/{doctorId}")
-    public void deleteDoctor(@PathVariable String doctorId) throws ExecutionException, InterruptedException {
-        doctorService.deleteDoctor(doctorId);
-    }
 }

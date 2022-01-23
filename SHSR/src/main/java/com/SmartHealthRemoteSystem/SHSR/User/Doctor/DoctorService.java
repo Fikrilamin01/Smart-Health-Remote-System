@@ -51,6 +51,9 @@ public class DoctorService {
     }
 
     public Doctor getDoctor(String doctorId) throws ExecutionException, InterruptedException {
+        if(doctorId.isEmpty()){
+            return new Doctor();
+        }
         Doctor doctor = doctorRepository.get(doctorId);
         if (doctor == null) {
             return null;
