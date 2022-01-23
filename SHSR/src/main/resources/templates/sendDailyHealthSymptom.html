@@ -17,8 +17,9 @@
             color: white;
             text-decoration: none;
         }
+        .f:hover{background-color: #e6e6e6;}
     </style>
-    <title>Patient's Dashboard</title>
+    <title>Send Daily Health Symptom</title>
 </head>
 <body>
 
@@ -47,7 +48,7 @@
                             <form th:action="@{/logout}" method="post" hidden="true" name="logoutForm">
                                 <button>Logout</button>
                             </form>
-                            <a href="javascript: document.logoutForm.submit()" class="nav-link link-dark">
+                            <a href="javascript: document.logoutForm.submit()" class="nav-link link-dark f">
                                 Logout
                             </a>
                         </li>
@@ -68,14 +69,6 @@
                             </div>
                         </div>
                         <div class="col ">
-                            <div class="container bg-primary bg-opacity-25 shadow-lg rounded border border-primary">
-                                <h3>Your Data</h3>
-                                <div class="d-flex justify-content-evenly">
-                                    <div ><p>Weight<h6>70Kg</h6></p></div>
-                                    <div ><p>Height<h6>1.7m</h6></p></div>
-                                    <div ><p>Age<h6>56</h6></p></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="row m-5">
