@@ -90,4 +90,8 @@ public class DoctorService {
         return patientList;
     }
 
+    public Patient getPatient(String patientId) throws ExecutionException, InterruptedException {
+        return patientRepository.get(patientId);
+    }
+
 }
