@@ -10,6 +10,10 @@ import java.util.concurrent.ExecutionException;
 public class SensorDataService {
     private final SHSRDAO<SensorData> sensorDataRepository;
 
+    public SensorDataService() {
+        sensorDataRepository=new SensorDataRepository();
+    }
+
     @Autowired
     public SensorDataService(SHSRDAO<SensorData> sensorDataRepository) {
         this.sensorDataRepository = sensorDataRepository;

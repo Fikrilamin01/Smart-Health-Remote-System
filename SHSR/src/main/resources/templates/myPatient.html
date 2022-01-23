@@ -87,6 +87,7 @@
                                 <a th:href="@{/prescription/form(patientId=${pacnt.userId})}"
                                    class="btn btn-primary rounded">
                                     Send Prescription</a>
+                                <a th:href="@{/doctor/sensorDashboard(patientId=${pacnt.userId})}" class="btn btn-primary rounded">Health Condition</a>
                             </td>
                             <td>
                                 <form th:action="@{/assignpatient/unassignDoctor}" th:method="put" hidden="true"

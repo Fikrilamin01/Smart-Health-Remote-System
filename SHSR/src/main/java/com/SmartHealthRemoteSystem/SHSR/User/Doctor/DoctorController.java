@@ -1,5 +1,8 @@
 package com.SmartHealthRemoteSystem.SHSR.User.Doctor;
 
+import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorData;
+import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataRepository;
+import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorDataService;
 import com.SmartHealthRemoteSystem.SHSR.User.Patient.Patient;
 import com.SmartHealthRemoteSystem.SHSR.User.Patient.PatientService;
 import com.SmartHealthRemoteSystem.SHSR.WebConfiguration.MyUserDetails;
@@ -11,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.Doc;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -42,6 +48,26 @@ public class DoctorController {
         model.addAttribute("patientList", patientList);
         model.addAttribute("doctor", doctor);
         return "myPatient";
+    }
+
+    @GetMapping("/sensorDashboard")
+    public String getSensorDashboard(Model model, @RequestParam(value= "patientId") String patientId) throws Exception {
+
+        Patient patient = doctorService.getPatient(patientId);
+
+        SensorDataService sensorDataService = new SensorDataService();
+        SensorData sensorData= sensorDataService.getSensorData("patient.getSensorDataId()");
+
+        SensorDataRepository sensorDataRepository= new SensorDataRepository();
+        ArrayList<SensorData> sensorDataList = (ArrayList<SensorData>) sensorDataRepository.getAll();
+        ArrayList<String> ecgReading =new ArrayList<>();
+        for (int i=0;i<sensorDataList.size();i++){
+            ecgReading.add(sensorDataList.get(i).getEcgReading());
+        }
+
+        model.addAttribute("sensorDataList",sensorDataList);
+        model.addAttribute("ecgReading",ecgReading);
+        return "sensorDashboard";
     }
 
     @PostMapping("/create-doctor")
