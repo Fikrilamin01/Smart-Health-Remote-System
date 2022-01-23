@@ -37,9 +37,6 @@ public class registerPatientController {
         Patient newPatient=new Patient(id,fullName,password,phoneNum,role,"",address,emergency,"");
         patientService.createPatient(newPatient);
 
-
         return "login";
-
-
     }
 }
