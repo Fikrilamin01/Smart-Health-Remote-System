@@ -11,6 +11,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .f:hover{background-color: #e6e6e6;}
+    </style>
     <title>My Patient</title>
 </head>
 <body>
@@ -30,17 +33,17 @@
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a th:href="@{/doctor/myPatient}" class="nav-link link-dark">
+                            <a th:href="@{/doctor/myPatient}" class="nav-link link-dark active f">
                                 My Patient
                             </a>
                         </li>
                         <li>
-                            <a th:href="@{/assignpatient}" class="nav-link link-dark">
+                            <a th:href="@{/assignpatient}" class="nav-link link-dark f">
                                 Assign Patient
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-dark">
+                            <a href="#" class="nav-link link-dark f">
                                 Notification
                             </a>
                         </li>
@@ -48,7 +51,7 @@
                             <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
                                 <input type="submit" value="Logout" />
                             </form>
-                            <a href="javascript: document.logoutForm.submit()" class="nav-link link-dark">
+                            <a href="javascript: document.logoutForm.submit()" class="nav-link link-dark f">
                                 Logout
                             </a>
                         </li>
