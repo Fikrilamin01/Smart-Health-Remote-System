@@ -34,12 +34,9 @@ public class registerPatientController {
             @RequestParam("address")String address, @RequestParam("emergency")String emergency,
             @RequestParam("role")String role, Model model) throws ExecutionException, InterruptedException {
 
-        Patient newPatient=new Patient(id,fullName,password,phoneNum,role,address,emergency);
+        Patient newPatient=new Patient(id,fullName,password,phoneNum,role,"",address,emergency,"");
         patientService.createPatient(newPatient);
 
-
         return "login";
-
-
     }
 }

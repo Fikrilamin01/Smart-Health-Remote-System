@@ -83,14 +83,13 @@ public class PatientService {
         return prescription;
     }
 
+    public List<Prescription> getAllPrescription(String patientId) throws ExecutionException, InterruptedException {
+        return prescriptionRepository.getAll(patientId);
+    }
+
     public List<Patient> getPatientList() throws ExecutionException, InterruptedException {
         return patientRepository.getAll();
     }
 
-    public Doctor findDoctorThroughHealthStatusPatient(Patient patient) throws ExecutionException, InterruptedException {
-//        List<HealthStatus> healthStatusList = healthStatusRepository.getListHealthStatus(patient.getUserId());
-//        String doctorId = healthStatusList.get(0).getDoctorId();
-        //change name of the function later.
-        return doctorRepository.get(patient.getAssigned_doctor());
-    }
+
 }

@@ -1,7 +1,5 @@
 package com.SmartHealthRemoteSystem.SHSR.SendDailyHealth;
 
-import com.SmartHealthRemoteSystem.SHSR.ReadSensorData.SensorData;
-import com.SmartHealthRemoteSystem.SHSR.Repository.SHSRDAO;
 import com.SmartHealthRemoteSystem.SHSR.Repository.SubCollectionSHSRDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +11,10 @@ import java.util.concurrent.ExecutionException;
 public class HealthStatusService {
 
     private final SubCollectionSHSRDAO<HealthStatus> healthStatusRepository;
-    private final SHSRDAO<SensorData> sensorDataService;
 
     @Autowired
-    public HealthStatusService(SubCollectionSHSRDAO<HealthStatus> healthStatusRepository, SHSRDAO<SensorData> sensorDataService) {
+    public HealthStatusService(SubCollectionSHSRDAO<HealthStatus> healthStatusRepository) {
         this.healthStatusRepository = healthStatusRepository;
-        this.sensorDataService = sensorDataService;
     }
 
     public String createHealthStatus(HealthStatus healthStatus, String patientId) throws ExecutionException, InterruptedException {

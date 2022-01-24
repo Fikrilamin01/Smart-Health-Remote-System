@@ -33,7 +33,8 @@ public class ViewPatientHealthStatusController {
         this.healthStatusService = healthStatusService;
     }
 @PostMapping("/a")
-    public String getHealthStatus(@RequestParam("patientId")String patientId, @RequestParam("doctorId")String doctorId, Model model) throws ExecutionException, InterruptedException {
+    public String getHealthStatus(@RequestParam("patientId")String patientId,
+                                  @RequestParam("doctorId")String doctorId, Model model) throws ExecutionException, InterruptedException {
         //Retrieve information
         Patient patient=patientService.getPatient(patientId);
         Doctor doctor=doctorService.getDoctor(doctorId);

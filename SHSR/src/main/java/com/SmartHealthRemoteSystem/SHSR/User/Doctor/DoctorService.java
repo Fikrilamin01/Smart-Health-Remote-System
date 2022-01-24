@@ -51,6 +51,9 @@ public class DoctorService {
     }
 
     public Doctor getDoctor(String doctorId) throws ExecutionException, InterruptedException {
+        if(doctorId.isEmpty()){
+            return new Doctor();
+        }
         Doctor doctor = doctorRepository.get(doctorId);
         if (doctor == null) {
             return null;
@@ -96,6 +99,10 @@ public class DoctorService {
             }
         }
         return patients;
+    }
+
+    public Patient getPatient(String patientId) throws ExecutionException, InterruptedException {
+        return patientRepository.get(patientId);
     }
 
 }
