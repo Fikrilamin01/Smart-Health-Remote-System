@@ -23,7 +23,7 @@ public class AssignPatientServices {
         List<Patient> patients=patientRepository.getAll();
         for(int i=patients.size()-1;i>=0;i--)
         {
-           if (!(patients.get(i).getAssigned_doctor().isEmpty())){
+           if (!(patients.get(i).getAssigned_doctor().isEmpty()&& patients.get(i).getStatus().equals("Under Surveillance"))){
                 patients.remove(i);
            }
         }
