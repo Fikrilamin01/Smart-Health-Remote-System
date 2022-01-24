@@ -57,11 +57,6 @@ and open the template in the editor.
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-dark f">
-                                Notification
-                            </a>
-                        </li>
-                        <li>
                             <form th:action="@{/logout}" method="post" hidden="true" name="logoutForm">
                                 <input type="submit" value="Logout"/>
                             </form>
@@ -134,7 +129,8 @@ and open the template in the editor.
     var i;
     $(function () {
         $('.assignbtn').click(function (){
-             i = $( "button" ).index( this );
+             i = $( ".assignbtn" ).index( this );
+
         })
         $(document).on('click', '.assignbtn', function () {
             var modalView = $('.confirmation_page');

@@ -57,4 +57,16 @@ public class AssignPatientController {
         return "assignpatient";
 
     }
+    @PostMapping("/releasepatient")
+    public String ReleasePatient(Model model,@RequestParam (value ="patientId")String patientID) throws ExecutionException, InterruptedException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
+        Doctor doctor = assignPatientServices.getDoctor(myUserDetails.getUsername());
+        Patient patient =assignPatientServices.getPatient(patientID);
+        assignPatientServices.ReleasePatient(patientID,doctor.getUserId());
+        List<Patient> patientList=assignPatientServices.getListPatient();
+        model.addAttribute("patientList",patientList);
+        model.addAttribute("doctor",doctor);
+        return "assignpatient";
+    }
 }

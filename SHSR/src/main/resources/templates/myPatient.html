@@ -43,11 +43,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-dark f">
-                                Notification
-                            </a>
-                        </li>
-                        <li>
+
                             <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
                                 <input type="submit" value="Logout" />
                             </form>
@@ -102,6 +98,19 @@
                                 <button type="button"
                                         class="btn btn-primary rounded UnassignedPatientBtn">
                                     UnassignedPatient
+                                </button>
+
+                            </td>
+                            <td>
+                                <form th:action="@{/assignpatient/releasepatient}" th:method="post" hidden="true"
+                                      name="ReleasePatient" class="ReleasePatient">
+                                    <input type="text" th:value="${pacnt.userId}" th:name="patientId">
+
+
+                                </form>
+                                <button type="button"
+                                        class="btn btn-primary rounded ReleasePatientBtn">
+                                    ReleasePatient
                                 </button>
 
                             </td>
