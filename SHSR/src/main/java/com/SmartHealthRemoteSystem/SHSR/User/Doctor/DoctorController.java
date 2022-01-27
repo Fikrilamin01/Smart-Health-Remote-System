@@ -35,6 +35,8 @@ public class DoctorController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = doctorService.getDoctor(myUserDetails.getUsername());
+        List<Patient> patientList= doctorService.getListPatient();
+        model.addAttribute("patientList", patientList);
         model.addAttribute("doctor",doctor);
         return "doctorDashBoard";
     }
@@ -60,9 +62,11 @@ public class DoctorController {
 
         SensorDataRepository sensorDataRepository= new SensorDataRepository();
         ArrayList<SensorData> sensorDataList = (ArrayList<SensorData>) sensorDataRepository.getAll();
-        ArrayList<String> ecgReading =new ArrayList<>();
+        ArrayList<Integer> ecgReading =new ArrayList<>();
+        int n;
         for (int i=0;i<sensorDataList.size();i++){
-            ecgReading.add(sensorDataList.get(i).getEcgReading());
+            n=Integer.parseInt(sensorDataList.get(i).getEcgReading());
+            ecgReading.add(n);
         }
 
         model.addAttribute("sensorDataList",sensorDataList);

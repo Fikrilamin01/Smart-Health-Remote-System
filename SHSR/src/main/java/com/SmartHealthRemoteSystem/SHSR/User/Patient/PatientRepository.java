@@ -92,6 +92,9 @@ public class PatientRepository implements SHSRDAO<Patient> {
         tempPatient.put("emergencyContact", patient.getEmergencyContact());
         tempPatient.put("sensorDataId", patient.getSensorDataId());
         tempPatient.put("assigned_doctor", patient.getAssigned_doctor());
+        tempPatient.put("status",patient.getStatus());
+
+
         //Create a temporary User
         User user = new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole());
         userRepository.save(user);
@@ -119,6 +122,11 @@ public class PatientRepository implements SHSRDAO<Patient> {
             ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("sensorDataId", patient.getSensorDataId());
         }
+        if (!(patient.getStatus() == null)) {
+            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
+                    .update("status", patient.getStatus());
+        }
+
         return userRepository.update(new User(patient.getUserId(), patient.getName(), patient.getPassword(), patient.getContact(), patient.getRole()));
     }
 
