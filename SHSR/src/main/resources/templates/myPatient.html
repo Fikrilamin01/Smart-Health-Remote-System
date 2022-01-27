@@ -86,7 +86,7 @@
                                 <a th:href="@{/prescription/form(patientId=${pacnt.userId})}"
                                    class="btn btn-primary rounded">
                                     Send Prescription</a>
-                                <a th:href="@{/doctor/sensorDashboard(patientId=${pacnt.userId})}" class="btn btn-primary rounded">Health Condition</a>
+                                <a th:href="@{/doctor/sensorDashboard(patientId=${pacnt.userId})}" class="btn btn-primary rounded HealthConditionBtn" name="HealthCondition">Health Condition</a>
                             </td>
                             <td>
                                 <form th:action="@{/assignpatient/unassignDoctor}" th:method="put" hidden="true"
@@ -133,7 +133,7 @@
     //     document.getElementById("viewPatientForm").submit();
     // });
 
-    var i,z,j;
+    var i,z,j,x;
     $(function () {
         $('.viewBtn').click(function () {
             i = $(".viewBtn").index(this);
@@ -157,6 +157,15 @@
         })
         $(document).on('click', '.ReleasePatientBtn', function () {
             $('.ReleasePatient').get(j).submit();
+        })
+        $('.HealthConditionBtn').click(function (){
+            x = $( ".HealthConditionBtn" ).index( this );
+
+
+
+        })
+        $(document).on('click', '.HealthConditionBtn', function () {
+            $('.HealthConditionBtn').get(x).submit();
         })
     })
 
