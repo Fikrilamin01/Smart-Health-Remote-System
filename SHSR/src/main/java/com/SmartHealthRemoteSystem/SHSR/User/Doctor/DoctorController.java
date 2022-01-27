@@ -56,21 +56,9 @@ public class DoctorController {
     public String getSensorDashboard(Model model, @RequestParam(value= "patientId") String patientId) throws Exception {
 
         Patient patient = doctorService.getPatient(patientId);
-
         SensorDataService sensorDataService = new SensorDataService();
-        SensorData sensorData= sensorDataService.getSensorData("patient.getSensorDataId()");
-
-        SensorDataRepository sensorDataRepository= new SensorDataRepository();
-        ArrayList<SensorData> sensorDataList = (ArrayList<SensorData>) sensorDataRepository.getAll();
-        ArrayList<Integer> ecgReading =new ArrayList<>();
-        int n;
-        for (int i=0;i<sensorDataList.size();i++){
-            n=Integer.parseInt(sensorDataList.get(i).getEcgReading());
-            ecgReading.add(n);
-        }
-
-        model.addAttribute("sensorDataList",sensorDataList);
-        model.addAttribute("ecgReading",ecgReading);
+        SensorData sensorData= sensorDataService.getSensorData(patient.getSensorDataId());
+        model.addAttribute("sensorDataList",sensorData);
         return "sensorDashboard";
     }
 
