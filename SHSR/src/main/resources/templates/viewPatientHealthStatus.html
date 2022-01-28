@@ -32,22 +32,21 @@
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link active f" aria-current="page">
+                            <a th:href="@{/doctor/myPatient}" class="nav-link active f" aria-current="page">
                                 My Patient
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-dark f">
+                            <a th:href="@{/assignpatient}" class="nav-link link-dark f">
                                 Assign Patient
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link link-dark f">
-                                Notification
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link link-dark f">
+
+                            <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+                                <input type="submit" value="Logout" />
+                            </form>
+                            <a href="javascript: document.logoutForm.submit()" class="nav-link link-dark f">
                                 Logout
                             </a>
                         </li>
