@@ -18,6 +18,11 @@ import java.util.concurrent.ExecutionException;
 @Controller
 public class LoginController {
 
+    @GetMapping("/")
+    public String index(){
+        return "login";
+    }
+
     @GetMapping("/login")
     public String getLoginPage() {
         return "login";
