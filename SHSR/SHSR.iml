@@ -123,7 +123,6 @@
     <orderEntry type="library" name="Maven: com.google.http-client:google-http-client-jackson2:1.39.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.5" level="project" />
     <orderEntry type="library" name="Maven: com.google.apis:google-api-services-storage:v1-rev20210127-1.32.1" level="project" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.8" level="project" />
     <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-core:1.95.4" level="project" />
     <orderEntry type="library" name="Maven: com.google.api.grpc:proto-google-common-protos:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-core-http:1.95.4" level="project" />
@@ -168,5 +167,7 @@
     <orderEntry type="library" name="Maven: net.logstash.logback:logstash-logback-encoder:7.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.5" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.5" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.7" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
   </component>
 </module>

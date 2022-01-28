@@ -20,6 +20,17 @@
      style="position: relative; top: 50px; width: 60%;">
     <div class="container overflow-hidden">
 
+        <form th:action="@{/patient/backDashboard}"   method="post">
+            <div>
+                <input type="hidden" th:value="${patient.userId}" th:name="patientId">
+                <input type="hidden" th:value="${doctor.userId}" th:name="doctorId">
+            </div>
+
+            <div list-group-item class="m-3 d-flex justify-content-left align-items-center " >
+                <input class="btn btn-secondary confirmBtn " value="Back" type="submit">
+            </div>
+        </form>
+
         <div class="col">
             <h1 d-flex justify-content-start>Doctor's Prescription & Diagnosis Ailments</h1>
 

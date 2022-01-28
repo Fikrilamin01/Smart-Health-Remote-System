@@ -35,6 +35,8 @@ public class DoctorController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = doctorService.getDoctor(myUserDetails.getUsername());
+        List<Patient> patientList= doctorService.getListPatient();
+        model.addAttribute("patientList", patientList);
         model.addAttribute("doctor",doctor);
         return "doctorDashBoard";
     }
@@ -54,19 +56,9 @@ public class DoctorController {
     public String getSensorDashboard(Model model, @RequestParam(value= "patientId") String patientId) throws Exception {
 
         Patient patient = doctorService.getPatient(patientId);
-
         SensorDataService sensorDataService = new SensorDataService();
-        SensorData sensorData= sensorDataService.getSensorData("patient.getSensorDataId()");
-
-        SensorDataRepository sensorDataRepository= new SensorDataRepository();
-        ArrayList<SensorData> sensorDataList = (ArrayList<SensorData>) sensorDataRepository.getAll();
-        ArrayList<String> ecgReading =new ArrayList<>();
-        for (int i=0;i<sensorDataList.size();i++){
-            ecgReading.add(sensorDataList.get(i).getEcgReading());
-        }
-
-        model.addAttribute("sensorDataList",sensorDataList);
-        model.addAttribute("ecgReading",ecgReading);
+        SensorData sensorData= sensorDataService.getSensorData(patient.getSensorDataId());
+        model.addAttribute("sensorDataList",sensorData);
         return "sensorDashboard";
     }
 

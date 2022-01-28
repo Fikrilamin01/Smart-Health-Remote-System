@@ -89,6 +89,17 @@ public class DoctorService {
         }
         return patientList;
     }
+    public List<Patient> getListPatient() throws ExecutionException, InterruptedException {
+        //function to return list of unassigned patient
+        List<Patient> patients=patientRepository.getAll();
+        for(int i=patients.size()-1;i>=0;i--)
+        {
+            if (!(patients.get(i).getAssigned_doctor().isEmpty())){
+                patients.remove(i);
+            }
+        }
+        return patients;
+    }
 
     public Patient getPatient(String patientId) throws ExecutionException, InterruptedException {
         return patientRepository.get(patientId);

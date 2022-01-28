@@ -23,7 +23,7 @@ public class AssignPatientServices {
         List<Patient> patients=patientRepository.getAll();
         for(int i=patients.size()-1;i>=0;i--)
         {
-           if (!(patients.get(i).getAssigned_doctor().isEmpty())){
+           if (!(patients.get(i).getAssigned_doctor().isEmpty()&& patients.get(i).getStatus().equals("Under Surveillance"))){
                 patients.remove(i);
            }
         }
@@ -40,12 +40,19 @@ public class AssignPatientServices {
         Doctor doctor=doctorRepository.get(doctorId);
         Patient patient=patientRepository.get(patientId);
         patient.setAssigned_doctor(doctorId);
+        patient.setStatus("Under Surveillance");
         patientRepository.update(patient);
     }
     public void UnassignDoctor(String patientId,String doctorId) throws ExecutionException, InterruptedException {
         Doctor doctor=doctorRepository.get(doctorId);
         Patient patient=patientRepository.get(patientId);
         patient.setAssigned_doctor("");
+        patientRepository.update(patient);
+    }
+    public void ReleasePatient(String patientId,String doctorId) throws ExecutionException, InterruptedException {
+        Doctor doctor=doctorRepository.get(doctorId);
+        Patient patient=patientRepository.get(patientId);
+        patient.setStatus("Released");
         patientRepository.update(patient);
     }
 }

@@ -34,6 +34,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .requiresChannel()
+                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+                .requiresSecure().and()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/doctor/**").hasAnyRole("ADMIN","DOCTOR")
@@ -47,10 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login")
-                .and()
-                .requiresChannel()
-                .requestMatchers(r->r.getHeader("X-Forwarded-Proto")!=null)
-                .requiresSecure();
+               
     }
 
 
