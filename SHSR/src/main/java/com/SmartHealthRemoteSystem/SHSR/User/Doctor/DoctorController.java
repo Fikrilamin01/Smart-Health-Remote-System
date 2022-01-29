@@ -52,6 +52,7 @@ public class DoctorController {
         return "myPatient";
     }
 
+
     @GetMapping("/sensorDashboard")
     public String getSensorDashboard(Model model, @RequestParam(value= "patientId") String patientId) throws Exception {
 
