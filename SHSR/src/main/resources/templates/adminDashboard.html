@@ -61,6 +61,7 @@
                             <th scope="col">Role</th>
                             <th scope="col">Emergency contact</th>
                             <th scope="col">Address</th>
+                            <th scope="col">Sensor Id</th>
                             <th scope="col">Action</th>
 
                         </tr>
@@ -76,6 +77,8 @@
                             <td th:text="${patient.role}"></td>
                             <td th:text="${patient.emergencyContact}"></td>
                             <td th:text="${patient.address}"></td>
+                            <td th:text="${patient.sensorDataId}"></td>
+
                             <td>
                                 <button type="button" class="btn btn-warning editUserBtn editPatient" >Edit</button>
                                 <button type="button" class="btn btn-danger deleteUserBtn">Delete</button>
@@ -214,6 +217,11 @@
                             <label for="emergencyContact">Emergency Contact</label>
                             <input type="text" class="form-control" id="emergencyContact" name="emergencyContact"
                                    placeholder="012-3456789">
+                        </div>
+                        <div class="form-group">
+                            <label for="sensorId">Sensor Id</label>
+                            <input type="text" class="form-control" id="sensorId" name="sensorId"
+                                   placeholder="sensorId">
                         </div>
                     </div>
                     <div class="extraForm form-group">
