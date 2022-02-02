@@ -83,7 +83,7 @@ public class DoctorService {
         List<Patient> allPatientList = patientRepository.getAll();
 
         for (Patient patient : allPatientList) {
-            if (patient.getAssigned_doctor().equals(doctorId)) {
+            if (patient.getAssigned_doctor().equals(doctorId)&& patient.getStatus().equals("Under Surveillance")) {
                 patientList.add(patient);
             }
         }

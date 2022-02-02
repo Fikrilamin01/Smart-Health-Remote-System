@@ -31,8 +31,9 @@
             <div class="container mt-5 ">
 
                 <div id="chartContainer" style="height: 400px; width: 100%;"></div>
-                <iframe width="70%" height="500" frameborder="0" src="https://stem.ubidots.com/app/dashboards/public/widget/tziPQVCJqiqio5HyQxSXuVaxwV6Ol_sDV4EEPG0fXmg?embed=true"></iframe>
-
+                <div th:if="${sensorDataList.sensorDataId=='testing'}">
+                <iframe width="90%" height="500" frameborder="0" src="https://stem.ubidots.com/app/dashboards/public/widget/tziPQVCJqiqio5HyQxSXuVaxwV6Ol_sDV4EEPG0fXmg?embed=true"></iframe>
+                </div>
 
 
 
