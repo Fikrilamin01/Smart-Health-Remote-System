@@ -31,18 +31,19 @@ public class Patient extends User {
 
     }
 
-    public Patient(String name, String password, String contact, String role, String sensorDataId, String address, String emergencyContact, String assigned_doctor) {
-        super(name, password, contact, role);
-        this.sensorDataId = sensorDataId;
-        this.address = address;
-        this.emergencyContact = emergencyContact;
-        this.assigned_doctor = assigned_doctor;
-    }
+//    public Patient(String name, String password, String contact, String role, String sensorDataId, String address, String emergencyContact, String assigned_doctor) {
+//        super(name, password, contact, role);
+//        this.sensorDataId = sensorDataId;
+//        this.address = address;
+//        this.emergencyContact = emergencyContact;
+//        this.assigned_doctor = assigned_doctor;
+//    }
 
-    public Patient(String userId, String name, String password, String contact, String role, String address, String emergencyContact) {
+    public Patient(String userId, String name, String password, String contact, String role, String address, String emergencyContact,String sensorDataId) {
         super(userId, name, password, contact, role);
         this.address = address;
         this.emergencyContact = emergencyContact;
+        this.sensorDataId=sensorDataId;
     }
 
     public String getSensorDataId() {
