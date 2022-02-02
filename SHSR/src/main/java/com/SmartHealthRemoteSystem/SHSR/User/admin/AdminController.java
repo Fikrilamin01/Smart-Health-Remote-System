@@ -54,7 +54,7 @@ public class AdminController {
         String Message;
         if(action.equals("add")){
             if(role.equals("PATIENT")){
-                Message =  patientService.createPatient(new Patient(id,name,password,contact,role,"",patientAddress,emergencyContact,""));
+                Message =  patientService.createPatient(new Patient(id,name,password,contact,role,"",patientAddress,emergencyContact,"","Under Surveillance"));
             } else if(role.equals("DOCTOR")){
                 Message = doctorService.createDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
             } else {

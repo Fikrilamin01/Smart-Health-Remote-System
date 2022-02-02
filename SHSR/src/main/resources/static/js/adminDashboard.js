@@ -124,7 +124,6 @@ editUserBtn.forEach((e) => {
         document.getElementById("userId").readOnly = true;
         document.getElementById("userFullName").value = cells[1].innerText;
         document.getElementById("userPassword").value = cells[3].innerText;
-        document.getElementById("userPassword").readOnly = true;
         document.getElementById("contact").value = cells[2].innerText;
 
         if (editClassName === 'btn btn-warning editUserBtn editPatient') {
