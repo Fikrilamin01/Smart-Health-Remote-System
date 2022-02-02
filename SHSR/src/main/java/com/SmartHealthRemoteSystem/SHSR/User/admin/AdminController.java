@@ -48,6 +48,7 @@ public class AdminController {
                                       @RequestParam(value = "emergencyContact") String emergencyContact,
                                       @RequestParam(value = "hospital") String doctorHospital,
                                       @RequestParam(value = "doctorPosition") String doctorPosition,
+                                      @RequestParam(value="sensorId")String sensorId,
                                       @RequestParam(value = "action") String action,
                                       Model model) throws ExecutionException, InterruptedException {
         String Message;
@@ -62,7 +63,7 @@ public class AdminController {
         }else{
             User user = new User(id,name,password,contact,role);
             if(role.equals("PATIENT")){
-                Patient patient = new Patient(id,name,password,contact,role,patientAddress,emergencyContact);
+                Patient patient = new Patient(id,name,password,contact,role,patientAddress,emergencyContact,sensorId);
                 Message = patientService.updatePatient(patient);
             } else if(role.equals("DOCTOR")){
                 Message = doctorService.updateDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));

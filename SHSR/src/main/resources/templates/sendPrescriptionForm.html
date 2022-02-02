@@ -41,11 +41,7 @@
                                 Assign Patient
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="nav-link link-dark f">
-                                Notification
-                            </a>
-                        </li>
+
                         <li>
                             <form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
                                 <input type="submit" value="Logout" />
@@ -77,11 +73,11 @@
 
                             <div class="mb-3 col-md-12">
                                 <label>Prescription<span class="text-danger">*</span></label>
-                                <textarea rows="4" cols="50" th:name="prescription" name="prescription" class="form-control form-input" autofocus="true" style="resize: none;"></textarea>
+                                <textarea rows="4" cols="50" th:name="prescription" name="prescription" class="form-control form-input" autofocus="true" required style="resize: none;"></textarea>
                             </div>
                             <div class="mb-3 col-md-12">
                                 <label>Diagnosis ailment<span class="text-danger">*</span></label>
-                                <textarea rows="4" cols="50" th:name="diagnosisAilment" name="diagnosisAilment"  class="form-control form-input" autofocus="true" style="resize: none;"></textarea>
+                                <textarea rows="4" cols="50" th:name="diagnosisAilment" name="diagnosisAilment"  class="form-control form-input" autofocus="true" required style="resize: none;"></textarea>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -107,6 +103,7 @@
                                             </tr>
                                             </thead>
                                             <tbody class="tbody">
+                                            <td><input type="text"class="form-control form-input" th:name="medicine" name="medicine" id="medicine" hidden value=" "></td>
                                             <!-- Add a javascript where when user add medicine it will update in the table -->
 
                                             </tbody>
@@ -144,7 +141,7 @@
 
         $('#addMedicineBtn').click(function(){
             var html = '<tr scope="row" id="row'+i+'"><td class="row-index">'+i+'</td>' +
-                '<td><input type="text"class="form-control form-input" th:name="medicine" name="medicine" id="medicine"></td>' +
+                '<td><input type="text"class="form-control form-input" th:name="medicine" name="medicine" id="medicine" required></td>' +
                 '<td><i class="uil uil-minus-circle btn removeMedicineBtn" id="'+i+'">Delete</i></td></tr>';
             $('.tbody').append(html);
             i++;

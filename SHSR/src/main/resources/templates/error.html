@@ -22,15 +22,18 @@
 </head>
 
 <body>
-
+<script>
+    alert("You cannot view this page" +
+        "\n Please contact your admin for further information")
+</script>
 <div id="notfound">
     <div class="notfound">
         <div class="notfound-404">
             <h1>Oops!</h1>
-            <h2>This Page is not available</h2>
-            <h3>Please contact the administrator for further information</h3>
+            <h2>You cannot view this page</h2>
+
         </div>
-        <a th:href="@{/login}">Go TO Homepage</a>
+        <a th:href="@{/login}">Go To Homepage</a>
     </div>
 </div>
 

@@ -78,6 +78,7 @@ cancelAddUserBtn.addEventListener("click", function () {
     document.getElementById("emergencyContact").value = null;
     document.getElementById("hospital").value = null;
     document.getElementById("doctorPosition").value = null;
+    document.getElementById("sensorId").value = null;
     document.getElementById("userId").readOnly = false;
     document.getElementById("userPassword").readOnly = false;
 })
@@ -132,6 +133,8 @@ editUserBtn.forEach((e) => {
             radioFormInput[1].checked = true;
             document.getElementById("address").value = cells[6].innerText;
             document.getElementById("emergencyContact").value = cells[5].innerText;
+            document.getElementById("sensorId").value = cells[7].innerText;
+
         } else if (editClassName === 'btn btn-warning editUserBtn editDoctor') {
             //        if user click edit button on doctor table
             userForm[1].className = "extraForm form-group activeForm";
