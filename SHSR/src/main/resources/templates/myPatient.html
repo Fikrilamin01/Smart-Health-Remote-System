@@ -70,7 +70,6 @@
                         <tr th:each="pacnt : ${patientList}">
                             <td th:text="${pacntStat.index}+1"></td>
                             <td th:text="${pacnt.name}"></td>
-                            <!--                            <td> <a th:href="@{/viewPatientHealthStatus}">View</a></td>-->
                             <td>
                                 <form th:action="@{/viewPatientHealthStatus/a}" method="post" hidden="true"
                                       name="viewPatient" class="viewPatientForm">
@@ -128,11 +127,6 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
 <script>
-    // let x=document.querySelector(".viewBtn");
-    // x.addEventListener("click",function () {
-    //     document.getElementById("viewPatientForm").submit();
-    // });
-
     var i,z,j,x;
     $(function () {
         $('.viewBtn').click(function () {

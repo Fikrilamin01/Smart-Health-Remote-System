@@ -143,7 +143,7 @@ public class PatientRepository implements SHSRDAO<Patient> {
         //delete sensor from sensor table
         //since patient and sensor is 1-to-1 composition relation,
         //delete the patient will also delete the sensor
-        if (patient.getSensorDataId() == null) {
+        if (patient.getSensorDataId().isEmpty()) {
             //since patient doesn't have sensorId, we are not deleting the sensor from sensor database table
         } else {
             messageSensor = sensorDataRepository.delete(patient.getSensorDataId());

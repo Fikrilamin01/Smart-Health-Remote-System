@@ -35,7 +35,7 @@ public class registerPatientController {
             @RequestParam("role")String role, Model model) throws ExecutionException, InterruptedException {
 
         String status= "Under Surveillance";
-        Patient newPatient=new Patient(id,fullName,password,phoneNum,role,"",address,emergency,"",status,"");
+        Patient newPatient=new Patient(id,fullName,password,phoneNum,role,"",address,emergency,"",status);
         patientService.createPatient(newPatient);
 
         return "login";

@@ -52,10 +52,19 @@ public class SendPrescriptionController {
                                          @RequestParam(value = "diagnosisAilment") String diagnosisAilment,
                                          @RequestParam(value = "medicine") List<String> medicineList)
             throws ExecutionException, InterruptedException {
+        if(medicineList.size()==0){
+            //default value if user didn't input any list of medicine
+        }else{
+            //if user input any medicine in the list
+            //shift to the left by 1 index
+            medicineList.remove(0);
+
+        }
         Prescription prescription1 = new Prescription(doctorId,
                 medicineList,
                 prescription,
                 diagnosisAilment);
+
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
