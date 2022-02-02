@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
+import com.google.cloud.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -50,7 +52,10 @@ public class PatientController {
         MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
         Patient patient = patientService.getPatient(myUserDetails.getUsername());
         Doctor doctor = doctorService.getDoctor(patient.getAssigned_doctor());
-        ArrayList<Prescription> prescriptionList = (ArrayList<Prescription>) patientService.getAllPrescription(patient.getUserId());
+        ArrayList<Prescription> prescriptionTemp = (ArrayList<Prescription>) patientService.getAllPrescription(patient.getUserId());
+
+        ArrayList<Prescription> prescriptionList = quickSort(prescriptionTemp);
+
         Prescription prescription = null;
         if ((!prescriptionList.isEmpty()) && pageNo == -1) {
             prescription = prescriptionList.get(prescriptionList.size() - 1);
@@ -76,6 +81,42 @@ public class PatientController {
         model.addAttribute("patient", patient);
         model.addAttribute("doctor", doctor);
         return "patientDashBoard";
+    }
+
+    public ArrayList<Prescription> quickSort(ArrayList<Prescription> list)
+    {
+        if (list.isEmpty())
+            return list;
+        ArrayList<Prescription> sorted;
+        ArrayList<Prescription> smaller = new ArrayList<Prescription>();
+        ArrayList<Prescription> greater = new ArrayList<Prescription>();
+        Prescription pivot = list.get(0);
+        int i;
+        Prescription j;
+        for (i=1;i<list.size();i++)
+        {
+            j=list.get(i);
+            if (compare(j,pivot)<0)
+                smaller.add(j);
+            else
+                greater.add(j);
+        }
+        smaller=quickSort(smaller);
+        greater=quickSort(greater);
+        smaller.add(pivot);
+        smaller.addAll(greater);
+        sorted = smaller;
+
+        return sorted;
+    }
+
+    int compare(Prescription obj1, Prescription obj2){
+        String ts1 = obj1.getTimestamp();
+        String ts2 = obj2.getTimestamp();
+        Timestamp timestamp1 = Timestamp.parseTimestamp(ts1);
+        Timestamp timestamp2 = Timestamp.parseTimestamp(ts2);
+        return timestamp1.compareTo(timestamp2);
+
     }
 
 }
