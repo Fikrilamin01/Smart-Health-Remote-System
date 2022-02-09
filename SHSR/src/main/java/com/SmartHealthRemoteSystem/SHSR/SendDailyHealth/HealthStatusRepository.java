@@ -61,6 +61,9 @@ public class HealthStatusRepository implements SubCollectionSHSRDAO<HealthStatus
             ApiFuture<DocumentSnapshot> future = documentReference1.get();
             DocumentSnapshot document = future.get();
             healthStatus = document.toObject(HealthStatus.class);
+//            String date= healthStatus.getTimestamp().substring(0,10);
+//            healthStatus.setTimestamp(date);
+
             healthStatusList.add(healthStatus);
         }
 
@@ -75,7 +78,7 @@ public class HealthStatusRepository implements SubCollectionSHSRDAO<HealthStatus
         healthStatus.setHealthStatusId(addedDocRef.getId());
         ApiFuture<WriteResult> collectionsApiFuture =
                 addedDocRef.set(healthStatus);
-        ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toString());
+        ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toDate().toString());
 
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
@@ -92,7 +95,7 @@ public class HealthStatusRepository implements SubCollectionSHSRDAO<HealthStatus
             collectionsApiFuture = addedDocRef.update("additionalNotes", healthStatus.getDoctorId());
         }
         if (collectionsApiFuture != null) {
-            ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toString());
+            ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toDate().toString());
             return writeResult.get().getUpdateTime().toString();
         }
         return Timestamp.now().toString();
