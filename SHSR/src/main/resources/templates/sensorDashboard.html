@@ -55,7 +55,7 @@
                     <tr th:each="sensorData:${sensorDataList}">
                         <td th:text="${sensorData.bodyTemperature}">-</td>
                         <td th:text="${sensorData.oxygenReading}">-</td>
-                        <td th:text="${sensorData.timestamp}">-</td>
+                        <td th:text="${sensorData.timestamp.toDate()}">-</td>
                     </tr>
 
                     </tbody>

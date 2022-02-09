@@ -111,8 +111,8 @@ public class PatientController {
     }
 
     int compare(Prescription obj1, Prescription obj2){
-        String ts1 = obj1.getTimestamp();
-        String ts2 = obj2.getTimestamp();
+        String ts1 = String.valueOf(obj1.getTimestamp());
+        String ts2 = String.valueOf(obj2.getTimestamp());
         Timestamp timestamp1 = Timestamp.parseTimestamp(ts1);
         Timestamp timestamp2 = Timestamp.parseTimestamp(ts2);
         return timestamp1.compareTo(timestamp2);

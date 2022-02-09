@@ -60,7 +60,7 @@
 
                     <div class=" bg-primary bg-opacity-25 shadow-lg rounded">
                         <div class="m-3 bg-primary bg-opacity-50 rounded">
-                            Time of prescription: <span th:text="${prescription.timestamp}"></span>
+                            Date of prescription: <span th:text="${prescription.timestamp.substring(0,10)}"></span>
                         </div>
                         <div class=" row m-3 d-flex justify-content-center align-items-center bg-primary bg-opacity-50 rounded">
                             <label>Prescription</label>

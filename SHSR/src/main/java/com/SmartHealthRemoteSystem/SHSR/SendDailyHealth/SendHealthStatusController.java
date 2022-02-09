@@ -33,7 +33,6 @@ public class SendHealthStatusController {
 
 
         String sensorId=patientService.getPatientSensorId(patientId);
-        symptom+="\n"+ sensorDataService.stringSensorData(sensorId);
         HealthStatus healthStatus=new HealthStatus(symptom,doctorId);
         healthStatusService.createHealthStatus(healthStatus,patientId);
 
