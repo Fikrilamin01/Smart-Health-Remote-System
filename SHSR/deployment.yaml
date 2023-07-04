@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shsr
+spec:
+  selector:
+    matchLabels:
+      app: shsr
+replicas: 1
+template:
+  metadata:
+    labels:
+      app: shsr
+  spec:
+    containers:
+    - name: shsr
+      image: fikrilamin01/shsr:latest
+      ports:
+      - containerPort: 8084
+```
