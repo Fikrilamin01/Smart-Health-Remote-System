@@ -17,4 +17,3 @@ template:
       image: fikrilamin01/shsr:latest
       ports:
       - containerPort: 8084
-```
