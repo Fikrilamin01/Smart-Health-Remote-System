@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 public class SendHealthStatusController {
     private final HealthStatusService healthStatusService;
     private final PatientService patientService;
-    private final SensorDataService sensorDataService;
+     final SensorDataService sensorDataService;
     private final DoctorService doctorService;
     public SendHealthStatusController(HealthStatusService healthStatusService, PatientService patientService, SensorDataService sensorDataService, DoctorService doctorService) {
         this.healthStatusService = healthStatusService;
@@ -32,7 +32,6 @@ public class SendHealthStatusController {
                                    Model model) throws ExecutionException, InterruptedException {
 
 
-        String sensorId=patientService.getPatientSensorId(patientId);
         HealthStatus healthStatus=new HealthStatus(symptom,doctorId);
         healthStatusService.createHealthStatus(healthStatus,patientId);
 
@@ -45,8 +44,6 @@ public class SendHealthStatusController {
 
     @PostMapping("/viewHealthStatusForm")
     public String healthStatusForm(@RequestParam (value = "patientId") String patientId, Model model) throws ExecutionException, InterruptedException {
-//        List<HealthStatus>  healthStatus=healthStatusService.getListHealthStatus(patientID);
-//        HealthStatus firstHealthStatus=healthStatus.get(0);
 
         Patient patient=patientService.getPatient(patientId);
         Doctor doctor=doctorService.getDoctor(patient.getAssigned_doctor());

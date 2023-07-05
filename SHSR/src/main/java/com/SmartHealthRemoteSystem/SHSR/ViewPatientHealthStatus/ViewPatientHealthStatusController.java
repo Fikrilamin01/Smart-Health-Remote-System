@@ -41,10 +41,6 @@ public class ViewPatientHealthStatusController {
 
         //Retrive patient list of health status
         List<HealthStatus> healthStatus= healthStatusService.getListHealthStatus(patientId);
-//        List<HealthStatus> threeLastHealth=null;
-//    for (int i = healthStatus.size()-1; i==(healthStatus.size()-3) ; i--) {
-//        threeLastHealth.add(healthStatus.get(i));
-//    }
         model.addAttribute("patient",patient);
         model.addAttribute("doctor",doctor);
         model.addAttribute("healthStatusList",healthStatus);

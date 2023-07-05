@@ -108,14 +108,13 @@ public class DoctorRepository implements SHSRDAO<Doctor> {
     @Override
     public String delete(String doctorId) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        String message;
         String timeDeleteUser;
         Doctor doctor = get(doctorId);
         if (doctor == null) {
             return "patientId is not exist in the database";
         } else {
             //delete patient
-            ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(doctorId).delete();
+            dbFirestore.collection(COL_NAME).document(doctorId).delete();
             timeDeleteUser = userRepository.delete(doctorId);
         }
 

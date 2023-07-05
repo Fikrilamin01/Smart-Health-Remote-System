@@ -20,7 +20,6 @@ public class ReadSensorDataController {
     @PostMapping("/create-sensor-data")
     public void saveSensorData(@RequestBody SensorData sensorData)
             throws ExecutionException, InterruptedException {
-        String sensorId = sensorDataService.createSensorData();
     }
 
     @GetMapping("/get-sensor-data/{sensorDataId}")
@@ -38,7 +37,6 @@ public class ReadSensorDataController {
 
     @PutMapping("/update-sensor-data")
     public void updateSensorData(@RequestBody SensorData sensorData) throws ExecutionException, InterruptedException {
-        String timeUpdated = sensorDataService.updateSensorData(sensorData);
     }
 
     @DeleteMapping("/delete-sensor-data/{sensorDataId}")

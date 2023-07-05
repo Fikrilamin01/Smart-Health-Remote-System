@@ -56,7 +56,6 @@ public class UserRepository implements SHSRDAO<User> {
     @Override
     public String update(User user) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        Map<String, String> tempUser = new HashMap<>();
         ApiFuture<WriteResult> collectionsApiFuture = null;
         //if-else condition is added to check which field does the user update.
         //statement inside if-else condition will add change value into a map key value

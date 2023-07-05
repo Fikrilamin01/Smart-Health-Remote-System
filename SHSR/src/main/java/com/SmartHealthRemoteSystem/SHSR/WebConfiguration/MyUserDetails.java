@@ -21,9 +21,9 @@ public class MyUserDetails implements UserDetails {
 
     public MyUserDetails(User user){
         this.user = user;
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
-        this.authorities = authorities;
+        List<GrantedAuthority> authority = new ArrayList<>();
+        authority.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+        this.authorities = authority;
     }
 
     @Override

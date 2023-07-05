@@ -65,7 +65,7 @@ public class PrescriptionRepository implements SubCollectionSHSRDAO<Prescription
         prescription.setPrescriptionId(addedDocRef.getId());
         ApiFuture<WriteResult> collectionsApiFuture =
                 addedDocRef.set(prescription);
-        ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toDate().toString());
+         addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toDate().toString());
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
@@ -86,7 +86,7 @@ public class PrescriptionRepository implements SubCollectionSHSRDAO<Prescription
         //need to make sure that user interface update all medicine list at once,
         //as firestore does not support updating element of array as in 13/1/2022.
         collectionsApiFuture = addedDocRef.update("medicineList", prescription.getMedicineList());
-        ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toDate().toString());
+         addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toDate().toString());
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
@@ -96,7 +96,7 @@ public class PrescriptionRepository implements SubCollectionSHSRDAO<Prescription
         if(get(patientId, prescriptionId) != null){
             return "Prescription with Id"  + prescriptionId +  "is not exist.";
         }
-        ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(patientId).collection(SUB_COL_NAME).document(prescriptionId).delete();
+         dbFirestore.collection(COL_NAME).document(patientId).collection(SUB_COL_NAME).document(prescriptionId).delete();
         return "Document with Sensor Data Id " + prescriptionId + " has been deleted";
     }
 }

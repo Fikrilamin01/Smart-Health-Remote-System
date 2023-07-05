@@ -69,7 +69,7 @@ public class SensorDataRepository implements SHSRDAO<SensorData> {
         sensorData.setSensorDataId(addedDocRef.getId());
         ApiFuture<WriteResult> collectionsApiFuture =
                 addedDocRef.set(sensorData);
-        ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime());
+         addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime());
 
         return addedDocRef.getId();
     }
@@ -101,7 +101,7 @@ public class SensorDataRepository implements SHSRDAO<SensorData> {
         if(get(sensorDataId) == null){
             return "The sensorData with Id " + sensorDataId + " is not exist.";
         }
-        ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(sensorDataId).delete();
+         dbFirestore.collection(COL_NAME).document(sensorDataId).delete();
         return "Document with Sensor Data Id " + sensorDataId + " has been deleted";
     }
 }

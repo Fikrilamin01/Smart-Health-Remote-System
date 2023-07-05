@@ -41,7 +41,6 @@ public class FirebaseInitializer {
         firebaseCredential.setAuth_provider_x509_cert_url(environment.getRequiredProperty("FIREBASE_AUTH_PROVIDER_X509_CERT_URL"));
         firebaseCredential.setClient_x509_cert_url(environment.getRequiredProperty("FIREBASE_CLIENT_X509_CERT_URL"));
 
-        ObjectMapper mapper = new ObjectMapper();
         String jsonString = gson.toJson(firebaseCredential);
 
         InputStream serviceAccount = IOUtils.toInputStream(jsonString);

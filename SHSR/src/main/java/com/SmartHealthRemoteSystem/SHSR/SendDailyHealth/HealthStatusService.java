@@ -31,7 +31,7 @@ public class HealthStatusService {
 
 
     public void updateHealthStatus(HealthStatus healthStatus, String patientId) throws ExecutionException, InterruptedException {
-        String timeUpdated = healthStatusRepository.update(healthStatus, patientId);
+         healthStatusRepository.update(healthStatus, patientId);
     }
 
     public String deleteHealthStatus(String healthStatusId, String patientId) throws ExecutionException, InterruptedException {

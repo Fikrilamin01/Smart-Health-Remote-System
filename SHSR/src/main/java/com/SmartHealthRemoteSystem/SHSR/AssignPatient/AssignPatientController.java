@@ -36,7 +36,6 @@ public class AssignPatientController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = assignPatientServices.getDoctor(myUserDetails.getUsername());
-        Patient patient =assignPatientServices.getPatient(patientID);
         assignPatientServices.AssignPatient(patientID,doctor.getUserId());
         List<Patient> patientList= assignPatientServices.getListPatient();
         model.addAttribute("patientList",patientList);
@@ -49,7 +48,6 @@ public class AssignPatientController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = assignPatientServices.getDoctor(myUserDetails.getUsername());
-        Patient patient =assignPatientServices.getPatient(patientID);
         assignPatientServices.UnassignDoctor(patientID,doctor.getUserId());
         List<Patient> patientList=assignPatientServices.getListPatient();
         model.addAttribute("patientList",patientList);
@@ -62,7 +60,6 @@ public class AssignPatientController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails myUserDetails= (MyUserDetails) auth.getPrincipal();
         Doctor doctor = assignPatientServices.getDoctor(myUserDetails.getUsername());
-        Patient patient =assignPatientServices.getPatient(patientID);
         assignPatientServices.ReleasePatient(patientID,doctor.getUserId());
         List<Patient> patientList=assignPatientServices.getListPatient();
         model.addAttribute("patientList",patientList);

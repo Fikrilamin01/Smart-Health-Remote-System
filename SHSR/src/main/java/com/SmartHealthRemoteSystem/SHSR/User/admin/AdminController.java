@@ -68,7 +68,7 @@ public class AdminController {
             } else if(role.equals("DOCTOR")){
                 Message = doctorService.updateDoctor(new Doctor(id,name,password,contact,role, doctorHospital, doctorPosition));
             } else {
-                Message = userService.updateUser(new User(id,name,password,contact,role));
+                Message = userService.updateUser(user);
             }
 
         }
