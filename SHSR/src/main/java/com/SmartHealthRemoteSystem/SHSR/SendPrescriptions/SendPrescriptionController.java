@@ -72,7 +72,7 @@ public class SendPrescriptionController {
         List<Patient> patientList = doctorService.findAllPatientAssignToDoctor(doctor.getUserId());
         model.addAttribute("patientList", patientList);
         model.addAttribute("doctor",doctor);
-        String timeCreated = prescriptionService.createPrescription(prescription1,patientId);
+        prescriptionService.createPrescription(prescription1,patientId);
         return "myPatient";
     }
 

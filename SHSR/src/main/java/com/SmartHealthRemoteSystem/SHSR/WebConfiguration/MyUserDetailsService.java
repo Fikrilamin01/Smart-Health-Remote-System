@@ -25,7 +25,8 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         // user from firestore database
         Optional<User> user = Optional.ofNullable(userRepository.get(userName));
-        user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
+        if(!user.isPresent())
+            throw new UsernameNotFoundException("Not found: " + userName);
         return user.map(MyUserDetails::new).get();
     }
 }

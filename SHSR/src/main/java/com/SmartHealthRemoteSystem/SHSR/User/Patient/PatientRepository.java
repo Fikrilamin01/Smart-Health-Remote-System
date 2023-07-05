@@ -107,23 +107,23 @@ public class PatientRepository implements SHSRDAO<Patient> {
     public String update(Patient patient) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         if (!(patient.getAddress().isEmpty())) {
-            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
+             dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("address", patient.getAddress());
         }
         if (!(patient.getAssigned_doctor() == null)) {
-            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
+             dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("assigned_doctor", patient.getAssigned_doctor());
         }
         if (!(patient.getEmergencyContact().isEmpty())) {
-            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
+             dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("emergencyContact", patient.getEmergencyContact());
         }
         if (!(patient.getSensorDataId() == null)) {
-            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
+             dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("sensorDataId", patient.getSensorDataId());
         }
         if (!(patient.getStatus() == null)) {
-            ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(patient.getUserId())
+             dbFirestore.collection(COL_NAME).document(patient.getUserId())
                     .update("status", patient.getStatus());
         }
 
@@ -162,7 +162,7 @@ public class PatientRepository implements SHSRDAO<Patient> {
         }
 
         //delete patient
-        ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(patientId).delete();
+         dbFirestore.collection(COL_NAME).document(patientId).delete();
         timeDeleteUser = userRepository.delete(patientId);
 
 

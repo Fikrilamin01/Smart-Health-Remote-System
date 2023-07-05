@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 
 @Repository
 public class HealthStatusRepository implements SubCollectionSHSRDAO<HealthStatus> {
-    private final SHSRDAO<SensorData> sensorDataRepository;
+    final SHSRDAO<SensorData> sensorDataRepository;
 
     public static final String COL_NAME = "Patient";
     public static final String SUB_COL_NAME = "HealthStatus";
@@ -61,8 +61,6 @@ public class HealthStatusRepository implements SubCollectionSHSRDAO<HealthStatus
             ApiFuture<DocumentSnapshot> future = documentReference1.get();
             DocumentSnapshot document = future.get();
             healthStatus = document.toObject(HealthStatus.class);
-//            String date= healthStatus.getTimestamp().substring(0,10);
-//            healthStatus.setTimestamp(date);
 
             healthStatusList.add(healthStatus);
         }
@@ -78,7 +76,7 @@ public class HealthStatusRepository implements SubCollectionSHSRDAO<HealthStatus
         healthStatus.setHealthStatusId(addedDocRef.getId());
         ApiFuture<WriteResult> collectionsApiFuture =
                 addedDocRef.set(healthStatus);
-        ApiFuture<WriteResult> writeResult = addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toDate().toString());
+         addedDocRef.update("timestamp", collectionsApiFuture.get().getUpdateTime().toDate().toString());
 
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
@@ -108,7 +106,7 @@ public class HealthStatusRepository implements SubCollectionSHSRDAO<HealthStatus
             return "Health status with Id " + healthStatusId + " is not exist.";
         }
         DocumentReference addedDocRef = dbFirestore.collection(COL_NAME).document(patientId).collection(SUB_COL_NAME).document(healthStatusId);
-        ApiFuture<WriteResult> writeResult = addedDocRef.delete();
+         addedDocRef.delete();
 
         return "Document with Health Id " + healthStatusId + " has been deleted";
     }
