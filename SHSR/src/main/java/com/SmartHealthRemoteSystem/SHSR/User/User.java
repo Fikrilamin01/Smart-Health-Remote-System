@@ -5,11 +5,11 @@ package com.SmartHealthRemoteSystem.SHSR.User;
 // import java.util.List;
 
 public class User {
-    // private String userId;
-    // private String name;
-    // private String password;
-    // private String contact;
-    // private String role;
+    private String userId;
+    private String name;
+    private String password;
+    private String contact;
+    private String role;
 
     public User() {
     }
